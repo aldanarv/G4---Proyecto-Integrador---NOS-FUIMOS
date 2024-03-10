@@ -1,0 +1,19 @@
+.articleList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100vh;
+    background-color: var(--background-color-productos);
+    border-left: 0.5px solid rgba(0, 0, 0, 0.33);
+    gap: 12px;
+    padding: 8rem 24px;
+    overflow-x: scroll;
+    width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .articleList {
+        padding-left: 47px;
+        padding-right: 47px;
+    }
+}

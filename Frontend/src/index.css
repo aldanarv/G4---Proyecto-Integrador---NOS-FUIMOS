@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Nunito Sans', 'Montserrat', sans-serif;
+
+  /*Colores del texto*/
+  --text-color-gray: #717171;
+  --text-color-blue: #022a3d;
+  --text-color-black: #222222;
+
+  /*Colores del borde*/
+  --border-color-gray: #ebebeb;
+
+  /*Colores de fondo*/
+  --background-color-header: #ffffff;
+  --background-color-footer: #ffffff;
+  --background-color-home: #FFE9CE;
+  --background-color-productos: #01A9D6;
+
+  /*Styles textos*/
+  --font-size-sm: 14px;
+  --line-height-sm: 20px;
+
+  --font-size-base: 16px;
+  --line-height-base: 24px;
+
+  --font-size-lg: 18px;
+  --line-height-lg: 28px;
+
+  --font-size-xl: 20px;
+  --line-height-xl: 28px;
+
+  --font-weight-light: 300;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /*Styles buttons*/
+  --button-primary-background: #ffffff;
+  --button-primary-border: 1px solid var(--border-color-gray);
+  --button-primary-border-radius: 6px;
+  --button-primary-padding: 8px 10px;
+
+  /*Oculta la barra de scroll de la pagina*/
+  scrollbar-width: none;
+}
+
+/*Quitando los estilos por defecto del navegador*/
+* {
+  box-sizing: border-box;
+	padding: 0;
+  margin: 0;
+}
+
+body {
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  text-decoration: none;
+}
