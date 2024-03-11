@@ -1,6 +1,7 @@
 /*Estilos del texto e imagen de la categoria*/
 .carouselItem__categoria {
     display: flex;
+    flex-direction: row;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;

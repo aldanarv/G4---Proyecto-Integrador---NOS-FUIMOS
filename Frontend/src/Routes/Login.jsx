@@ -68,7 +68,7 @@ const Login = () => {
                             />
                         </div>
                         {formik.touched.email && formik.errors.email ? (
-                            <div className="text-black font-light text-sm">
+                            <div className="text-red-500 font-light text-sm">
                                 {formik.errors.email}
                             </div>
                         ) : null}
@@ -95,7 +95,7 @@ const Login = () => {
                             <svg onClick={togglePasswordVisibility} className="icon icon-tabler icon-tabler-eye absolute top-1 right-1.5" width="30" height="30" viewBox="0 0 24 24" strokeWidth="1" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
                         </div>
                         {formik.touched.password && formik.errors.password ? (
-                            <div className="text-black font-light text-sm">
+                            <div className="text-red-500 font-light text-sm">
                                 {formik.errors.password}
                             </div>
                         ) : null}
