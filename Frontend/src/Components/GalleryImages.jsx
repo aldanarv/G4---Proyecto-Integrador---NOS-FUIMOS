@@ -2,20 +2,10 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import styles from "../styles/galleryImages.module.css";
-
-const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    maxWidth: "100%",
-    width: "65%",
-    bgcolor: "transparent",
-    border: "none",
-};
 
 export default function GalleryImagesDos() {
     const { id } = useParams();
@@ -45,10 +35,23 @@ export default function GalleryImagesDos() {
         setCurrentIndex(nextIndex);
     };
 
+    const isSmallScreen = useMediaQuery('(max-width:1023px)');
+
+    const style = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        maxWidth: "100%",
+        width: isSmallScreen ? '95%' : '70%',
+        bgcolor: "transparent",
+        border: "none",
+    };
+
     return (
         <div>
-            <Button onClick={handleOpen} className={styles.details__buttons}>
-                <p className={styles.details__buttons_atras}>Ver más</p>
+            <Button onClick={handleOpen} className={styles.details__buttons_gallery}>
+                <p className={styles.details__buttons_atras_gallery}>Ver más</p>
             </Button>
             <Modal
                 open={open}
@@ -59,10 +62,10 @@ export default function GalleryImagesDos() {
                 <Box sx={style}>
                     <div className="grid gap-4">
                         <div>
-                            <div className="flex flex-row gap-6 items-center justify-center mt-4">
+                            <div className="flex flex-row gap-1.5 lg:gap-6 items-center justify-center mt-4">
                                 <button
                                     onClick={handlePrevClick}
-                                    className="bg-white flex items-center h-7 rounded-md"
+                                    className="bg-white items-center h-7 rounded-md hidden lg:flex"
                                 >
                                     <svg
                                         width="30"
@@ -80,13 +83,13 @@ export default function GalleryImagesDos() {
                                     </svg>
                                 </button>
                                 <img
-                                    className="h-auto w-11/12 rounded-2xl"
+                                    className="h-auto w-full lg:w-11/12 rounded-2xl"
                                     src={selectedImage || "data:image;base64," + data?.urlImagenes[0]}
                                     alt=""
                                 />
                                 <button
                                     onClick={handleNextClick}
-                                    className="bg-white flex items-center h-7 rounded-md"
+                                    className="bg-white items-center h-7 rounded-md hidden lg:flex"
                                 >
                                     <svg
                                         width="30"
@@ -106,7 +109,7 @@ export default function GalleryImagesDos() {
                             </div>
                         </div>
 
-                        <div className={styles.carouselItem__categoria}>
+                        <div className={styles.carouselItem__gallery }>
                             {data?.urlImagenes.map((imagenes, index) => (
                                 <div
                                     className="contents"
@@ -116,7 +119,7 @@ export default function GalleryImagesDos() {
                                     }
                                 >
                                     <img
-                                        className="h-36 max-w-full rounded-lg cursor-pointer hover:scale-95"
+                                        className="h-16 lg:h-28 max-w-full rounded-lg cursor-pointer hover:scale-95"
                                         src={`data:image;base64,${imagenes}`}
                                         alt=""
                                         loading="lazy"

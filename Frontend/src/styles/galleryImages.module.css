@@ -1,4 +1,4 @@
-.carouselItem__categoria {
+.carouselItem__gallery {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
@@ -9,7 +9,7 @@
     align-items: center;
 }
 
-.details__buttons {
+.details__buttons_gallery {
     font-size: var(--font-size-sm);
     line-height: var(--line-height-sm);
     font-weight: var(--font-weight-medium);
@@ -21,7 +21,7 @@
     text-transform: none;
 }
 
-.details__buttons_atras {
+.details__buttons_atras_gallery {
     font-size: 14px;
     text-decoration: underline;
     text-transform: none;
