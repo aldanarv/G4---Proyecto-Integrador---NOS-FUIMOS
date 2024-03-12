@@ -68,7 +68,7 @@ const DetailProduct = () => {
 
                 <div className="bg-[#fff7ec] rounded-2xl">
                     <div>
-                        <div className="flex justify-end gap-4 mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:max-w-7xl lg:px-8">
+                        <div className="flex justify-end gap-4 mx-auto px-4 pt-10 sm:px-6 lg:max-w-7xl lg:px-8">
                             <div className="flex items-center gap-2">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-share"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M8.7 10.7l6.6 -3.4" /><path d="M8.7 13.3l6.6 3.4" /></svg>
                                 <p className="text-sm hover:underline">Compartir</p>
@@ -78,8 +78,8 @@ const DetailProduct = () => {
                                 <p className="text-sm hover:underline">Guardar</p>
                             </div>
                         </div>
-                        <div className="mx-auto max-w-2xl px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-                            <div className="lg:col-span-2 lg:pr-8">
+                        <div className="mx-auto px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:px-8 lg:pb-24 lg:pt-16">
+                            <div className="lg:col-span-2 lg:pr-4">
                                 <h1 className="text-xl font-bold text-black sm:text-2xl">{data?.destino}</h1>
                             </div>
 
@@ -136,7 +136,7 @@ const DetailProduct = () => {
                                 </form>
                             </div>
 
-                            <div className="py-10 lg:col-span-2 lg:col-start-1 lg:pb-16 lg:pr-8 lg:pt-6">
+                            <div className="py-10 lg:col-span-2 lg:col-start-1 lg:pb-16 lg:pr-4 lg:pt-6">
                                 <div>
                                     <h3 className="sr-only">Description</h3>
 

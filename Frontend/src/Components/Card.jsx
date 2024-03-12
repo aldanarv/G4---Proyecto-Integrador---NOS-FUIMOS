@@ -33,9 +33,11 @@ const Card = ({ id, nombre, destino, salidaDate, vueltaDate, precio, urlImagenes
                                 <p className={styles.detallePersona}>Precio por persona</p>
                                 <p className={styles.detallePrecio}>${precio} USD</p>
                             </div>
-                            <Link to={"/product/" + id} className="px-3 py-2 font-medium text-black text-sm bg-white rounded-md border-2 border-[#E37B00] hover:bg-[#E37B00] focus:outline-none">
-                                Ver más
-                            </Link>
+                            <div className="ml-auto sm:m-0">
+                                <Link to={"/product/" + id} className="p-2 font-medium text-black text-sm bg-white rounded-md border-2 border-[#E37B00] hover:bg-[#E37B00] focus:outline-none">
+                                    Ver más
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </Link>

@@ -80,13 +80,15 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 640px) {
     .divDetalle {
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 1.25rem;
         align-items: flex-start;
+        margin-top: 10px;
     }
 }
 
@@ -111,7 +113,14 @@
 
 @media (max-width: 640px) {
     .detallePrecio {
-        font-size: var(--font-size-base);
-        line-height: var(--line-height-base);
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-sm);
+    }
+}
+
+@media (max-width: 640px) {
+    .detallePersona {
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-sm);
     }
 }

@@ -12,7 +12,7 @@ const CarouselCategory = () => {
                 categoria?.map((category) => (
                     <Link key={category.id} className={styles.category__buttons}>
                         <img src={"data:image;base64," + category.imagen} alt="" width="24" height="24"/>
-                        {category.titulo}
+                        <p className={styles.carouselItem__texto}>{category.titulo}</p>
                     </Link>
                 ))
             }
