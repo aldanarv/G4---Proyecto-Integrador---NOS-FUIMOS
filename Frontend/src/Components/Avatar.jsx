@@ -9,13 +9,13 @@ const Avatar = () => {
     const { user } = useFetchGetIdUser("http://localhost:8080/usuario/" + id);
     const navigate = useNavigate()
 
-     // Verificar si state.avatar y state.avatar.name existen antes de dividir el nombre
-     const firstName = user?.nombre ? user.nombre.split(' ')[0] : '';
-     const lastName = user?.apellido ? user.apellido.split(' ')[0] : '';
- 
-     // Obtener la primera letra del nombre y del apellido
-     const firstLetterFirstName = firstName ? firstName.charAt(0) : '';
-     const firstLetterLastName = lastName ? lastName.charAt(0) : '';
+    // Verificar si state.avatar y state.avatar.name existen antes de dividir el nombre
+    const firstName = user?.nombre ? user.nombre.split(' ')[0] : '';
+    const lastName = user?.apellido ? user.apellido.split(' ')[0] : '';
+
+    // Obtener la primera letra del nombre y del apellido
+    const firstLetterFirstName = firstName ? firstName.charAt(0) : '';
+    const firstLetterLastName = lastName ? lastName.charAt(0) : '';
 
     //Mostrar menu desplegable
     const [isDropdownOpen, setDropdownOpen] = useState(false);

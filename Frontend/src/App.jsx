@@ -6,7 +6,6 @@ import Footer from "./Components/Footer";
 import Login from './Routes/Login';
 import Register from './Routes/Register';
 import DetailProduct from './Routes/DetailProduct';
-import GalleryImages from './Routes/GalleryImages';
 import Reservar from './Routes/Reservar';
 import AddProduct from './Routes/AddProduct';
 import ListProduct from './Routes/ListProduct';
@@ -33,7 +32,6 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/product/:id' element={<DetailProduct />} />
-        <Route path='/product/:id/gallery' element={<GalleryImages />} />
         <Route element={<ProtectedRoutes />}>
           <Route path='/administracion' element={<ListProduct />} />
           <Route path='/administracion/addProduct' element={<AddProduct />} />

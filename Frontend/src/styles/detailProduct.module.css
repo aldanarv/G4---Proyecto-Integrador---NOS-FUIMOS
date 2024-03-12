@@ -57,7 +57,6 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    position: relative;
 }
 
 @media (max-width: 768px) {
@@ -68,74 +67,64 @@
 
 /*Estilos del boton atras*/
 .details__buttons {
-    background: #E47F07;
-    border: none;
     font-size: var(--font-size-sm);
     line-height: var(--line-height-sm);
-    font-weight: var(--font-weight-light);
-    color: #ffffff;
-    border-radius: var(--button-primary-border-radius);
-    padding: 7px 10px;
+    font-weight: var(--font-weight-medium);
+    color: black;
     text-decoration: none;
     display: flex;
     align-items: center;
-    width: 87px;
     justify-content: flex-end;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    text-transform: none;
 }
 
 .details__buttons_back {
-    background: #E47F07;
-    border: none;
     font-size: var(--font-size-sm);
     line-height: var(--line-height-sm);
-    font-weight: var(--font-weight-light);
-    color: #ffffff;
-    border-radius: var(--button-primary-border-radius);
-    padding: 7px 20px;
-    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    color: black;
     display: flex;
     align-items: center;
-    width: 87px;
     justify-content: flex-end;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-}
-
-.details__svgButtons {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background-color: #EAA353;
-    color: #ffffff;
-    position: absolute;
-    left: -10px;
 }
 
 .details__buttons_title {
     font-size: 14px;
 }
 
+.details__buttons_atras {
+    font-size: 14px;
+    text-decoration: underline;
+    text-transform: none;
+    color: black;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
+    font-weight: var(--font-weight-medium);
+}
+
 .gallery {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 10px;
     margin-bottom: 24px;
+    background-color: #fff7ec;
+    border-radius: 1rem; /* 16px */
+    padding: 16px;
+    margin-top: 16px;
 }
 
 .galleryContainer {
-    margin-top: 24px;
     margin-left: auto;
     margin-right: auto;
     max-width: 42rem; /* 672px */
     gap: 16px;
-    background-color: #fff7ec;
-    border-radius: 1rem; /* 16px */
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (min-width: 640px) {
-    .galleryContainer {
-        padding: 30px;
+    .gallery {
+        padding: 30px 30px 10px 30px;
     }
 }
 
@@ -194,27 +183,6 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    position: relative;
-}
-
-.details__svgButtonsPlus {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background-color: #dff9cd;
-    color: #ffffff;
-    position: absolute;
-    left: -6px;
-}
-
-.details__svgButtonsPlusDos {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background-color: #EAA353;
-    color: #ffffff;
-    position: absolute;
-    left: -10px;
 }
 
 .divContainer {
