@@ -50,7 +50,16 @@ public class CategoriaService {
     }
 
 
+    public ResponseEntity actualizarCategoria(Categoria categoria) {
+        Optional<Categoria> optionalCategoria = categoriaRepository.findById(categoria.getId());
+        if(optionalCategoria.isPresent()){
+            return ResponseEntity.ok(categoriaRepository.save(categoria));
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria no encontrada");
+        }
     }
+}
 
 
 

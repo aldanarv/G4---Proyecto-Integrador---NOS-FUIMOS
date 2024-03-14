@@ -29,6 +29,11 @@ public class CategoriaController {
         return categoriaService.addCategoria(categoria);
     }
 
+    @PutMapping("/actualizar")
+    public ResponseEntity actualizarCategoria(@RequestBody Categoria categoria){
+        return categoriaService.actualizarCategoria(categoria);
+    }
+
     @GetMapping(value = "/listar")
     public List<Categoria> listarCategorias(Model model){
         return categoriaService.getAllCategoria();
