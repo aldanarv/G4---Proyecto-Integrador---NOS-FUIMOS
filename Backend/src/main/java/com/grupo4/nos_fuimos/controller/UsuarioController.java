@@ -95,4 +95,9 @@ public class UsuarioController {
         return usuarioService.getAll();
     }
 
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity eliminarUsuario(@PathVariable String id){
+        return usuarioService.eliminarUsuarioById(id);
+    }
+
 }
