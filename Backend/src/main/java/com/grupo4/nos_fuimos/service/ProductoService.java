@@ -23,7 +23,6 @@ public class ProductoService {
     }
 
     public ResponseEntity<?> addProducto(Producto producto){
-
         Optional<Producto> existingProduct = productoRepository.findByNombre(producto.getNombre());
         if (existingProduct.isPresent())
             return ResponseEntity.status(HttpStatus.CONFLICT).body("El producto con nombre '" + producto.getNombre() + "' ya existe en la base de datos");
@@ -46,5 +45,36 @@ public class ProductoService {
     public void deleteProducto(String id){
         productoRepository.deleteById(id);
     }
+
+    public ResponseEntity addResena(String productoId, String resenaId){
+        Optional<Producto> existingProduct = productoRepository.findById(productoId);
+        if (existingProduct.isPresent()){
+            Producto producto = existingProduct.get();
+            producto.addResena(resenaId);
+            return  ResponseEntity.ok(productoRepository.save(producto));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+        }
+    }
+
+    public ResponseEntity removeResena(String productoId, String resenaId){
+        Optional<Producto> existingProduct = productoRepository.findById(productoId);
+        if (existingProduct.isPresent()){
+            Producto producto = existingProduct.get();
+            if(producto.removeResena(resenaId)){
+                return  ResponseEntity.ok(productoRepository.save(producto));
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resena no encontrada en producto");
+            }
+
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+        }
+    }
+
+
 
 }

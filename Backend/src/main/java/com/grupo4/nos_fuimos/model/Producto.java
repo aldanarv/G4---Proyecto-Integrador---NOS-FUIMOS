@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "productos")
@@ -27,8 +28,9 @@ public class Producto {
     private Double precio;
     private List<String> urlImagenes;
     private List<Caracteristica> listCaracteristicas;
+    private List<String> listResena;
 
-    public Producto(String id, String nombre, String destino, String descripcion, String categoria, LocalDate salidaDate, LocalDate vueltaDate, Double precio, List<String> urlImagenes, List<Caracteristica> listCaracteristicas) {
+    public Producto(String id, String nombre, String destino, String descripcion, String categoria, LocalDate salidaDate, LocalDate vueltaDate, Double precio, List<String> urlImagenes, List<Caracteristica> listCaracteristicas, List<String> listResena) {
         this.id = id;
         this.nombre = nombre;
         this.destino = destino;
@@ -39,6 +41,7 @@ public class Producto {
         this.precio = precio;
         this.urlImagenes = urlImagenes;
         this.listCaracteristicas = listCaracteristicas;
+        this.listResena = listResena;
     }
 
     public Producto(){}
@@ -121,5 +124,33 @@ public class Producto {
 
     public void setListCaracteristicas(List<Caracteristica> listCaracteristicas) {
         this.listCaracteristicas = listCaracteristicas;
+    }
+
+    public List<String> getListResena() {
+        return listResena;
+    }
+
+    public void setListResena(List<String> listResena) {
+        this.listResena = listResena;
+    }
+
+    public void addResena(String resenaId){
+        if(listResena==null){
+            listResena = new ArrayList<>();
+        }
+
+        listResena.add(resenaId);
+    }
+
+    public Boolean removeResena(String resenaId) {
+        if (listResena != null && !listResena.isEmpty()) {
+            for (String id : listResena) {
+                if (resenaId.equals(id)) {
+                    listResena.remove(id);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
