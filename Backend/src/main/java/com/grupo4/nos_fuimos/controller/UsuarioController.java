@@ -100,4 +100,23 @@ public class UsuarioController {
         return usuarioService.eliminarUsuarioById(id);
     }
 
+
+    @GetMapping("/nombre/{id}")
+    public String nombreUsuario(@PathVariable String id){
+        Optional <Usuario> usuario = usuarioService.findById(id);
+        if(usuario.isPresent()){
+            Usuario usuarioEncontrado = usuario.get();
+            return (usuarioEncontrado.getNombre() + usuarioEncontrado.getApellido());
+        }
+        return "Usuario no encontrado";
+    }
+
+    @GetMapping("/email/{id}")
+    public String emailUsuario(@PathVariable String id){
+        Optional <Usuario> usuario = usuarioService.findById(id);
+        if(usuario.isPresent()){
+            return usuario.get().getEmail();
+        }
+        return "Usuario no encontrado";
+    }
 }
