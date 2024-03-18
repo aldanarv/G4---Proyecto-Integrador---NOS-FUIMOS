@@ -7,7 +7,7 @@
     display: grid;
     place-items: center;
     background-color: var(--background-color-home);
-    padding: 16rem 16px 2rem 16px;
+    padding: 20rem 16px 2rem 16px;
     gap: 30px;
 }
 

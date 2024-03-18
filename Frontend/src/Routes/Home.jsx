@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useContextGlobal } from "../Context/global.context";
-import SearchButton from "../Components/ui/Buttons/SearchButton";
+import InputSearch from "../Components/ui/Buttons/InputSearch";
 import Category from "../Components/Category";
 import Card from "../Components/Card";
 import Pagination from '@mui/material/Pagination';
@@ -20,27 +20,19 @@ const Home = () => {
         setPage(newPage);
     };
 
-    //algoritmo de Fisher-Yates para barajar aleatoriamente un array
-    const aleatorio = (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    };
-
-    const aleatorioProducts = aleatorio(state.data);
-
     return (
         <div className={styles.divMain}>
             <div className={styles.main__searchButton}>
-                <SearchButton />
-                <Category />
+                <h2 className="text-3xl font-light text-white text-center lg:text-4xl">Busca ofertas en hoteles, casas y mucho más</h2>
+                
+                <InputSearch options={state.data} />
             </div>
             <main className={styles.main}>
+                <Category />
                 <article>
+                    <h3 className="text-lg font-light text-black lg:text-xl pb-4">Recomendaciones</h3>
                     <section className={styles.main__sectionCard}>
-                        {aleatorioProducts.slice(pagInicio, pagFinal).map((product) => (
+                        {state.dataAleatoria.slice(pagInicio, pagFinal).map((product) => (
                             <Card
                                 key={product.id}
                                 id={product.id}

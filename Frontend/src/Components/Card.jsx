@@ -18,8 +18,8 @@ const Card = ({ id, nombre, destino, salidaDate, vueltaDate, precio, urlImagenes
                         />
                     </Link>
                 </div>
-                <Link to={"/product/" + id}>
-                    <div className={styles.containerText}>
+                <div className={styles.containerText}>
+                    <Link to={"/product/" + id}>
                         <h3 className={styles.title}>
                             {nombre}
                         </h3>
@@ -27,20 +27,20 @@ const Card = ({ id, nombre, destino, salidaDate, vueltaDate, precio, urlImagenes
                         <p className={styles.detalle}>
                             {destino}
                         </p>
-
-                        <div className={styles.divDetalle}>
-                            <div>
-                                <p className={styles.detallePersona}>Precio por persona</p>
-                                <p className={styles.detallePrecio}>${precio} USD</p>
-                            </div>
-                            <div className="ml-auto sm:m-0">
-                                <Link to={"/product/" + id} className="p-2 font-medium text-black text-sm bg-white rounded-md border-2 border-[#E37B00] hover:bg-[#E37B00] focus:outline-none">
-                                    Ver más
-                                </Link>
-                            </div>
+                    </Link>
+                    <div className={styles.divDetalle}>
+                        <div>
+                            <p className={styles.detallePersona}>Precio por persona</p>
+                            <p className={styles.detallePrecio}>${precio} USD</p>
+                        </div>
+                        <div className="ml-auto sm:m-0">
+                            <Link to={"/product/" + id} className="p-2 font-medium text-black text-sm bg-white rounded-md border-2 border-[#E37B00] hover:bg-[#E37B00] focus:outline-none">
+                                Ver más
+                            </Link>
                         </div>
                     </div>
-                </Link>
+                </div>
+
             </div>
         </div>
     );

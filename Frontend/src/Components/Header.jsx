@@ -19,6 +19,7 @@ const Header = () => {
                             src="/assets/logo3.png"
                             alt=""
                         />
+                        <h1 className="hidden">Nos Fuimos</h1>
                     </Link>
                 </div>
 

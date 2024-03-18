@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { useContextGlobal } from "../Context/global.context";
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
+import Swal from "sweetalert2";
 
 const Avatar = () => {
     const { state, dispatch } = useContextGlobal();
@@ -40,9 +41,23 @@ const Avatar = () => {
     }, []);
 
     const handleLogout = () => {
-        // Limpiar el estado global
-        dispatch({ type: "LOGOUT" });
-        navigate('/login');
+        // Mostrar alerta de confirmación antes de cerrar sesión
+        Swal.fire({
+            title: "¿Deseas cerrar sesión?",
+            icon: "question",
+            showCancelButton: true,
+            color: "#000000",
+            confirmButtonColor: "#E47F07",
+            cancelButtonColor: "#01A9D6",
+            confirmButtonText: "Confirmar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Limpiar el estado global
+                dispatch({ type: "LOGOUT" });
+                navigate('/login');
+            }
+        });
     };
 
     return (

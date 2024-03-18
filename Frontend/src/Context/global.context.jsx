@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useReducer } from 'react'
-import { createContext, useContext, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 const ContextGlobal = createContext();
 
@@ -8,6 +8,8 @@ const reducer = (state, action) => {
     switch (action.type) {
         case 'DATA_PRODUCTS':
             return { ...state, data: action.payload };
+        case 'DATA_PRODUCTS_ALEATORIA':
+            return { ...state, dataAleatoria: action.payload };
         case 'DATA_USER':
             return { ...state, user: action.payload };
         case 'LOGOUT':
@@ -27,19 +29,37 @@ const reducer = (state, action) => {
 
 const initialState = {
     data: [],
+    dataAleatoria: [],
     user: [],
-    loged: JSON.parse(localStorage.getItem("loged")) || false,
     isLoged: JSON.parse(localStorage.getItem("isLoged")) || false,
+    loged: JSON.parse(localStorage.getItem("loged")) || false,
 }
+
+const aleatorio = (array) => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+};
 
 const ContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
-        axios("http://localhost:8080/admin/productos")
-            .then(res => dispatch({ type: 'DATA_PRODUCTS', payload: res.data }))
+        axios.get('http://localhost:8080/admin/productos')
+            .then(res => {
+                const newData = res.data;
+                dispatch({ type: 'DATA_PRODUCTS', payload: newData });
+                // Actualizar state.dataAleatoria si hay cambios en state.data
+                if (JSON.stringify(state.data) !== JSON.stringify(newData)) {
+                    const newDataAleatoria = aleatorio(newData);
+                    dispatch({ type: 'DATA_PRODUCTS_ALEATORIA', payload: newDataAleatoria });
+                }
+            })
             .catch(error => console.error('Error fetching data:', error));
-    }, []);
+    }, [state.data]);
 
     return (
         <ContextGlobal.Provider value={{
