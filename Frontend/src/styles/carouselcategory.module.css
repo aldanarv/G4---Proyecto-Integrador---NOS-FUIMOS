@@ -34,4 +34,9 @@
 .carouselItem__texto {
     width: 100%;
     text-wrap: nowrap;
+    text-transform: capitalize;
+}
+
+.selected {
+    border: 2px solid #E47F07; /* Por ejemplo, puedes ajustar el color y el grosor del borde según tus preferencias */
 }

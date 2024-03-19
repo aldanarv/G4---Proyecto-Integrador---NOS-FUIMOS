@@ -70,7 +70,7 @@ const Avatar = () => {
                         </div>
                         <div className="flex flex-col items-start gap-0">
                             <h1 className="text-base font-medium text-black">{firstName} {lastName}</h1>
-                            <button onClick={handleLogout} className="text-sm text-gray-500">Cerrar sesión</button>
+                            <button onClick={handleLogout} className="text-sm font-extralight text-gray-700">Cerrar sesión</button>
                         </div>
                     </div>
                     <button
