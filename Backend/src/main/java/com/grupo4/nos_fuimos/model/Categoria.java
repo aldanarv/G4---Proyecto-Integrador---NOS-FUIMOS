@@ -19,17 +19,15 @@ public class Categoria {
     @NotNull
     private String imagen;
 
-    private List<String> idProductos;
 
     public Categoria() {
     }
 
-    public Categoria(String id, String titulo, String descripcion, String imagen, List<String> idProductos) {
+    public Categoria(String id, String titulo, String descripcion, String imagen) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.imagen = imagen;
-        this.idProductos = idProductos;
     }
 
     public String getId() {
@@ -64,11 +62,4 @@ public class Categoria {
         this.imagen = imagen;
     }
 
-    public List<String> getIdProductos() {
-        return idProductos;
-    }
-
-    public void setIdProductos(List<String> idProductos) {
-        this.idProductos = idProductos;
-    }
 }

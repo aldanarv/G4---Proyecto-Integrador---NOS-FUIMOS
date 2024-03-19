@@ -36,21 +36,27 @@ public class CategoriaService {
         return categoriaRepository.findById(id).orElse(null);
     }
 
-    public Categoria updateCategoria(List<String> productosId, String idCategoria){
-        Categoria categoriaEncontrada = getCategoriaById(idCategoria);
-        if (categoriaEncontrada != null){
-            categoriaEncontrada.setIdProductos(productosId);
-            return categoriaRepository.save(categoriaEncontrada);
+
+    public ResponseEntity actualizarCategoria(Categoria categoria) {
+        Optional<Categoria> optionalCategoria = categoriaRepository.findById(categoria.getId());
+        if(optionalCategoria.isPresent()){
+            return ResponseEntity.ok(categoriaRepository.save(categoria));
         }
-        return null;
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria no encontrada");
+        }
     }
 
-    public void deleteCategoria(String id){
-        categoriaRepository.deleteById(id);
+    public ResponseEntity eliminarCategoriaById(String id){
+        Optional<Categoria> optionalCategoria = categoriaRepository.findById(id);
+        if(optionalCategoria.isPresent()) {
+            categoriaRepository.deleteById(id);
+            return ResponseEntity.ok("Categoria eliminada correctamente");
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria no encontrada");
+        }
     }
-
-
-    }
+}
 
 
 

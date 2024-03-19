@@ -29,6 +29,11 @@ public class CategoriaController {
         return categoriaService.addCategoria(categoria);
     }
 
+    @PutMapping("/actualizar")
+    public ResponseEntity actualizarCategoria(@RequestBody Categoria categoria){
+        return categoriaService.actualizarCategoria(categoria);
+    }
+
     @GetMapping(value = "/listar")
     public List<Categoria> listarCategorias(Model model){
         return categoriaService.getAllCategoria();
@@ -39,22 +44,10 @@ public class CategoriaController {
         return categoriaService.getCategoriaById(id);
     }
 
-    @PostMapping("/{id}/guardar-producto")
-    public Categoria guardarProductoEnCategoria(@PathVariable String id, @RequestBody List<String> productosId){
-        return categoriaService.updateCategoria(productosId, id);
+
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity borrarCategoria(@PathVariable String id){
+        return categoriaService.eliminarCategoriaById(id);
     }
 
-    @GetMapping("/{id}/productos")
-    public List<Producto> listarProductoPorCategoria(@PathVariable String id){
-        Categoria categoria = categoriaService.getCategoriaById(id);
-        List<Producto> listaProductos = new ArrayList<>();
-        if(categoria!=null){
-            for(String idProducto : categoria.getIdProductos()){
-                Producto producto = productoService.getProductoById(idProducto);
-                if(producto!=null)
-                    listaProductos.add(producto);
-            }
-        }
-        return listaProductos;
-    }
 }
