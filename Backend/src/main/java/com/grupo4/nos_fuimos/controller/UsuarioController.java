@@ -43,6 +43,19 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("/confirmacion-email")
+    public ResponseEntity reenviarEmail(@RequestBody Usuario usuario){
+        Optional<Usuario> usuarioEncontrado = usuarioService.findByEmail(usuario.getEmail());
+        if(usuarioEncontrado.isPresent()){
+            String email = usuarioEncontrado.get().getEmail();
+            emailService.enviarCorreoConfirmacion(email);
+            return ResponseEntity.ok().body("Email reenviado correctamente");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario no fue creado");
+        }
+    }
+
     @PostMapping("/iniciar-sesion")
     public ResponseEntity iniciarSesion(@RequestBody Usuario usuario) {
         try {
