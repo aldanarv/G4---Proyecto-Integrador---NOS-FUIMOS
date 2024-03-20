@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import axios from "axios";
 import { useMediaQuery } from "react-responsive";
 import Swal from "sweetalert2";
@@ -13,11 +12,11 @@ const ListCategory = () => {
 
     const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
 
-    const eliminarCategoria = async (characteristicId, characteristicNombre) => {
+    const eliminarCategoria = async (categoryId, categoryName) => {
         try {
             const result = await Swal.fire({
-                title: "Deseas eliminar la caracteristica?",
-                text: characteristicNombre,
+                title: `¿Desea eliminar la categoría ${categoryName}?`,
+                text: 'Al eliminar la categoría, se quedaran productos sin categoria asociada.',
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#E47F07",
@@ -28,11 +27,11 @@ const ListCategory = () => {
             });
 
             if (result.isConfirmed) {
-                const url = `http://localhost:8080/admin/caracteristica/${characteristicId}`;
+                const url = `http://localhost:8080/categorias/borrar/${categoryId}/${categoryName}`;
                 await axios.delete(url);
                 Swal.fire({
                     title: "Eliminada!",
-                    text: "Su caracteristica ha sido eliminada exitosamente.",
+                    text: `La categoría ${categoryName} ha sido eliminada exitosamente.`,
                     icon: "success",
                     color: "#000000",
                     confirmButtonColor: "#E47F07",
@@ -93,7 +92,7 @@ const ListCategory = () => {
                                                         scope="col"
                                                         className="px-4 py-4 text-base font-medium text-left text-[#E37B00]"
                                                     >
-                                                        idProductos
+                                                        Acciones
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -112,8 +111,35 @@ const ListCategory = () => {
                                                         <td className="px-4 py-4 text-base font-light text-black">
                                                             <img src={"data:image;base64," + category.imagen} alt="" style={{ height: '25px', width: '25px' }} />
                                                         </td>
-                                                        <td className="px-4 py-4 text-base font-light text-black">
-                                                            {category.idProductos}
+                                                        <td className="px-4 py-8 text-center">
+                                                            <button
+                                                                className="flex flex-col items-center"
+                                                                onClick={() => eliminarCategoria(category.id, category.titulo)}
+                                                            >
+                                                                <svg
+                                                                    className="icon icon-tabler icon-tabler-trash"
+                                                                    width="30"
+                                                                    height="30"
+                                                                    viewBox="0 0 24 24"
+                                                                    strokeWidth="1.75"
+                                                                    stroke="#000000"
+                                                                    fill="none"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                >
+                                                                    <path
+                                                                        stroke="none"
+                                                                        d="M0 0h24v24H0z"
+                                                                        fill="none"
+                                                                    />
+                                                                    <path d="M4 7l16 0" />
+                                                                    <path d="M10 11l0 6" />
+                                                                    <path d="M14 11l0 6" />
+                                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                </svg>
+                                                                Eliminar Categoría
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 ))}

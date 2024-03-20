@@ -96,6 +96,7 @@ const UpdateCharacteristic = () => {
             fetchDataCaracteristica(characteristic);
             resetForm();
         },
+        validateOnChange: false
     });
 
     useEffect(() => {

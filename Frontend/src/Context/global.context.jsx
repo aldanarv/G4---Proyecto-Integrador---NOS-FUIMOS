@@ -59,7 +59,7 @@ const ContextProvider = ({ children }) => {
                 }
             })
             .catch(error => console.error('Error fetching data:', error));
-    }, [state.data]);
+    }, []);
 
     return (
         <ContextGlobal.Provider value={{

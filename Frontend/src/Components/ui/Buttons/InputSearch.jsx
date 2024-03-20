@@ -48,7 +48,6 @@ export default function InputSearch({ options }) {
                     gap: "12px",
                     width: "100%",
                     justifyContent: "center",
-                    flexDirection: "column",
                     flexDirection: isSmallScreen ? 'column' : 'row',
                 }}
             >

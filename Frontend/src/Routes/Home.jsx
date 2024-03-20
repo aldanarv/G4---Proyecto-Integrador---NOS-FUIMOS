@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useContextGlobal } from "../Context/global.context";
+import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser"
 import InputSearch from "../Components/ui/Buttons/InputSearch";
 import Category from "../Components/Category";
 import Card from "../Components/Card";
@@ -8,11 +9,14 @@ import Pagination from '@mui/material/Pagination';
 import styles from "../styles/home.module.css"
 
 const Home = () => {
-    /*
     const { state } = useContextGlobal();
     const [page, setPage] = useState(1);
     const [totalCounts, setTotalCounts] = useState(0);
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [listProducts, setListProducts] = useState(null);
+
+    const id = localStorage.getItem("id");
+    const { user } = id ? useFetchGetIdUser("http://localhost:8080/usuario/" + id) : { user: undefined };
 
     // Función para calcular el recuento total
     const calculateTotalCounts = () => {
@@ -54,7 +58,6 @@ const Home = () => {
     const pagInicio = (page - 1) * pageSize;
     const pagFinal = pagInicio + pageSize;
 
-    
 
     const totalPages = Math.ceil(
         (selectedCategoryTitles.length > 0
@@ -65,61 +68,36 @@ const Home = () => {
     const paginationChange = (event, newPage) => {
         setPage(newPage);
     };
-    */
-    const { state } = useContextGlobal();
-    const [page, setPage] = useState(1);
-    const [totalCounts, setTotalCounts] = useState(0);
-    const [selectedCategories, setSelectedCategories] = useState([]);
 
-    // Función para calcular el recuento total
-    const calculateTotalCounts = () => {
-        let totalCount = 0;
-        selectedCategories.forEach(category => {
-            totalCount += state.data.filter(product => product.categoria === category.titulo).length;
-        });
-        setTotalCounts(totalCount);
-    };
 
-    // Efecto para calcular el recuento total cuando cambia la selección de categorías o los productos
+    const aleatorioProducts = state.dataAleatoria;
+
     useEffect(() => {
-        calculateTotalCounts();
-    }, [selectedCategories, state.data]);
-
-    const handleCategorySelect = (category) => {
-        const index = selectedCategories.findIndex((cat) => cat.titulo === category.titulo);
-        if (index === -1) {
-            setSelectedCategories([...selectedCategories, category]);
-        } else {
-            setSelectedCategories(selectedCategories.filter((cat) => cat.titulo !== category.titulo));
+        if (user == undefined) {
+            setListProducts(aleatorioProducts);
         }
-        setPage(1);
-    };
 
-    const selectedCategoryTitles = selectedCategories.map((cat) => cat.titulo);
-    const filteredProducts = selectedCategoryTitles.length > 0 ?
-        state.data.filter(product => selectedCategoryTitles.includes(product.categoria)) :
-        state.data;
+        if (user && user.favoriteList != null) {
+            const updatedAleatorioProducts = aleatorioProducts.map(element => {
+                const updatedElement = { ...element };
+                const isFavorite = user.favoriteList.includes(element.id);
+                updatedElement['fav'] = isFavorite;
+                console.log("updatedElement" + updatedElement)
+                console.log("isFavorite" + isFavorite)
+                return updatedElement;
+            });
+            setListProducts(updatedAleatorioProducts);
+        }
+    }, [user, aleatorioProducts]);
 
-    const totalResultsForCategories = selectedCategoryTitles.length > 0 ?
-        filteredProducts.length :
-        null;
-
-    const totalResults = state.data.length;
-    const totalResultsAletorios = state.dataAleatoria.length;
-
-    const pageSize = 10;
-    const pagInicio = (page - 1) * pageSize;
-    const pagFinal = pagInicio + pageSize;
-    
-
-    const totalPages = Math.ceil(
-        (selectedCategoryTitles.length > 0
-            ? totalResultsForCategories + totalResultsAletorios
-            : totalResultsAletorios) / pageSize
-    );
-
-    const paginationChange = (event, newPage) => {
-        setPage(newPage);
+    const handleFavChange = (productId, newFavValue) => {
+        const updatedList = listProducts.map(product => {
+            if (product.id === productId) {
+                return { ...product, fav: newFavValue };
+            }
+            return product;
+        });
+        setListProducts(updatedList);
     };
 
     return (
@@ -168,6 +146,8 @@ const Home = () => {
                                             vueltaDate={product.vueltaDate}
                                             precio={product.precio}
                                             urlImagenes={product.urlImagenes}
+                                            fav={product.fav}
+                                            onFavChange={handleFavChange}
                                         />
                                     ))}
                             </section>
@@ -178,7 +158,7 @@ const Home = () => {
                         <p className="text-sm font-extralight text-gray-700 sm:text-base">{totalResultsAletorios} resultados</p>
                     </div>
                     <section className={styles.main__sectionCard}>
-                        {state.dataAleatoria.slice(pagInicio, pagFinal).map((product) => (
+                        {listProducts && listProducts.slice(pagInicio, pagFinal).map((product) => (
                             <Card
                                 key={product.id}
                                 id={product.id}
@@ -188,6 +168,8 @@ const Home = () => {
                                 vueltaDate={product.vueltaDate}
                                 precio={product.precio}
                                 urlImagenes={product.urlImagenes}
+                                fav={product.fav}
+                                onFavChange={handleFavChange}
                             />
                         ))}
                     </section>

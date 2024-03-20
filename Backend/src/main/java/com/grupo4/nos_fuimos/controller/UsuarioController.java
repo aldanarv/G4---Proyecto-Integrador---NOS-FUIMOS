@@ -1,8 +1,10 @@
 package com.grupo4.nos_fuimos.controller;
 
 
+import com.grupo4.nos_fuimos.model.Producto;
 import com.grupo4.nos_fuimos.model.Usuario;
 import com.grupo4.nos_fuimos.service.EmailService;
+import com.grupo4.nos_fuimos.service.ProductoService;
 import com.grupo4.nos_fuimos.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,11 +25,13 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final ProductoService productoService;
 
-    public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder, EmailService emailService){
+    public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder, EmailService emailService, ProductoService productoService) {
         this.usuarioService = usuarioService;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.productoService = productoService;
     }
 
     @PostMapping("/registrarse")
@@ -40,6 +45,19 @@ public class UsuarioController {
             return ResponseEntity.ok().body(usuarioCreado);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/confirmacion-email")
+    public ResponseEntity reenviarEmail(@RequestBody Usuario usuario){
+        Optional<Usuario> usuarioEncontrado = usuarioService.findByEmail(usuario.getEmail());
+        if(usuarioEncontrado.isPresent()){
+            String email = usuarioEncontrado.get().getEmail();
+            emailService.enviarCorreoConfirmacion(email);
+            return ResponseEntity.ok().body("Email reenviado correctamente");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario no fue creado");
         }
     }
 
@@ -81,6 +99,35 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+        }
+    }
+
+    @PutMapping("/addFav/{id}/{idProduct}")
+    public ResponseEntity añadirFavorito(@PathVariable String id, @PathVariable String idProduct) {
+        Usuario usuario = usuarioService.findById(id).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Producto producto = productoService.getProductoById(idProduct);
+        if (producto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<String> favoriteList = usuario.getFavoriteList();
+        if (favoriteList == null) {
+            favoriteList = new ArrayList<>();
+            usuario.setFavoriteList(favoriteList);
+        }
+
+        if (favoriteList.contains(idProduct)) {
+            favoriteList.remove(idProduct);
+            usuarioService.actualizarUsuario(usuario);
+            return ResponseEntity.ok().body(false);
+        }else{
+            favoriteList.add(idProduct);
+            usuarioService.actualizarUsuario(usuario);
+            return ResponseEntity.ok().body(true);
         }
     }
 

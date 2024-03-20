@@ -20,6 +20,7 @@ import ProtectedRoutes from './Routes/ProtectedRoutes';
 import ProtectedRoutesBooking from './Routes/ProtectedRoutesBooking';
 import ListUser from './Routes/ListUser';
 import ListCategory from './Routes/ListCategory';
+import ConfirmRegister from './Routes/ConfirmRegister';
 import './App.css'
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/confirmRegister' element={<ConfirmRegister />} />
         <Route path='/product/:id' element={<DetailProduct />} />
         <Route element={<ProtectedRoutes />}>
           <Route path='/administracion' element={<ListProduct />} />

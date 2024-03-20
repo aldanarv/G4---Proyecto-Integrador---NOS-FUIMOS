@@ -94,6 +94,7 @@ const AddCharacteristic = () => {
             fetchData(characteristic);
             resetForm();
         },
+        validateOnChange: false
     });
 
     return (

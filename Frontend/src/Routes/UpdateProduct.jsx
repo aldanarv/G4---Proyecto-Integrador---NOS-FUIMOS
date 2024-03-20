@@ -142,6 +142,7 @@ const UpdateProduct = () => {
 
             fetchDataProducto(product);
         },
+        validateOnChange: false
     });
 
     useEffect(() => {

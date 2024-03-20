@@ -14,7 +14,6 @@ const AddProduct = () => {
     const { categoria } = useFetchGetAllCategorias("http://localhost:8080/categorias/listar");
     const { fetchData } = useFetchPost("http://localhost:8080/admin/productos/guardar");
 
-
     const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
 
     // Función para convertir un archivo a base64
@@ -73,6 +72,9 @@ const AddProduct = () => {
         }
     };
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const formik = useFormik({
         initialValues: {
             nombre: "",
@@ -122,6 +124,7 @@ const AddProduct = () => {
             fetchData(product);
             resetForm();
         },
+        validateOnChange: false
     });
 
     const agregarCaracteristica = (caracteristicaSeleccionada) => {
@@ -134,7 +137,6 @@ const AddProduct = () => {
         const nuevasCaracteristicas = formik.values.listCaracteristicas.filter((c) => c !== caracteristica);
         formik.setFieldValue('listCaracteristicas', nuevasCaracteristicas);
     };
-
 
     return (
         <>

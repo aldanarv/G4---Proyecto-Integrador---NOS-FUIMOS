@@ -97,6 +97,7 @@ const AddCategory = () => {
             fetchData(category);
             resetForm();
         },
+        validateOnChange: false
     });
 
     return (

@@ -25,7 +25,7 @@ public class CategoriaController {
     }
 
     @PostMapping("/guardar")
-    public Categoria guardarCategoria(@RequestBody Categoria categoria){
+    public ResponseEntity<?> guardarCategoria(@RequestBody Categoria categoria){
         return categoriaService.addCategoria(categoria);
     }
 
@@ -44,10 +44,15 @@ public class CategoriaController {
         return categoriaService.getCategoriaById(id);
     }
 
-
-    @DeleteMapping("/borrar/{id}")
-    public ResponseEntity borrarCategoria(@PathVariable String id){
-        return categoriaService.eliminarCategoriaById(id);
+    @DeleteMapping("/borrar/{id}/{name}")
+    public ResponseEntity borrarCategoria(@PathVariable String id, @PathVariable String name) {
+        // Elimina la categoría de todos los productos que la tienen asignada
+        List<Producto> productosConCategoria = productoService.getProductosByCategoria(name);
+        for (Producto producto : productosConCategoria) {
+            producto.setCategoria(null);
+            productoService.actualizarProducto(producto);
+        }
+        categoriaService.eliminarCategoriaById(id);
+        return ResponseEntity.ok("Categoría eliminada y productos actualizados");
     }
-
 }

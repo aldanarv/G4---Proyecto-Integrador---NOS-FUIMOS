@@ -22,12 +22,15 @@ public class ProductoService {
         return productoRepository.findAll();
     }
 
-    public ResponseEntity<?> addProducto(Producto producto){
-        Optional<Producto> existingProduct = productoRepository.findByNombre(producto.getNombre());
-        if (existingProduct.isPresent())
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("El producto con nombre '" + producto.getNombre() + "' ya existe en la base de datos");
+    public ResponseEntity<?> addProducto(Producto producto) {
+        // Convertir el nombre del producto a minúsculas para la comparación
+        String nombreMinuscula = producto.getNombre().toLowerCase();
 
-        else{
+        // Verificar si el producto ya existe en la base de datos (en minúsculas)
+        Optional<Producto> existingProduct = productoRepository.findByNombre(nombreMinuscula);
+        if (existingProduct.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El producto con nombre '" + producto.getNombre() + "' ya existe en la base de datos");
+        } else {
             Producto savedProducto = productoRepository.save(producto);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedProducto);
         }
@@ -40,6 +43,10 @@ public class ProductoService {
 
     public Producto actualizarProducto(Producto producto){
         return productoRepository.save(producto);
+    }
+
+    public List<Producto> getProductosByCategoria(String categoria) {
+        return productoRepository.findByCategoria(categoria);
     }
 
     public void deleteProducto(String id){

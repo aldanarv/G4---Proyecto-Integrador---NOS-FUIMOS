@@ -9,7 +9,7 @@ export function useFetchGetIdUser(url) {
             .get(url)
             .then((res) => setUser(res.data))
             .catch((err) => console.log(err));
-    }, [user]);
+    }, []);
 
     return { user };
 }
