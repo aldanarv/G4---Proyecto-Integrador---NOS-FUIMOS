@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from "./Components/Header";
 import Home from './Routes/Home';
@@ -33,7 +32,6 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/product/:id' element={<DetailProduct />} />
-        <Route path='/product/:id/gallery' element={<GalleryImages />} />
         <Route path='/politicasProducto' element={<PoliticasProducto />} />
         <Route element={<ProtectedRoutes />}>
           <Route path='/administracion' element={<ListProduct />} />

@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import styles from "../styles/galleryImages.module.css";
 
-export default function GalleryImagesDos() {
+export default function GalleryImages() {
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
     const [open, setOpen] = React.useState(false);
