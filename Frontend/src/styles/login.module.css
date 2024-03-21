@@ -5,17 +5,7 @@
     align-items: center;
     height: 100vh;
     padding: 0 24px;
-    background-image: linear-gradient(180deg,
-            hsl(33deg 94% 46%) 65%,
-            hsl(30deg 82% 56%) 92%,
-            hsl(29deg 85% 62%) 98%,
-            hsl(28deg 89% 68%) 100%,
-            hsl(27deg 93% 74%) 101%,
-            hsl(27deg 98% 80%) 101%,
-            hsl(26deg 100% 85%) 101%,
-            hsl(27deg 100% 90%) 101%,
-            hsl(27deg 100% 95%) 100%,
-            hsl(0deg 0% 100%) 100%);
+    background-color: #FFE9CE;
 }
 
 @media (min-width: 1024px) {
@@ -87,13 +77,13 @@
     display: block;
     width: 100%;
     border-radius: 0.375rem;
-    border: 1px solid #E47F07;
-    padding: 7px;
+    border: 1px solid #666666;
+    padding: 10px 7px;
     color: #000000;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-sm);
-    background-color: #F4CE9F;
+    background-color: #ffffff;
 }
 
 .input:focus {
@@ -111,18 +101,16 @@
 }
 
 .button {
-    display: flex;
-    width: auto;
-    justify-content: center;
-    border-radius: 1.5rem; /* 24px */
+    background: #E37B00 !important;
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
     font-weight: var(--font-weight-light);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    border: 1px solid #D2D5DC;
-    padding: 8px 35px;
-    background: #57BEE1 !important;
-    color: #000000;
+    color: #ffffff;
+    border-radius: var(--button-primary-border-radius);
+    padding: var(--button-primary-padding);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 .needLogin {
@@ -135,9 +123,10 @@
 
 .needLogin_enlace {
     font-weight: var(--font-weight-light);
-    color: #ffffff;
+    color: #000000;
     margin-left: 0.5rem; /* 8px */
     font-weight: var(--font-weight-medium);
+    text-decoration: underline;
 }
 
 .needLogin_enlace:hover {

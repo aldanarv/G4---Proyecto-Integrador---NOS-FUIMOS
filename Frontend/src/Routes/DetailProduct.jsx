@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
+import GalleryImagesDos from "../Components/GalleryImages";
 import styles from "../styles/detailProduct.module.css";
 
 const DetailProduct = () => {
@@ -41,6 +42,7 @@ const DetailProduct = () => {
                             <img
                                 src={"data:image;base64," + data?.urlImagenes[0]}
                                 alt=""
+                                loading="lazy"
                                 className={styles.leftImg}
                             />
                         </div>
@@ -50,104 +52,124 @@ const DetailProduct = () => {
                                     <img
                                         src={"data:image;base64," + imagenes}
                                         alt=""
+                                        loading="lazy"
                                         className={styles.rightImg}
                                     />
                                 </div>
                             ))}
                         </div>
                     </div>
-
                     <div className={styles.more}>
                         <div className={styles.title_plus}>
-                            <Link
-                                to={"/product/" + id + "/gallery"}
-                                className={styles.details__buttons}
-                            >
-                                <span className={styles.details__svgButtonsPlusDos}></span>
-                                <svg
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1"
-                                    stroke="#5baf00"
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className={styles.details__svgButtonsPlus}
-                                >
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M12 5l0 14" />
-                                    <path d="M5 12l14 0" />
-                                </svg>
-                                <span className={styles.details__buttons_title}>Ver más</span>
-                            </Link>
+                            <GalleryImagesDos />
                         </div>
                     </div>
                 </section>
 
-                {data?.listCaracteristicas && (
-                    <section className="text-gray-600 body-font mb-20">
-                        <div className="">
-                            <div className="flex flex-col w-full mb-5">
-                                <h1 className="text-xl font-medium title-font text-black">Características</h1>
+                <div className="bg-[#fff7ec] rounded-2xl">
+                    <div>
+                        <div className="flex justify-end gap-4 mx-auto px-4 pt-10 sm:px-6 lg:max-w-7xl lg:px-8">
+                            <div className="flex items-center gap-2">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-share"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M8.7 10.7l6.6 -3.4" /><path d="M8.7 13.3l6.6 3.4" /></svg>
+                                <p className="text-sm hover:underline">Compartir</p>
                             </div>
-                            <div className="flex flex-wrap">
-                                {data?.listCaracteristicas.map((caracteristica, index) => (
-                                    <div key={index} className="p-2 lg:w-1/3 md:w-1/2 w-full">
-                                        <div className="h-full flex items-center gap-4 bg-[#fff7ec] p-4 rounded-lg">
-                                            <img
-                                                src={"data:image;base64," + caracteristica.icono}
-                                                alt=""
-                                                className="w-6 h-6"
-                                            />
-                                            <div className="flex-grow">
-                                                <p className="text-black">{caracteristica.nombre}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="flex items-center gap-2">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-heart"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                                <p className="text-sm hover:underline">Guardar</p>
                             </div>
                         </div>
-                    </section>
-                )}
+                        <div className="mx-auto px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:px-8 lg:pb-24 lg:pt-16">
+                            <div className="lg:col-span-2 lg:pr-4">
+                                <h1 className="text-xl font-bold text-black sm:text-2xl">{data?.destino}</h1>
+                            </div>
 
-                <div className={styles.divContainer}>
-                    <div className={styles.descriptionContainer}>
-                        <div className={styles.description}>
-                            <p>Destino</p>
-                            <div className={styles.dataContainerDestino}>
-                                <p className={styles.dataDestino}>{data?.destino}</p>
-                                <div className={styles.widthColumn}></div>
+                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-6 rounded-md bg-white shadow-md">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-end sm:gap-2">
+                                    <p className="text-xl text-black">${data?.precio} USD</p>
+                                    <h3 className="text-sm font-light text-black">precio por persona</h3>
+                                </div>
+                                <div className="mt-6">
+                                    <div className="flex items-center">
+                                        <div className="flex items-center">
+                                            <svg className="text-black h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+                                            </svg>
+                                            <svg className="text-black h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+                                            </svg>
+                                            <svg className="text-black h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+                                            </svg>
+                                            <svg className="text-black h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+                                            </svg>
+                                            <svg className="text-gray-200 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <a href="#" className="ml-3 text-sm font-light text-black hover:underline">10 Reseñas</a>
+                                    </div>
+                                </div>
+
+                                <form className="mt-10">
+                                    <div className="mt-10">
+                                        <fieldset className="mt-4 border border-gray-300 rounded-md">
+                                        <div className="grid grid-rows sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                                                <div className="p-3 sm:border-r sm:border-gray-300 lg:border-r-0 xl:border-r xl:border-gray-300">
+                                                    <p className="text-sm font-medium text-black">Fecha salida</p>
+                                                    <p className="text-sm font-light text-black">{data?.salidaDate}</p>
+                                                    <input className="text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1" type="date" name="" id="" />
+                                                </div>
+
+                                                <div className="p-3 border-t border-gray-300 sm:border-t-0 lg:border-t lg:border-gray-300 xl:border-t-0">
+                                                    <p className="text-sm font-medium text-black">Fecha regreso</p>
+                                                    <p className="text-sm font-light text-black">{data?.vueltaDate}</p>
+                                                    <input className="text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1" type="date" name="" id="" />
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+                                    <Link to={"/product/" + id + "/reservar"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
+                                        Reservar
+                                    </Link>
+                                </form>
+                            </div>
+
+                            <div className="py-10 lg:col-span-2 lg:col-start-1 lg:pb-16 lg:pr-4 lg:pt-6">
+                                <div>
+                                    <h3 className="sr-only">Description</h3>
+
+                                    <div className="space-y-6">
+                                        <p className="text-base text-black">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, odio. Officiis quae quis eligendi laboriosam dolor, pariatur veritatis atque rem eius accusantium facere, deserunt, earum nesciunt quo nihil. Excepturi, rem!
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="mt-10">
+                                    <h3 className="text-lg font-medium text-black">Características</h3>
+                                    <div className="mt-4">
+                                        {data?.listCaracteristicas.map((caracteristica, index) => (
+                                            <ul key={index} role="list" className="list-none pl-4 text-md">
+                                                <li className="flex items-center gap-4 mt-2">
+                                                    <img
+                                                        src={"data:image;base64," + caracteristica.icono}
+                                                        alt=""
+                                                        className="w-6 h-6"
+                                                    />
+                                                    <p className="text-black">{caracteristica.nombre}</p>
+                                                </li>
+                                            </ul>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className={styles.description}>
-                            <p>Fecha de salida</p>
-                            <div className={styles.dataContainer}>
-                                <p className={styles.data}>{data?.salidaDate}</p>
-                                <img width="24" height="24" src="../../public/assets/calendario.png" alt="" />
-                            </div>
-                        </div>
-                        <div className={styles.description}>
-                            <p>Fecha de regreso</p>
-                            <div className={styles.dataContainer}>
-                                <p className={styles.data}>{data?.vueltaDate}</p>
-                                <img width="24" height="24" src="../../public/assets/calendario.png" alt="" />
-                            </div>
-                        </div>
-                        <div className={styles.descriptionPrecio}>
-                            <p>Precio por persona</p>
-                            <div className={styles.dataContainer}>
-                                <p className={styles.data}>{data?.precio} USD</p>
-                                <div className={styles.widthColumn}></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.price}>
-                        <Link to={"/product/" + id + "/reservar"} className={styles.details__buttonsRerservar}>
-                            Reservar
-                        </Link>
                     </div>
                 </div>
+
+
             </section>
         </article>
     );

@@ -6,7 +6,6 @@ import Footer from "./Components/Footer";
 import Login from './Routes/Login';
 import Register from './Routes/Register';
 import DetailProduct from './Routes/DetailProduct';
-import GalleryImages from './Routes/GalleryImages';
 import Reservar from './Routes/Reservar';
 import AddProduct from './Routes/AddProduct';
 import ListProduct from './Routes/ListProduct';

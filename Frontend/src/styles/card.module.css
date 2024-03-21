@@ -14,10 +14,6 @@
     border-top-right-radius: 1rem; /* 16px */
 }
 
-.containerImage:hover {
-    opacity: 0.75;
-}
-
 @media (min-width: 640px) {
     .containerImage {
         height: 75%;
@@ -80,34 +76,51 @@
 
 .divDetalle {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 640px) {
+    .divDetalle {
+        flex-direction: column;
+        gap: 1.25rem;
+        align-items: flex-start;
+        margin-top: 10px;
+    }
 }
 
 .detallePersona {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-base);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
     font-weight: var(--font-weight-light);
     color: var(--text-color-black);
-    margin-top: 4px;
-    text-align: center;
+    text-align: left;
 }
 
 .detallePrecio {
-    font-size: var(--font-size-xl);
-    line-height: var(--line-height-xl);
-    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+    font-weight: var(--font-weight-semibold);
     color: var(--text-color-black);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-top: 4px;
-    text-align: center;
+    text-align: left;
 }
 
 @media (max-width: 640px) {
     .detallePrecio {
-        font-size: var(--font-size-base);
-        line-height: var(--line-height-base);
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-sm);
+    }
+}
+
+@media (max-width: 640px) {
+    .detallePersona {
+        font-size: var(--font-size-sm);
+        line-height: var(--line-height-sm);
     }
 }

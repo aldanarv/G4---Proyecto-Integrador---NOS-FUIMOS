@@ -1,14 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmación de registro</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Confirmación de registro</title>
 </head>
+
 <body>
-<h2>Gracias por registrarte en nuestra aplicación</h2>
-<p>Te has registrado con exito en Nos fuimos</p>
+<section class="max-w-2xl px-6 py-8 mx-auto bg-white">
+  <header>
+    <a href="#">
+      <img class="w-auto h-7 sm:h-6" src="./logoNosFuimos.png" alt="logo_nosFuimos">
+    </a>
+  </header>
+
+  <main class="mt-20 flex flex-col items-center justify-center gap-6">
+    <img class="w-auto h-7 sm:h-[72px]" src="./circleCheck.png" alt="logo_check">
+    <h2 class="text-[#E37B00] font-medium text-3xl">¡Hola Ana María!,</h2>
+
+    <div class="flex flex-col text-lg text-center">
+      <p class="text-base text-black ">
+        Te has registrado exitosamente en Nos Fuimos,
+      </p>
+      <p class="text-base text-black ">con el correo <span class="font-semibold ">ana.maria@example.com</span>.</p>
+    </div>
+
+    <button
+            class="px-6 py-2 mt-4 text-sm font-medium tracking-wider text-black capitalize transition-colors duration-300 transform bg-[#E37B00] rounded hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+      Iniciar sesión
+    </button>
+  </main>
+</section>
 
 </body>
+
 </html>
