@@ -13,14 +13,13 @@ const DetailUser = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-
     const formik = useFormik({
         initialValues: {
-            id: user?.id,
-            nombre: user?.nombre,
-            apellido: user?.apellido,
-            email:user?.email,
-            password: user?.password,
+            id: user?.id || "",
+            nombre: user?.nombre || "",
+            apellido: user?.apellido || "",
+            email:user?.email || "",
+            password: user?.password || "",
         },
         validationSchema: Yup.object({
             id: Yup.string().trim().required("Requerido"),
@@ -50,6 +49,7 @@ const DetailUser = () => {
 
             console.log("Users:", avatar);
         },
+        validateOnChange: false
     });
 
     useEffect(() => {

@@ -15,9 +15,7 @@ const Home = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [listProducts, setListProducts] = useState(null);
 
-    const id = localStorage.getItem("id");
-    const { user } = id ? useFetchGetIdUser("http://localhost:8080/usuario/" + id) : { user: undefined };
-
+    //Categorias
     // Función para calcular el recuento total
     const calculateTotalCounts = () => {
         let totalCount = 0;
@@ -42,6 +40,7 @@ const Home = () => {
         setPage(1);
     };
 
+    //Paginacion
     const selectedCategoryTitles = selectedCategories.map((cat) => cat.titulo);
     const filteredProducts = selectedCategoryTitles.length > 0 ?
         state.data.filter(product => selectedCategoryTitles.includes(product.categoria)) :
@@ -69,6 +68,9 @@ const Home = () => {
         setPage(newPage);
     };
 
+    //Favoritos
+    const id = localStorage.getItem("id");
+    const { user } = id ? useFetchGetIdUser("http://localhost:8080/usuario/" + id) : { user: undefined };
 
     const aleatorioProducts = state.dataAleatoria;
 

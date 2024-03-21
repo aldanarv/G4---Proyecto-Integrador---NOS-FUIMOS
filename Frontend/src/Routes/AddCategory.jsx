@@ -72,12 +72,11 @@ const AddCategory = () => {
         initialValues: {
             titulo: "",
             descripcion: "",
-            imagen: "",
-            idProductos: [],
+            imagen: [],
         },
         validationSchema: Yup.object({
             titulo: Yup.string().lowercase().trim().required("El nombre es requerido"),
-            descripcion: Yup.string().lowercase().trim().required("El nombre es requerido"),
+            descripcion: Yup.string().lowercase().trim().required("La descripcion es requerida"),
             imagen: Yup.array()
                 .length(1, "Solo puedes agregar 1 icono")
                 .required("El icono es requerido"),
@@ -89,7 +88,6 @@ const AddCategory = () => {
                 titulo: data.titulo,
                 descripcion: data.descripcion,
                 imagen: data.imagen[0],
-                idProductos: [],
             };
 
             console.log("category:", category);

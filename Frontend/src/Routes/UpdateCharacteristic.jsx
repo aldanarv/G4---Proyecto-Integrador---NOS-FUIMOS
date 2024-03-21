@@ -71,9 +71,9 @@ const UpdateCharacteristic = () => {
 
     const formik = useFormik({
         initialValues: {
-            id: data?.id,
-            nombre: data?.nombre,
-            icono: data?.icono,
+            id: data?.id || "",
+            nombre: data?.nombre || "",
+            icono: data?.icono || [],
         },
         validationSchema: Yup.object({
             id: Yup.string().trim().required("Requerido"),

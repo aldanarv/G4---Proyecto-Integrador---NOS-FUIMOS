@@ -17,6 +17,7 @@ const Footer = () => {
 
         <div className={styles.navegation}>
           <Link to="/" className={styles.navegation__enlace}>Inicio</Link>
+          <Link to="/politicasProducto" className={styles.navegation__enlace}>Políticas del producto</Link>
         </div>
       </div>
     </footer>

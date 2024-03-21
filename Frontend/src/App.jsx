@@ -6,12 +6,14 @@ import Footer from "./Components/Footer";
 import Login from './Routes/Login';
 import Register from './Routes/Register';
 import DetailProduct from './Routes/DetailProduct';
+import PoliticasProducto from './Routes/PoliticasProducto';
 import Reservar from './Routes/Reservar';
 import AddProduct from './Routes/AddProduct';
 import ListProduct from './Routes/ListProduct';
 import UpdateProduct from './Routes/UpdateProduct';
 import NotFound from './Routes/NotFound';
 import DetailUser from './Routes/DetailUser';
+import ListFavoritos from './Routes/ListFavoritos';
 import Characteristic from './Routes/Characteristic';
 import UpdateCharacteristic from './Routes/UpdateCharacteristic';
 import AddCharacteristic from './Routes/AddCharacteristic';
@@ -34,6 +36,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/confirmRegister' element={<ConfirmRegister />} />
         <Route path='/product/:id' element={<DetailProduct />} />
+        <Route path='/politicasProducto' element={<PoliticasProducto />} />
         <Route element={<ProtectedRoutes />}>
           <Route path='/administracion' element={<ListProduct />} />
           <Route path='/administracion/addProduct' element={<AddProduct />} />
@@ -47,6 +50,7 @@ function App() {
         </Route>
         <Route element={<ProtectedRoutesBooking />}>
           <Route path='/detailUser' element={<DetailUser />} />
+          <Route path='/favorites' element={<ListFavoritos />} />
           <Route path='/product/:id/reservar' element={<Reservar />} />
         </Route>
       </Routes>
