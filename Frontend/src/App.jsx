@@ -22,6 +22,7 @@ import ProtectedRoutesBooking from './Routes/ProtectedRoutesBooking';
 import ListUser from './Routes/ListUser';
 import ListCategory from './Routes/ListCategory';
 import './App.css'
+import PoliticasProducto from './Routes/PoliticasProducto';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/product/:id' element={<DetailProduct />} />
         <Route path='/product/:id/gallery' element={<GalleryImages />} />
+        <Route path='/politicasProducto' element={<PoliticasProducto />} />
         <Route element={<ProtectedRoutes />}>
           <Route path='/administracion' element={<ListProduct />} />
           <Route path='/administracion/addProduct' element={<AddProduct />} />
