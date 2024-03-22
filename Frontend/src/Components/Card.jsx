@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { useFetchPutFavorite } from "../PeticionesHTTP/Usuarios/useFetchPutFavorite";
 import styles from "../styles/card.module.css"
 
-const Card = ({ id, nombre, destino, salidaDate, vueltaDate, precio, urlImagenes, fav, onFavChange }) => {
+const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio, urlImagenes, fav, onFavChange }) => {
     const [esFavorito, setEsFavorito] = useState(fav);
     const { fetchPutFavorite } = useFetchPutFavorite(`http://localhost:8080/usuario/addFav/${localStorage.getItem("id")}/${id}`);
 
-    const handlerFav = async (id, nombre ) => {
+    const handlerFav = async (id, nombre) => {
         fetchPutFavorite(id)
             .then(res => {
                 if (res.status == 200) {
@@ -45,7 +45,7 @@ const Card = ({ id, nombre, destino, salidaDate, vueltaDate, precio, urlImagenes
                         </h3>
 
                         <p className={styles.detalle}>
-                            {destino}
+                            {descripcion}
                         </p>
                     </Link>
                     <div className={styles.divDetalle}>

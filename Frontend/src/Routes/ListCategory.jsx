@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useMediaQuery } from "react-responsive";
 import Swal from "sweetalert2";
@@ -10,7 +11,7 @@ import styles from "../styles/listProduct.module.css";
 const ListCategory = () => {
     const { categoria } = useFetchGetAllCategorias("http://localhost:8080/categorias/listar");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const eliminarCategoria = async (categoryId, categoryName) => {
         try {
@@ -94,6 +95,11 @@ const ListCategory = () => {
                                                     >
                                                         Acciones
                                                     </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-4 py-4 text-base font-medium text-left text-[#E37B00]"
+                                                    >
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-[#c5c5c5]">
@@ -140,6 +146,36 @@ const ListCategory = () => {
                                                                 </svg>
                                                                 Eliminar Categoría
                                                             </button>
+                                                        </td>
+                                                        <td className="px-4 py-8 text-center">
+                                                            <Link
+                                                                className="flex flex-col items-center"
+                                                                to={
+                                                                    "/administracion/category/updateCategory/" + category.id
+                                                                }
+                                                            >
+                                                                <svg
+                                                                    className="icon icon-tabler icon-tabler-edit"
+                                                                    width="30"
+                                                                    height="30"
+                                                                    viewBox="0 0 24 24"
+                                                                    strokeWidth="1.75"
+                                                                    stroke="currentColor"
+                                                                    fill="none"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                >
+                                                                    <path
+                                                                        stroke="none"
+                                                                        d="M0 0h24v24H0z"
+                                                                        fill="none"
+                                                                    />
+                                                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                                    <path d="M16 5l3 3" />
+                                                                </svg>
+                                                                Editar Categoría
+                                                            </Link>
                                                         </td>
                                                     </tr>
                                                 ))}

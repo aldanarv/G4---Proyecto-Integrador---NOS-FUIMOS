@@ -30,7 +30,7 @@ const Header = () => {
 
                 {/* Menú de login, registro y Avatar */}
                 <div className={styles.header__auth}>
-                    {state.isLoged || state.loged ?(
+                    {state.isLoged || state.loged ? (
                         <Avatar />
                     ) : (
                         <>

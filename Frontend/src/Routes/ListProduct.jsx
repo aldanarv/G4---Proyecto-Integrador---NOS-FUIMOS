@@ -12,7 +12,7 @@ import styles from "../styles/listProduct.module.css";
 const ListProduct = () => {
     const { data } = useFetchGetAll("http://localhost:8080/admin/productos");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const eliminarProducto = async (productId, productNombre) => {
         try {

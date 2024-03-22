@@ -10,7 +10,7 @@ import Administration from "../Components/Administration";
 import styles from "../styles/listProduct.module.css";
 
 const ListUser = () => {
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const { state, dispatch } = useContextGlobal();
     const [userData, setUserData] = useState(null);
 

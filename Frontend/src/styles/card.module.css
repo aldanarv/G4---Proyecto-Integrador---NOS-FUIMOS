@@ -1,6 +1,7 @@
 .containerCard {
     background-color: #ffffff;
-    border-radius: 1rem; /* 16px */
+    border-radius: 1rem;
+    /* 16px */
     max-width: 472px;
 }
 
@@ -10,8 +11,10 @@
     overflow: hidden;
     background-color: #ffffff;
     height: 65%;
-    border-top-left-radius: 1rem; /* 16px */
-    border-top-right-radius: 1rem; /* 16px */
+    border-top-left-radius: 1rem;
+    /* 16px */
+    border-top-right-radius: 1rem;
+    /* 16px */
 }
 
 @media (min-width: 640px) {
@@ -25,8 +28,10 @@
     width: 100%;
     object-fit: cover;
     object-position: center;
-    border-top-left-radius: 1rem; /* 16px */
-    border-top-right-radius: 1rem; /* 16px */
+    border-top-left-radius: 1rem;
+    /* 16px */
+    border-top-right-radius: 1rem;
+    /* 16px */
     aspect-ratio: 800/533;
 }
 
@@ -45,8 +50,10 @@
     font-weight: var(--font-weight-semibold);
     color: #E47F07;
     text-wrap: pretty;
-    font-size: 1.5rem; /* 24px */
-    line-height: 2rem; /* 32px */
+    font-size: 1.5rem;
+    /* 24px */
+    line-height: 2rem;
+    /* 32px */
     margin-bottom: 10px;
     overflow: hidden;
     display: -webkit-box;

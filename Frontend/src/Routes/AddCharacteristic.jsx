@@ -13,7 +13,7 @@ const AddCharacteristic = () => {
         "http://localhost:8080/admin/caracteristica/guardar"
     );
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const convertFileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -78,8 +78,8 @@ const AddCharacteristic = () => {
         validationSchema: Yup.object({
             nombre: Yup.string().lowercase().trim().required("El nombre es requerido"),
             icono: Yup.array()
-            .length(1, "Solo puedes agregar 1 icono")
-            .required("El icono es requerido"),
+                .length(1, "Solo puedes agregar 1 icono")
+                .required("El icono es requerido"),
         }),
         onSubmit: (data, { resetForm }) => {
             console.log("Submitted Data:", data);
@@ -109,7 +109,7 @@ const AddCharacteristic = () => {
                         id="crearCaracteristicaForm"
                         className="flex flex-col gap-3 justify-center h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
-                        <div className="pt-40">
+                        <div className="pt-28">
                             <h2 className="text-4xl font-bold text-white">Agregar Característica</h2>
                             <p className="text-lg text-white font-medium mt-2">
                                 Complete el formulario para agregar su característica

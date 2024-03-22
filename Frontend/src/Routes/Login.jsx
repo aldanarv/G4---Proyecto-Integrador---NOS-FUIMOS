@@ -62,7 +62,7 @@ const Login = () => {
                                 type="email"
                                 placeholder="Correo electrónico"
                                 required
-                                autoComplete="email" 
+                                autoComplete="email"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}

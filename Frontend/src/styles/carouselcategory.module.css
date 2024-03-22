@@ -19,7 +19,8 @@
     line-height: var(--line-height-base);
     font-weight: var(--font-weight-light);
     color: var(--text-color-black);
-    border-radius: 0.5rem; /* 8px */
+    border-radius: 0.5rem;
+    /* 8px */
     padding: var(--button-primary-padding);
     text-decoration: none;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -38,5 +39,6 @@
 }
 
 .selected {
-    border: 2px solid #E47F07; /* Por ejemplo, puedes ajustar el color y el grosor del borde según tus preferencias */
+    border: 2px solid #E47F07;
+    /* Por ejemplo, puedes ajustar el color y el grosor del borde según tus preferencias */
 }

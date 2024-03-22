@@ -14,7 +14,7 @@ const AddProduct = () => {
     const { categoria } = useFetchGetAllCategorias("http://localhost:8080/categorias/listar");
     const { fetchData } = useFetchPost("http://localhost:8080/admin/productos/guardar");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     // Función para convertir un archivo a base64
     const convertFileToBase64 = (file) => {
@@ -79,6 +79,7 @@ const AddProduct = () => {
         initialValues: {
             nombre: "",
             destino: "",
+            descripcion: "",
             salidaDate: "",
             vueltaDate: "",
             precio: "",
@@ -89,6 +90,7 @@ const AddProduct = () => {
         validationSchema: Yup.object({
             nombre: Yup.string().min(4, "El nombre debe tener al menos 4 caracteres.").lowercase().trim().required("El nombre es requerido"),
             destino: Yup.string().min(4, "El destino debe tener al menos 4 caracteres.").lowercase().trim().required("El destino es requerido"),
+            descripcion: Yup.string().min(4, "La descripcion debe tener al menos 4 caracteres.").lowercase().trim().required("La descripcion es requerida"),
             salidaDate: Yup.date().min(today, "La fecha no puede ser menor al dia de hoy").required("La fecha de salida es requerida"),
             vueltaDate: Yup.date().min(Yup.ref('salidaDate'), 'La fecha de regreso no puede ser anterior a la fecha de salida').required("La fecha de regreso requerida"),
             precio: Yup.number().min(1).positive("El precio debe ser un número positivo").required("El precio es requerido"),
@@ -113,6 +115,7 @@ const AddProduct = () => {
             let product = {
                 nombre: info.nombre,
                 destino: info.destino,
+                descripcion: info.descripcion,
                 salidaDate: info.salidaDate,
                 vueltaDate: info.vueltaDate,
                 precio: info.precio,
@@ -151,7 +154,7 @@ const AddProduct = () => {
                         id="crearProductoForm"
                         className="flex flex-col gap-3 justify-center h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
-                        <div className="pt-40">
+                        <div className="pt-64">
                             <h2 className="text-4xl font-bold text-white">Agregar producto</h2>
                             <p className="text-lg text-white font-medium mt-2">
                                 Complete el formulario para agregar su producto
@@ -210,6 +213,33 @@ const AddProduct = () => {
                                         {formik.touched.destino && formik.errors.destino ? (
                                             <div className="text-red-400 font-light text-sm">
                                                 {formik.errors.destino}
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div className="col-span-full">
+                                    <label
+                                        htmlFor="descripcion"
+                                        className="text-base font-medium text-[#E47F07]"
+                                    >
+                                        Descripción
+                                    </label>
+                                    <div className="mt-2">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                            <input
+                                                type="text"
+                                                name="descripcion"
+                                                id="descripcion"
+                                                required
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.descripcion}
+                                                className="flex-1 border-0 bg-transparent rounded-md focus:bg-[#F4CE9F] py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 outline-none text-base"
+                                            />
+                                        </div>
+                                        {formik.touched.descripcion && formik.errors.descripcion ? (
+                                            <div className="text-red-400 font-light text-sm">
+                                                {formik.errors.descripcion}
                                             </div>
                                         ) : null}
                                     </div>

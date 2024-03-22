@@ -21,7 +21,8 @@
     line-height: var(--line-height-base);
     font-weight: var(--font-weight-light);
     color: #000000;
-    border-radius: 0.5rem; /* 8px */
+    border-radius: 0.5rem;
+    /* 8px */
     background-color: #ffffff;
     padding: var(--button-primary-padding);
     border: none;

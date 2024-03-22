@@ -23,7 +23,7 @@ import ProtectedRoutesBooking from './Routes/ProtectedRoutesBooking';
 import ListUser from './Routes/ListUser';
 import ListCategory from './Routes/ListCategory';
 import ConfirmRegister from './Routes/ConfirmRegister';
-import './App.css'
+import UpdateCategory from './Routes/UpdateCategory';
 
 function App() {
   return (
@@ -47,6 +47,7 @@ function App() {
           <Route path='/administracion/users' element={<ListUser />} />
           <Route path='/administracion/category' element={<ListCategory />} />
           <Route path='/administracion/category/addCategory' element={<AddCategory />} />
+          <Route path='/administracion/category/updateCategory/:id' element={<UpdateCategory />} />
         </Route>
         <Route element={<ProtectedRoutesBooking />}>
           <Route path='/detailUser' element={<DetailUser />} />

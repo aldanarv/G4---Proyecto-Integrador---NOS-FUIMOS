@@ -11,7 +11,7 @@ import styles from "../styles/listProduct.module.css";
 const Characteristic = () => {
     const { data } = useFetchGetAllCaracteristicas("http://localhost:8080/admin/caracteristica");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const eliminarCaracteristica = async (characteristicId, characteristicNombre) => {
         try {

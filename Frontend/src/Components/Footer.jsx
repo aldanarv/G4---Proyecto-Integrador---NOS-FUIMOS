@@ -10,7 +10,7 @@ const Footer = () => {
           <a href="#" className={styles.enlace}>
             <img className={styles.logo} src="/assets/logo2.png" alt="" />
           </a>
-          <p  className={styles.textoCopywriting}>
+          <p className={styles.textoCopywriting}>
             ©️ 2024 Nos Fuimos.
           </p>
         </div>

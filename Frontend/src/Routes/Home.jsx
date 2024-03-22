@@ -11,6 +11,7 @@ import styles from "../styles/home.module.css"
 const Home = () => {
     const { state } = useContextGlobal();
     const [page, setPage] = useState(1);
+
     const [totalCounts, setTotalCounts] = useState(0);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [listProducts, setListProducts] = useState(null);
@@ -28,7 +29,7 @@ const Home = () => {
     // Efecto para calcular el recuento total cuando cambia la selección de categorías o los productos
     useEffect(() => {
         calculateTotalCounts();
-    }, [selectedCategories, state.data]);
+    }, [selectedCategories, state.dataCategorias]);
 
     const handleCategorySelect = (category) => {
         const index = selectedCategories.findIndex((cat) => cat.titulo === category.titulo);
@@ -40,39 +41,52 @@ const Home = () => {
         setPage(1);
     };
 
-    //Paginacion
     const selectedCategoryTitles = selectedCategories.map((cat) => cat.titulo);
     const filteredProducts = selectedCategoryTitles.length > 0 ?
-        state.data.filter(product => selectedCategoryTitles.includes(product.categoria)) :
-        state.data;
+        state.dataCategorias.filter(product => selectedCategoryTitles.includes(product.categoria)) :
+        state.dataCategorias;
 
-    const totalResultsForCategories = selectedCategoryTitles.length > 0 ?
-        filteredProducts.length :
-        null;
+    const totalResults = state.dataCategorias.length;
+    const totalResultsAletorios = state.data.length;
 
-    const totalResults = state.data.length;
-    const totalResultsAletorios = state.dataAleatoria.length;
 
+    useEffect(() => {
+        // Recuperar categorías seleccionadas del localStorage al recargar el componente
+        const savedCategories = JSON.parse(localStorage.getItem('selectedCategories'));
+        if (savedCategories) {
+            setSelectedCategories(savedCategories);
+        }
+    }, []);
+
+    useEffect(() => {
+        // Guardar categorías seleccionadas en el localStorage antes de desmontar el componente
+        localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
+    }, [selectedCategories]);
+
+    //Paginacion
     const pageSize = 10;
     const pagInicio = (page - 1) * pageSize;
     const pagFinal = pagInicio + pageSize;
-
-
-    const totalPages = Math.ceil(
-        (selectedCategoryTitles.length > 0
-            ? totalResultsForCategories + totalResultsAletorios
-            : totalResultsAletorios) / pageSize
-    );
+    const totalPages = Math.ceil(state.data.length / pageSize);
 
     const paginationChange = (event, newPage) => {
         setPage(newPage);
     };
 
-    //Favoritos
+    //Agregar a Favoritos
     const id = localStorage.getItem("id");
     const { user } = id ? useFetchGetIdUser("http://localhost:8080/usuario/" + id) : { user: undefined };
 
-    const aleatorioProducts = state.dataAleatoria;
+    //algoritmo para barajar aleatoriamente un array
+    const aleatorio = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    };
+
+    const aleatorioProducts = aleatorio(state.data);
 
     useEffect(() => {
         if (user == undefined) {
@@ -106,7 +120,7 @@ const Home = () => {
         <div className={styles.divMain}>
             <div className={styles.main__searchButton}>
                 <h2 className="text-3xl font-light text-white text-center lg:text-4xl">Busca ofertas en hoteles, casas y mucho más</h2>
-                <InputSearch options={state.data} />
+                <InputSearch options={state.dataCategorias} />
             </div>
             <main className={styles.main}>
                 <Category handleCategorySelect={handleCategorySelect} selectedCategories={selectedCategories} />
@@ -120,7 +134,10 @@ const Home = () => {
                         <div className="flex justify-end mt-4">
                             <button
                                 className="text-sm hover:underline"
-                                onClick={() => setSelectedCategories([])}
+                                onClick={() => {
+                                    setSelectedCategories([]);
+                                    localStorage.removeItem('selectedCategories');
+                                }}
                             >
                                 Quitar Filtros
                             </button>
@@ -144,6 +161,7 @@ const Home = () => {
                                             id={product.id}
                                             nombre={product.nombre}
                                             destino={product.destino}
+                                            descripcion={product.descripcion}
                                             salidaDate={product.salidaDate}
                                             vueltaDate={product.vueltaDate}
                                             precio={product.precio}
@@ -166,6 +184,7 @@ const Home = () => {
                                 id={product.id}
                                 nombre={product.nombre}
                                 destino={product.destino}
+                                descripcion={product.descripcion}
                                 salidaDate={product.salidaDate}
                                 vueltaDate={product.vueltaDate}
                                 precio={product.precio}

@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
-import GalleryImagesDos from "../Components/GalleryImages";
+import GalleryImages from "../Components/GalleryImages";
+import CompartirRedes from "../Components/CompartirRedes";
 import styles from "../styles/detailProduct.module.css";
 
 const DetailProduct = () => {
@@ -61,7 +62,7 @@ const DetailProduct = () => {
                     </div>
                     <div className={styles.more}>
                         <div className={styles.title_plus}>
-                            <GalleryImagesDos />
+                            <GalleryImages />
                         </div>
                     </div>
                 </section>
@@ -69,13 +70,10 @@ const DetailProduct = () => {
                 <div className="bg-[#fff7ec] rounded-2xl">
                     <div>
                         <div className="flex justify-end gap-4 mx-auto px-4 pt-10 sm:px-6 lg:max-w-7xl lg:px-8">
+                            <CompartirRedes />
                             <div className="flex items-center gap-2">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-share"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M8.7 10.7l6.6 -3.4" /><path d="M8.7 13.3l6.6 3.4" /></svg>
-                                <p className="text-sm hover:underline">Compartir</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-heart"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                                <p className="text-sm hover:underline">Guardar</p>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-heart"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                                <p className="text-sm hover:underline capitalize text-black font-normal">Guardar</p>
                             </div>
                         </div>
                         <div className="mx-auto px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:px-8 lg:pb-24 lg:pt-16">
@@ -83,7 +81,7 @@ const DetailProduct = () => {
                                 <h1 className="text-xl font-bold text-black sm:text-2xl">{data?.destino}</h1>
                             </div>
 
-                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-6 rounded-md bg-white shadow-md">
+                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md">
                                 <div className="flex flex-col sm:flex-row items-start sm:items-end sm:gap-2">
                                     <p className="text-xl text-black">${data?.precio} USD</p>
                                     <h3 className="text-sm font-light text-black">precio por persona</h3>
@@ -114,7 +112,7 @@ const DetailProduct = () => {
                                 <form className="mt-10">
                                     <div className="mt-10">
                                         <fieldset className="mt-4 border border-gray-300 rounded-md">
-                                        <div className="grid grid-rows sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                                            <div className="grid grid-rows sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                                                 <div className="p-3 sm:border-r sm:border-gray-300 lg:border-r-0 xl:border-r xl:border-gray-300">
                                                     <p className="text-sm font-medium text-black">Fecha salida</p>
                                                     <p className="text-sm font-light text-black">{data?.salidaDate}</p>
@@ -142,7 +140,7 @@ const DetailProduct = () => {
 
                                     <div className="space-y-6">
                                         <p className="text-base text-black">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, odio. Officiis quae quis eligendi laboriosam dolor, pariatur veritatis atque rem eius accusantium facere, deserunt, earum nesciunt quo nihil. Excepturi, rem!
+                                            {data?.descripcion}
                                         </p>
                                     </div>
                                 </div>
@@ -168,8 +166,6 @@ const DetailProduct = () => {
                         </div>
                     </div>
                 </div>
-
-
             </section>
         </article>
     );

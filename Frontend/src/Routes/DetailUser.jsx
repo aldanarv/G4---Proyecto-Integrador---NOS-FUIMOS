@@ -18,7 +18,7 @@ const DetailUser = () => {
             id: user?.id || "",
             nombre: user?.nombre || "",
             apellido: user?.apellido || "",
-            email:user?.email || "",
+            email: user?.email || "",
             password: user?.password || "",
         },
         validationSchema: Yup.object({

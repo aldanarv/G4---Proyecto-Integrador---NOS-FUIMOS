@@ -3,17 +3,17 @@ import { useMediaQuery } from "react-responsive";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
-import { useFetchUpdateCaracteristicas } from "../PeticionesHTTP/Caracteristicas/useFetchUpdateCaracteristicas";
+import { useFetchPutCategorias } from "../PeticionesHTTP/Categorias/useFetchPutCategorias";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import MobileAdministration from "../Components/MobileAdministration";
 import { useParams } from "react-router-dom";
 import Administration from "../Components/Administration";
 
-const UpdateCharacteristic = () => {
+const UpdateCategory = () => {
 
     const { id } = useParams();
-    const { data } = useFetchGetID("http://localhost:8080/admin/caracteristica/" + id);
-    const { fetchDataCaracteristica } = useFetchUpdateCaracteristicas("http://localhost:8080/admin/caracteristica/actualizar");
+    const { data } = useFetchGetID("http://localhost:8080/categorias/" + id);
+    const { fetchDataCategoria } = useFetchPutCategorias("http://localhost:8080/categorias/actualizar");
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
@@ -27,9 +27,9 @@ const UpdateCharacteristic = () => {
     };
 
     const handleFileChange = async () => {
-        const fileInput = document.getElementById("icono").files;
+        const fileInput = document.getElementById("imagen").files;
 
-        const icono = await Promise.all(
+        const imagen = await Promise.all(
             Array.from(fileInput).map(async (file, index) => {
                 const base64String = await convertFileToBase64(file);
                 return {
@@ -39,11 +39,11 @@ const UpdateCharacteristic = () => {
             })
         );
 
-        console.log("Processed Images:", icono);
+        console.log("Processed Images:", imagen);
 
-        formik.setFieldValue("icono", [
-            ...formik.values.icono,
-            ...icono.map((img) => img.data),
+        formik.setFieldValue("imagen", [
+            ...formik.values.imagen,
+            ...imagen.map((img) => img.data),
         ]);
         formik.setFieldValue("selectedImageIndex", 0);
     };
@@ -61,10 +61,10 @@ const UpdateCharacteristic = () => {
         });
 
         if (confirmRemove.isConfirmed) {
-            const updatedImages = formik.values.icono.filter(
+            const updatedImages = formik.values.imagen.filter(
                 (_, i) => i !== index
             );
-            formik.setFieldValue("icono", updatedImages);
+            formik.setFieldValue("imagen", updatedImages);
             formik.setFieldValue("selectedImageIndex", 0);
         }
     };
@@ -72,28 +72,31 @@ const UpdateCharacteristic = () => {
     const formik = useFormik({
         initialValues: {
             id: data?.id || "",
-            nombre: data?.nombre || "",
-            icono: data?.icono || [],
+            titulo: data?.titulo || "",
+            descripcion: data?.descripcion || "",
+            imagen: data?.imagen || [],
         },
         validationSchema: Yup.object({
             id: Yup.string().trim().required("Requerido"),
-            nombre: Yup.string().lowercase().trim().required("El nombre es requerido"),
-            icono: Yup.array()
+            titulo: Yup.string().lowercase().trim().required("El nombre es requerido"),
+            descripcion: Yup.string().lowercase().trim().required("La descripcion es requerida"),
+            imagen: Yup.array()
                 .length(1, "Solo puedes agregar 1 icono")
                 .required("El icono es requerido"),
         }),
         onSubmit: (data, { resetForm }) => {
             console.log("Submitted Data:", data);
 
-            let characteristic = {
+            let category = {
                 id: data.id,
-                nombre: data.nombre,
-                icono: data.icono[0],
+                titulo: data.titulo,
+                descripcion: data.descripcion,
+                imagen: data.imagen[0],
             };
 
-            console.log("Characteristic:", characteristic);
+            console.log("category:", category);
 
-            fetchDataCaracteristica(characteristic);
+            fetchDataCategoria(category);
             resetForm();
         },
         validateOnChange: false
@@ -102,8 +105,9 @@ const UpdateCharacteristic = () => {
     useEffect(() => {
         if (data) {
             formik.setFieldValue("id", data?.id);
-            formik.setFieldValue("nombre", data?.nombre);
-            formik.setFieldValue("icono", [data?.icono]);
+            formik.setFieldValue("titulo", data?.titulo);
+            formik.setFieldValue("descripcion", data?.descripcion);
+            formik.setFieldValue("imagen", [data?.imagen]);
         }
     }, [data]);
 
@@ -120,9 +124,9 @@ const UpdateCharacteristic = () => {
                         className="flex flex-col gap-3 justify-center h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
                         <div className="pt-40">
-                            <h2 className="text-4xl font-bold text-white">Editar Característica</h2>
+                            <h2 className="text-4xl font-bold text-white">Editar Categoría</h2>
                             <p className="text-lg text-white font-medium mt-2">
-                                Complete el formulario para actualizar su característica
+                                Complete el formulario para actualizar su categoría
                             </p>
                         </div>
 
@@ -130,27 +134,55 @@ const UpdateCharacteristic = () => {
                             <div className="flex flex-col gap-6">
                                 <div className="col-span-full">
                                     <label
-                                        htmlFor="nombre"
+                                        htmlFor="titulo"
                                         className="text-base font-medium text-[#E47F07]"
                                     >
-                                        Nombre
+                                        titulo
                                     </label>
                                     <div className="mt-2">
                                         <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
                                             <input
                                                 type="text"
-                                                name="nombre"
-                                                id="nombre"
+                                                name="titulo"
+                                                id="titulo"
                                                 required
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
-                                                value={formik.values.nombre}
+                                                value={formik.values.titulo}
                                                 className="flex-1 border-0 bg-transparent rounded-md focus:bg-[#F4CE9F] py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 outline-none text-base"
                                             />
                                         </div>
-                                        {formik.touched.nombre && formik.errors.nombre ? (
+                                        {formik.touched.titulo && formik.errors.titulo ? (
                                             <div className="text-red-400 font-light text-sm">
-                                                {formik.errors.nombre}
+                                                {formik.errors.titulo}
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </div>
+
+                                <div className="col-span-full">
+                                    <label
+                                        htmlFor="descripcion"
+                                        className="text-base font-medium text-[#E47F07]"
+                                    >
+                                        descripcion
+                                    </label>
+                                    <div className="mt-2">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                            <input
+                                                type="text"
+                                                name="descripcion"
+                                                id="descripcion"
+                                                required
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.descripcion}
+                                                className="flex-1 border-0 bg-transparent rounded-md focus:bg-[#F4CE9F] py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 outline-none text-base"
+                                            />
+                                        </div>
+                                        {formik.touched.descripcion && formik.errors.descripcion ? (
+                                            <div className="text-red-400 font-light text-sm">
+                                                {formik.errors.descripcion}
                                             </div>
                                         ) : null}
                                     </div>
@@ -162,7 +194,7 @@ const UpdateCharacteristic = () => {
                                         <div className="mt-2 flex justify-center flex-col items-center gap-4 rounded-lg border border-dashed border-gray-300 px-6 py-8 hover:border-[#E47F07]">
                                             <div className="flex text-base text-gray-600">
                                                 <label
-                                                    htmlFor="icono"
+                                                    htmlFor="imagen"
                                                     className="rounded-md border border-solid border-gray-300 px-6 py-2 text-base font-light hover:shadow-lg cursor-pointer text-[#E47F07] hover:bg-[#E47F07] hover:text-white hover:border-white"
                                                 >
                                                     <svg
@@ -179,8 +211,8 @@ const UpdateCharacteristic = () => {
                                                     </svg>
                                                     <span>Agregar Icono</span>
                                                     <input
-                                                        id="icono"
-                                                        name="icono"
+                                                        id="imagen"
+                                                        name="imagen"
                                                         type="file"
                                                         className="sr-only"
                                                         multiple
@@ -196,8 +228,8 @@ const UpdateCharacteristic = () => {
                                                 PNG, JPG, GIF hasta 10MB
                                             </p>
                                             <div className="flex mt-2 flex-wrap gap-1">
-                                                {formik.values.icono &&
-                                                    formik.values.icono.map((url, index) => (
+                                                {formik.values.imagen &&
+                                                    formik.values.imagen.map((url, index) => (
                                                         <div
                                                             key={index}
                                                             className="w-16 h-16"
@@ -220,9 +252,9 @@ const UpdateCharacteristic = () => {
                                                 Haz doble clic sobre el icono que desees cambiar
                                             </p>
                                         </div>
-                                        {formik.touched.icono && formik.errors.icono ? (
+                                        {formik.touched.imagen && formik.errors.imagen ? (
                                             <div className="text-red-400 font-light text-sm">
-                                                {formik.errors.icono}
+                                                {formik.errors.imagen}
                                             </div>
                                         ) : null}
                                     </div>
@@ -242,4 +274,4 @@ const UpdateCharacteristic = () => {
     );
 }
 
-export default UpdateCharacteristic;
+export default UpdateCategory;

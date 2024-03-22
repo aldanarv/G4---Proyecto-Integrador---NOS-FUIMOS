@@ -15,9 +15,9 @@ export function useFetchPostLogin(url) {
 
                 localStorage.setItem("id", response.data.id);
 
-                if(response.data.privilegios){
+                if (response.data.privilegios) {
                     dispatch({ type: 'ADMIN_LOGED' });
-                }else{
+                } else {
                     dispatch({ type: 'USER_LOGED' });
                 }
 

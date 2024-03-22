@@ -12,7 +12,7 @@ import Administration from "../Components/Administration";
 import MobileAdministration from "../Components/MobileAdministration";
 
 const UpdateProduct = () => {
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
     const dataCaracteristica = useFetchGetAll("http://localhost:8080/admin/caracteristica").data;
@@ -90,6 +90,7 @@ const UpdateProduct = () => {
             id: data?.id || "",
             nombre: data?.nombre || "",
             destino: data?.destino || "",
+            descripcion: data?.descripcion || "",
             categoria: data?.categoria || "",
             salidaDate: data?.salidaDate || "",
             vueltaDate: data?.vueltaDate || "",
@@ -101,6 +102,7 @@ const UpdateProduct = () => {
             id: Yup.string().trim().required("Requerido"),
             nombre: Yup.string().min(4, "El nombre debe tener al menos 4 caracteres.").lowercase().trim().required("El nombre es requerido"),
             destino: Yup.string().min(4, "El destino debe tener al menos 4 caracteres.").lowercase().trim().required("El destino es requerido"),
+            descripcion: Yup.string().min(4, "La descripcion debe tener al menos 4 caracteres.").lowercase().trim().required("La descripcion es requerida"),
             salidaDate: Yup.date().min(today, "La fecha no puede ser menor al dia de hoy").required("La fecha de salida es requerida"),
             vueltaDate: Yup.date().min(Yup.ref('salidaDate'), 'La fecha de regreso no puede ser anterior a la fecha de salida').required("La fecha de regreso requerida"),
             precio: Yup.number().min(1).positive("El precio debe ser un número positivo").required("El precio es requerido"),
@@ -132,6 +134,7 @@ const UpdateProduct = () => {
                 id: data?.id,
                 nombre: data.nombre,
                 destino: data.destino,
+                descripcion: data.descripcion,
                 categoria: data.categoria,
                 salidaDate: data.salidaDate,
                 vueltaDate: data.vueltaDate,
@@ -153,6 +156,7 @@ const UpdateProduct = () => {
             formik.setFieldValue("id", data?.id);
             formik.setFieldValue("nombre", data?.nombre);
             formik.setFieldValue("destino", data?.destino);
+            formik.setFieldValue("descripcion", data?.descripcion);
             formik.setFieldValue("categoria", data?.categoria);
             formik.setFieldValue("salidaDate", data?.salidaDate);
             formik.setFieldValue("vueltaDate", data?.vueltaDate);
@@ -238,6 +242,33 @@ const UpdateProduct = () => {
                                         {formik.touched.destino && formik.errors.destino ? (
                                             <div className="text-red-400 font-light text-sm">
                                                 {formik.errors.destino}
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div className="col-span-full">
+                                    <label
+                                        htmlFor="descripcion"
+                                        className="text-base font-medium text-[#E47F07]"
+                                    >
+                                        Descripción
+                                    </label>
+                                    <div className="mt-2">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                            <input
+                                                type="text"
+                                                name="descripcion"
+                                                id="descripcion"
+                                                required
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.descripcion}
+                                                className="flex-1 border-0 bg-transparent rounded-md focus:bg-[#F4CE9F] py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 outline-none text-base"
+                                            />
+                                        </div>
+                                        {formik.touched.descripcion && formik.errors.descripcion ? (
+                                            <div className="text-red-400 font-light text-sm">
+                                                {formik.errors.descripcion}
                                             </div>
                                         ) : null}
                                     </div>

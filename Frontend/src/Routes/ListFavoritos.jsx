@@ -13,15 +13,15 @@ const ListFavoritos = () => {
     const id = localStorage.getItem("id");
     const { user } = id ? useFetchGetIdUser("http://localhost:8080/usuario/" + id) : { user: undefined };
 
-    const aleatorioProducts = state.dataAleatoria;
+    const dataProducts = state.data;
 
     useEffect(() => {
         if (user == undefined) {
-            setListProducts(aleatorioProducts);
+            setListProducts(dataProducts);
         }
 
         if (user && user.favoriteList != null) {
-            const updatedAleatorioProducts = aleatorioProducts.map(element => {
+            const updatedDataProducts = dataProducts.map(element => {
                 const updatedElement = { ...element };
                 const isFavorite = user.favoriteList.includes(element.id);
                 updatedElement['fav'] = isFavorite;
@@ -29,9 +29,9 @@ const ListFavoritos = () => {
                 console.log("isFavorite" + isFavorite)
                 return updatedElement;
             });
-            setListProducts(updatedAleatorioProducts);
+            setListProducts(updatedDataProducts);
         }
-    }, [user, aleatorioProducts]);
+    }, [user, dataProducts]);
 
     const handleFavChange = (productId, newFavValue) => {
         const updatedList = listProducts.map(product => {
@@ -57,6 +57,7 @@ const ListFavoritos = () => {
                                 id={product.id}
                                 nombre={product.nombre}
                                 destino={product.destino}
+                                descripcion={product.descripcion}
                                 salidaDate={product.salidaDate}
                                 vueltaDate={product.vueltaDate}
                                 precio={product.precio}
