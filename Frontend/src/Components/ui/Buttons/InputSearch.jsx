@@ -4,6 +4,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { es } from "date-fns/locale";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import { useContextGlobal } from "../../../Context/global.context";
 
 const css = `
     .my-selected:not([disabled]) { 
@@ -12,9 +13,12 @@ const css = `
     }
 `;
 
-export default function InputSearch({ options }) {
+export default function InputSearch({ options, onProductSelect }) {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
+
+    const { state } = useContextGlobal();
+    const [selectedOption, setSelectedOption] = useState(null);
 
     const toggleCalendar = () => {
         setIsCalendarOpen(!isCalendarOpen);
@@ -38,6 +42,20 @@ export default function InputSearch({ options }) {
     };
 
     const isSmallScreen = useMediaQuery('(max-width:640px)');
+
+    const handleSearch = () => {
+        if (selectedOption) {
+            const selectedProduct = state.dataCategorias.find(product => product.id === selectedOption.id);
+            
+            if (selectedProduct) {
+                onProductSelect(selectedProduct);
+            } else {
+                onProductSelect(null);
+            }
+        } else {
+            onProductSelect(null);
+        }
+    };
 
     return (
         <>
@@ -92,6 +110,9 @@ export default function InputSearch({ options }) {
                             </span>
                         </div>
                     )}
+                    onChange={(event, newValue) => {
+                        setSelectedOption(newValue);
+                    }}
                 />
                 <input
                     placeholder={`${selectedRange.from ? formatDate(selectedRange.from) : "Check in"
@@ -99,7 +120,7 @@ export default function InputSearch({ options }) {
                     onClick={toggleCalendar}
                     className="relative border-0 bg-white rounded-md py-2 px-2.5 text-black placeholder:text-[#7a7e82] focus:outline focus:outline-2 focus:outline-offset-0 font-light text-base"
                 />
-                <button className="px-6 py-2 mx-auto sm:m-0 font-medium text-white bg-[#01A9D6] rounded-md focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+                <button onClick={handleSearch} className="px-6 py-2 mx-auto sm:m-0 font-medium text-white bg-[#01A9D6] rounded-md focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                     Buscar
                 </button>
             </div>

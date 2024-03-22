@@ -34,6 +34,18 @@ public class CategoriaController {
         return categoriaService.actualizarCategoria(categoria);
     }
 
+    @PutMapping("/actualizar}")
+    public ResponseEntity actualizarCategoria(@PathVariable String name, @RequestBody Categoria categoria) {
+        // Elimina la categoría de todos los productos que la tienen asignada
+        List<Producto> productosConCategoria = productoService.getProductosByCategoria(name);
+        for (Producto producto : productosConCategoria) {
+            producto.setCategoria(null);
+            productoService.actualizarProducto(producto);
+        }
+        categoriaService.actualizarCategoria(categoria);
+        return ResponseEntity.ok("Categoría actualizada y productos actualizados");
+    }
+
     @GetMapping(value = "/listar")
     public List<Categoria> listarCategorias(Model model){
         return categoriaService.getAllCategoria();

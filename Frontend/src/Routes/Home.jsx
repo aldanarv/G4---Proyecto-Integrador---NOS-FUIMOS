@@ -16,6 +16,8 @@ const Home = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [listProducts, setListProducts] = useState(null);
 
+    const [selectedProductInfo, setSelectedProductInfo] = useState(null);
+
     //Categorias
     // Función para calcular el recuento total
     const calculateTotalCounts = () => {
@@ -116,14 +118,39 @@ const Home = () => {
         setListProducts(updatedList);
     };
 
+    const handleProductSelect = (productInfo) => {
+        setSelectedProductInfo(productInfo);
+        console.log(selectedProductInfo)
+    };
+
+
     return (
         <div className={styles.divMain}>
             <div className={styles.main__searchButton}>
                 <h2 className="text-3xl font-light text-white text-center lg:text-4xl">Busca ofertas en hoteles, casas y mucho más</h2>
-                <InputSearch options={state.dataCategorias} />
+                <InputSearch options={state.dataCategorias} onProductSelect={handleProductSelect} />
             </div>
             <main className={styles.main}>
                 <Category handleCategorySelect={handleCategorySelect} selectedCategories={selectedCategories} />
+                {/*resultado busqueda*/}
+                <section className={styles.main__sectionCard}>
+                    {selectedProductInfo && (
+                        <Card
+                            key={selectedProductInfo?.id}
+                            id={selectedProductInfo?.id}
+                            nombre={selectedProductInfo?.nombre}
+                            destino={selectedProductInfo?.destino}
+                            descripcion={selectedProductInfo?.descripcion}
+                            salidaDate={selectedProductInfo?.salidaDate}
+                            vueltaDate={selectedProductInfo?.vueltaDate}
+                            precio={selectedProductInfo?.precio}
+                            urlImagenes={selectedProductInfo?.urlImagenes}
+                            fav={selectedProductInfo?.fav}
+                            onFavChange={handleFavChange}
+                        />
+                    )}
+                </section>
+                {/*resultado busqueda*/}
                 <article>
                     {selectedCategories && selectedCategories.length > 0 ? (
                         <p className="text-sm font-extralight text-gray-700 sm:text-base text-right">
