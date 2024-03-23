@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Autocomplete from "@mui/joy/Autocomplete";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { es } from "date-fns/locale";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
 import { useContextGlobal } from "../../../Context/global.context";
 
 const css = `
@@ -46,7 +44,7 @@ export default function InputSearch({ options, onProductSelect }) {
     const handleSearch = () => {
         if (selectedOption) {
             const selectedProduct = state.dataCategorias.find(product => product.id === selectedOption.id);
-            
+
             if (selectedProduct) {
                 onProductSelect(selectedProduct);
             } else {
@@ -114,16 +112,20 @@ export default function InputSearch({ options, onProductSelect }) {
                         setSelectedOption(newValue);
                     }}
                 />
+                {/* 
                 <input
                     placeholder={`${selectedRange.from ? formatDate(selectedRange.from) : "Check in"
                         } - ${selectedRange.to ? formatDate(selectedRange.to) : "Check out"}`}
                     onClick={toggleCalendar}
                     className="relative border-0 bg-white rounded-md py-2 px-2.5 text-black placeholder:text-[#7a7e82] focus:outline focus:outline-2 focus:outline-offset-0 font-light text-base"
                 />
+                */}
+
                 <button onClick={handleSearch} className="px-6 py-2 mx-auto sm:m-0 font-medium text-white bg-[#01A9D6] rounded-md focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                     Buscar
                 </button>
             </div>
+            {/*
             {isCalendarOpen && (
                 <div
                     style={{
@@ -145,15 +147,11 @@ export default function InputSearch({ options, onProductSelect }) {
                         modifiersClassNames={{
                             selected: "my-selected",
                         }}
-                        /*
-                            styles={{
-                                day: { width: '27px' }
-                            }}
-                        */
-                        locale={es}
-                    />
-                </div>
-            )}
+                            locale={es}
+                            />
+                        </div>
+                    )}
+            */}
         </>
     );
 }

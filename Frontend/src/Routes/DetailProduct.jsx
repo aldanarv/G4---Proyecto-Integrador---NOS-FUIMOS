@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import GalleryImages from "../Components/GalleryImages";
 import CompartirRedes from "../Components/CompartirRedes";
+import Calendario from "../Components/Calendario";
 import styles from "../styles/detailProduct.module.css";
 
 const DetailProduct = () => {
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [fechasSeleccionadas, setFechasSeleccionadas] = useState(null);
+
+    const toggleCalendar = () => {
+        setIsCalendarOpen(!isCalendarOpen);
+    };
+
+    const handleDateSelect = (dates) => {
+        setFechasSeleccionadas(dates);
+    };
 
     return (
         <article className={styles.article}>
@@ -112,17 +123,28 @@ const DetailProduct = () => {
                                 <form className="mt-10">
                                     <div className="mt-10">
                                         <fieldset className="mt-4 border border-gray-300 rounded-md">
-                                            <div className="grid grid-rows sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                                                <div className="p-3 sm:border-r sm:border-gray-300 lg:border-r-0 xl:border-r xl:border-gray-300">
-                                                    <p className="text-sm font-medium text-black">Fecha salida</p>
-                                                    <p className="text-sm font-light text-black">{data?.salidaDate}</p>
-                                                    <input className="text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1" type="date" name="" id="" />
-                                                </div>
-
-                                                <div className="p-3 border-t border-gray-300 sm:border-t-0 lg:border-t lg:border-gray-300 xl:border-t-0">
-                                                    <p className="text-sm font-medium text-black">Fecha regreso</p>
-                                                    <p className="text-sm font-light text-black">{data?.vueltaDate}</p>
-                                                    <input className="text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1" type="date" name="" id="" />
+                                            <div className="grid grid-rows">
+                                                <div className="p-2 sm:p-3">
+                                                    <p className="text-sm font-medium text-black">Fecha salida - Fecha regreso</p>
+                                                    <div className="flex items-center gap-1 sm:gap-4">
+                                                        <p onClick={toggleCalendar} className="relative text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1">
+                                                            {fechasSeleccionadas ?
+                                                                `${fechasSeleccionadas.startDate.toLocaleDateString('es-ES')} - ${fechasSeleccionadas.endDate.toLocaleDateString('es-ES')}`
+                                                                : 'dd/mm/aaaa - dd/mm/aaaa'
+                                                            }                                                        </p>
+                                                        <svg onClick={toggleCalendar} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
+                                                    </div>
+                                                    {isCalendarOpen && (
+                                                        <div
+                                                            style={{
+                                                                position: "absolute",
+                                                                left: "50%",
+                                                                right: "50%"
+                                                            }}
+                                                        >
+                                                            <Calendario onDateSelect={handleDateSelect} />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </fieldset>
