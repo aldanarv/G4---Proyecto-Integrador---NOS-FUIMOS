@@ -59,7 +59,7 @@ export default function CompartirRedes() {
                                 src={"data:image;base64," + data?.urlImagenes[0]}
                                 alt=""
                                 loading="lazy"
-                                className="rounded-t-lg"
+                                className="rounded-t-lg w-full"
                             />
                         </a>
                         <div className="p-5">

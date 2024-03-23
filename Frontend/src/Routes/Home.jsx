@@ -133,25 +133,31 @@ const Home = () => {
             <main className={styles.main}>
                 <Category handleCategorySelect={handleCategorySelect} selectedCategories={selectedCategories} />
                 {/*resultado busqueda*/}
-                <section className={styles.main__sectionCard}>
-                    {selectedProductInfo && (
-                        <Card
-                            key={selectedProductInfo?.id}
-                            id={selectedProductInfo?.id}
-                            nombre={selectedProductInfo?.nombre}
-                            destino={selectedProductInfo?.destino}
-                            descripcion={selectedProductInfo?.descripcion}
-                            salidaDate={selectedProductInfo?.salidaDate}
-                            vueltaDate={selectedProductInfo?.vueltaDate}
-                            precio={selectedProductInfo?.precio}
-                            urlImagenes={selectedProductInfo?.urlImagenes}
-                            fav={selectedProductInfo?.fav}
-                            onFavChange={handleFavChange}
-                        />
-                    )}
-                </section>
                 {/*resultado busqueda*/}
                 <article>
+                    {selectedProductInfo && (
+                        <div className='mb-10'>
+                            <div className='pb-4 flex flex-col'>
+                                <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Resultados</h3>
+                            </div>
+                            <section className={styles.main__sectionCard}>
+                                <Card
+                                    key={selectedProductInfo?.id}
+                                    id={selectedProductInfo?.id}
+                                    nombre={selectedProductInfo?.nombre}
+                                    destino={selectedProductInfo?.destino}
+                                    descripcion={selectedProductInfo?.descripcion}
+                                    salidaDate={selectedProductInfo?.salidaDate}
+                                    vueltaDate={selectedProductInfo?.vueltaDate}
+                                    precio={selectedProductInfo?.precio}
+                                    urlImagenes={selectedProductInfo?.urlImagenes}
+                                    fav={selectedProductInfo?.fav}
+                                    onFavChange={handleFavChange}
+                                />
+                            </section>
+                        </div>
+                    )}
+
                     {selectedCategories && selectedCategories.length > 0 ? (
                         <p className="text-sm font-extralight text-gray-700 sm:text-base text-right">
                             {totalCounts} productos encontrados
