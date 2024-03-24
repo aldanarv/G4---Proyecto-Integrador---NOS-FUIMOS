@@ -55,4 +55,5 @@ public class CategoriaController {
         categoriaService.eliminarCategoriaById(id);
         return ResponseEntity.ok("Categoría eliminada y productos actualizados");
     }
+
 }

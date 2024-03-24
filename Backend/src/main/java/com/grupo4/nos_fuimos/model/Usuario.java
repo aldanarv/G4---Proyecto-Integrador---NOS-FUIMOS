@@ -92,7 +92,6 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
-
     public List<String> getFavoriteList() {
         return favoriteList;
     }
@@ -100,7 +99,6 @@ public class Usuario {
     public void setFavoriteList(List<String> favoriteList) {
         this.favoriteList = favoriteList;
     }
-
     public boolean havePrivilegios() {
         return privilegios;
     }

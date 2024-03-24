@@ -24,9 +24,7 @@ public class CaracteristicaService {
 
     public ResponseEntity<?> addCaracteristica(Caracteristica caracteristica){
 
-        String caracteristicaMinuscula = caracteristica.getNombre().toLowerCase();
-
-        Optional<Caracteristica> existingCaracteristica = caracteristicaRepository.findByNombre(caracteristicaMinuscula);
+        Optional<Caracteristica> existingCaracteristica = caracteristicaRepository.findByNombre(caracteristica.getNombre());
         if (existingCaracteristica.isPresent())
             return ResponseEntity.status(HttpStatus.CONFLICT).body("La caracteristica con nombre '" + caracteristica.getNombre() + "' ya existe en la base de datos");
 
