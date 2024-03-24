@@ -16,7 +16,7 @@ const Home = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [listProducts, setListProducts] = useState(null);
 
-    const [selectedProductInfo, setSelectedProductInfo] = useState(null);
+    const [selectedProductInfo, setSelectedProductInfo] = useState([]);
 
     //Categorias
     // Función para calcular el recuento total
@@ -123,7 +123,6 @@ const Home = () => {
         console.log(selectedProductInfo)
     };
 
-
     return (
         <div className={styles.divMain}>
             <div className={styles.main__searchButton}>
@@ -133,7 +132,6 @@ const Home = () => {
             <main className={styles.main}>
                 <Category handleCategorySelect={handleCategorySelect} selectedCategories={selectedCategories} />
                 {/*resultado busqueda*/}
-                {/*resultado busqueda*/}
                 <article>
                     {selectedProductInfo && (
                         <div className='mb-10'>
@@ -141,19 +139,21 @@ const Home = () => {
                                 <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Resultados</h3>
                             </div>
                             <section className={styles.main__sectionCard}>
-                                <Card
-                                    key={selectedProductInfo?.id}
-                                    id={selectedProductInfo?.id}
-                                    nombre={selectedProductInfo?.nombre}
-                                    destino={selectedProductInfo?.destino}
-                                    descripcion={selectedProductInfo?.descripcion}
-                                    salidaDate={selectedProductInfo?.salidaDate}
-                                    vueltaDate={selectedProductInfo?.vueltaDate}
-                                    precio={selectedProductInfo?.precio}
-                                    urlImagenes={selectedProductInfo?.urlImagenes}
-                                    fav={selectedProductInfo?.fav}
-                                    onFavChange={handleFavChange}
-                                />
+                                {selectedProductInfo?.map((product) => (
+                                    <Card
+                                        key={product.id}
+                                        id={product.id}
+                                        nombre={product.nombre}
+                                        destino={product.destino}
+                                        descripcion={product.descripcion}
+                                        salidaDate={product.salidaDate}
+                                        vueltaDate={product.vueltaDate}
+                                        precio={product.precio}
+                                        urlImagenes={product.urlImagenes}
+                                        fav={product.fav}
+                                        onFavChange={handleFavChange}
+                                    />
+                                ))}
                             </section>
                         </div>
                     )}

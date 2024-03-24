@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Autocomplete from "@mui/joy/Autocomplete";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useContextGlobal } from "../../../Context/global.context";
-import Calendario from "../../Calendario";
+import CalendarioHome from "../../CalendarioHome";
 
 export default function InputSearch({ options, onProductSelect }) {
     const { state } = useContextGlobal();
@@ -25,6 +25,7 @@ export default function InputSearch({ options, onProductSelect }) {
 
     const isSmallScreen = useMediaQuery('(max-width:639px)');
 
+    /*
     const handleSearch = () => {
         if (selectedOption) {
             const selectedProduct = state.dataCategorias.find(product => product.id === selectedOption.id);
@@ -37,6 +38,29 @@ export default function InputSearch({ options, onProductSelect }) {
         } else {
             onProductSelect(null);
         }
+    };
+    */
+
+    const handleSearch = () => {
+        let filteredProduct = state.dataCategorias;
+    
+        // Filtrar por selectedOption
+        if (selectedOption) {
+            filteredProduct = filteredProduct.filter(product => product.id === selectedOption.id);
+        }
+    
+        // Filtrar por rango de fechas
+        if (fechasSeleccionadas && fechasSeleccionadas.startDate && fechasSeleccionadas.endDate) {
+            const startDate = fechasSeleccionadas.startDate.getTime();
+            const endDate = fechasSeleccionadas.endDate.getTime();
+            filteredProduct = filteredProduct.filter(product => {
+                const productStartDate = new Date(product.salidaDate).getTime();
+                return productStartDate >= startDate && productStartDate <= endDate;
+            });
+        }
+    
+        onProductSelect(filteredProduct);
+        console.log(filteredProduct)
     };
 
     return (
@@ -116,7 +140,7 @@ export default function InputSearch({ options, onProductSelect }) {
                         top: "100%",
                     }}
                 >
-                    <Calendario onDateSelect={handleDateSelect} />
+                    <CalendarioHome onDateSelect={handleDateSelect} />
                 </div>
             )}
         </>
