@@ -1,45 +1,29 @@
 import React, { useState } from "react";
 import Autocomplete from "@mui/joy/Autocomplete";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { es } from "date-fns/locale";
 import { useContextGlobal } from "../../../Context/global.context";
-
-const css = `
-    .my-selected:not([disabled]) { 
-        background-color: #BFEBFA; 
-        color: black;
-    }
-`;
+import Calendario from "../../Calendario";
 
 export default function InputSearch({ options, onProductSelect }) {
-    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-    const [selectedRange, setSelectedRange] = useState({ from: null, to: null });
-
     const { state } = useContextGlobal();
     const [selectedOption, setSelectedOption] = useState(null);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [fechasSeleccionadas, setFechasSeleccionadas] = useState(null);
 
     const toggleCalendar = () => {
         setIsCalendarOpen(!isCalendarOpen);
     };
 
-    const handleDayClick = (day) => {
-        setSelectedRange((prevRange) => {
-            if (!prevRange.from || prevRange.to) {
-                return { from: day, to: null };
-            } else if (day < prevRange.from) {
-                return { from: day, to: prevRange.from };
-            } else {
-                return { ...prevRange, to: day };
-            }
-        });
-    };
-
     const formatDate = (date) => {
         if (!date) return "";
-        return date.toLocaleDateString();
+        return date.toLocaleDateString('es-ES');
     };
 
-    const isSmallScreen = useMediaQuery('(max-width:640px)');
+    const handleDateSelect = (dates) => {
+        setFechasSeleccionadas(dates);
+    };
+
+    const isSmallScreen = useMediaQuery('(max-width:639px)');
 
     const handleSearch = () => {
         if (selectedOption) {
@@ -57,7 +41,6 @@ export default function InputSearch({ options, onProductSelect }) {
 
     return (
         <>
-            <style>{css}</style>
             <div
                 style={{
                     display: "flex",
@@ -112,46 +95,30 @@ export default function InputSearch({ options, onProductSelect }) {
                         setSelectedOption(newValue);
                     }}
                 />
-                {/* 
-                <input
-                    placeholder={`${selectedRange.from ? formatDate(selectedRange.from) : "Check in"
-                        } - ${selectedRange.to ? formatDate(selectedRange.to) : "Check out"}`}
-                    onClick={toggleCalendar}
-                    className="relative border-0 bg-white rounded-md py-2 px-2.5 text-black placeholder:text-[#7a7e82] focus:outline focus:outline-2 focus:outline-offset-0 font-light text-base"
-                />
-                */}
+
+                <p onClick={toggleCalendar} className="relative min-w-52 border-0 bg-white rounded-md py-2 px-2.5 text-[#7a7e82] focus:outline focus:outline-2 focus:outline-offset-0 font-light text-base">
+                    {fechasSeleccionadas ?
+                        `${formatDate(fechasSeleccionadas?.startDate)} - ${formatDate(fechasSeleccionadas?.endDate)}`
+                        : "Check in - Check out"
+                    }
+                </p>
 
                 <button onClick={handleSearch} className="px-6 py-2 mx-auto sm:m-0 font-medium text-white bg-[#01A9D6] rounded-md focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                     Buscar
                 </button>
             </div>
-            {/*
             {isCalendarOpen && (
                 <div
                     style={{
                         position: "absolute",
+                        left: "50%",
+                        right: "50%",
                         top: "100%",
-                        backgroundColor: "white",
-                        borderRadius: "6px",
-                        fontWeight: 300,
-                        fontFamily: "Nunito Sans",
                     }}
                 >
-                    <DayPicker
-                        selected={selectedRange}
-                        onDayClick={handleDayClick}
-                        numberOfMonths={2}
-                        fixedWeeks
-                        showOutsideDays
-                        mode="range"
-                        modifiersClassNames={{
-                            selected: "my-selected",
-                        }}
-                            locale={es}
-                            />
-                        </div>
-                    )}
-            */}
+                    <Calendario onDateSelect={handleDateSelect} />
+                </div>
+            )}
         </>
     );
 }

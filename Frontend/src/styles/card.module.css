@@ -40,7 +40,7 @@
     padding: 20px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 639px) {
     .containerText {
         padding: 10px;
     }
@@ -61,7 +61,7 @@
     -webkit-line-clamp: 1;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 639px) {
     .title {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -90,7 +90,7 @@
     margin-bottom: 10px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 639px) {
     .divDetalle {
         flex-direction: column;
         gap: 1.25rem;
@@ -118,14 +118,14 @@
     text-align: left;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 639px) {
     .detallePrecio {
         font-size: var(--font-size-sm);
         line-height: var(--line-height-sm);
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 639px) {
     .detallePersona {
         font-size: var(--font-size-sm);
         line-height: var(--line-height-sm);
