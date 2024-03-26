@@ -65,7 +65,7 @@ const Avatar = () => {
             <div className="relative">
                 <div className="flex">
                     <div className="flex items-center flex-row gap-4">
-                        <div className="flex items-center justify-center w-10 h-10  bg-[#01A9D6] rounded-full">
+                        <div className="flex items-center justify-center w-10 h-10  bg-[#01A9D6] rounded-full shrink-0">
                             <span className="font-light text-base text-white ">{firstLetterFirstName + firstLetterLastName}</span>
                         </div>
                         <div className="flex flex-col items-start gap-0">

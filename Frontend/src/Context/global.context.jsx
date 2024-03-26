@@ -38,14 +38,16 @@ const initialState = {
 const ContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const url = "http://localhost:8080/admin/productos";
+
     useEffect(() => {
-        axios("http://localhost:8080/admin/productos")
+        axios(url)
             .then(res => dispatch({ type: 'DATA_PRODUCTS', payload: res.data }))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
     useEffect(() => {
-        axios("http://localhost:8080/admin/productos")
+        axios(url)
             .then(res => dispatch({ type: 'DATA_PRODUCTS_CATEGORIES', payload: res.data }))
             .catch(error => console.error('Error fetching data:', error));
     }, []);

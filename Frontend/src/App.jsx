@@ -7,7 +7,7 @@ import Login from './Routes/Login';
 import Register from './Routes/Register';
 import DetailProduct from './Routes/DetailProduct';
 import PoliticasProducto from './Routes/PoliticasProducto';
-import Reservar from './Routes/Reservar';
+import Puntuacion from './Routes/Puntuacion';
 import AddProduct from './Routes/AddProduct';
 import ListProduct from './Routes/ListProduct';
 import UpdateProduct from './Routes/UpdateProduct';
@@ -24,6 +24,7 @@ import ListUser from './Routes/ListUser';
 import ListCategory from './Routes/ListCategory';
 import ConfirmRegister from './Routes/ConfirmRegister';
 import UpdateCategory from './Routes/UpdateCategory';
+import AddPuntuacion from './Routes/AddPuntuacion';
 
 function App() {
   return (
@@ -52,7 +53,8 @@ function App() {
         <Route element={<ProtectedRoutesBooking />}>
           <Route path='/detailUser' element={<DetailUser />} />
           <Route path='/favorites' element={<ListFavoritos />} />
-          <Route path='/product/:id/reservar' element={<Reservar />} />
+          <Route path='/product/:id/puntuacion' element={<Puntuacion />} />
+          <Route path='/product/:id/addPuntuacion' element={<AddPuntuacion />} />
         </Route>
       </Routes>
       <Footer />

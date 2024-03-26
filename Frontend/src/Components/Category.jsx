@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "../styles/carouselcategory.module.css";
+import styles from "../styles/category.module.css";
 import { useFetchGetAllCategorias } from "../PeticionesHTTP/Categorias/useFetchGetAllCategorias";
 
-const CarouselCategory = ({ handleCategorySelect, selectedCategories }) => {
+const Category = ({ handleCategorySelect, selectedCategories }) => {
     const { categoria } = useFetchGetAllCategorias("http://localhost:8080/categorias/listar");
 
     return (
@@ -22,4 +22,4 @@ const CarouselCategory = ({ handleCategorySelect, selectedCategories }) => {
     );
 };
 
-export default CarouselCategory;
+export default Category;
