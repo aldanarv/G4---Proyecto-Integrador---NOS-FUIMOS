@@ -72,6 +72,9 @@ const AddProduct = () => {
         }
     };
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const formik = useFormik({
         initialValues: {
             nombre: "",
@@ -88,7 +91,7 @@ const AddProduct = () => {
             nombre: Yup.string().min(4, "El nombre debe tener al menos 4 caracteres.").lowercase().trim().required("El nombre es requerido"),
             destino: Yup.string().min(4, "El destino debe tener al menos 4 caracteres.").lowercase().trim().required("El destino es requerido"),
             descripcion: Yup.string().min(4, "La descripcion debe tener al menos 4 caracteres.").lowercase().trim().required("La descripcion es requerida"),
-            salidaDate: Yup.date().required("La fecha de salida es requerida"),
+            salidaDate: Yup.date().min(today, "La fecha no puede ser menor al dia de hoy").required("La fecha de salida es requerida"),
             vueltaDate: Yup.date().min(Yup.ref('salidaDate'), 'La fecha de regreso no puede ser anterior a la fecha de salida').required("La fecha de regreso requerida"),
             precio: Yup.number().min(1).positive("El precio debe ser un número positivo").required("El precio es requerido"),
             categoria: Yup.string().lowercase().trim().required("La categoría es requerida"),
@@ -149,9 +152,9 @@ const AddProduct = () => {
                     <form
                         onSubmit={formik.handleSubmit}
                         id="crearProductoForm"
-                        className="flex flex-col gap-3 justify-center h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
+                        className="flex flex-col gap-3 justify-start h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
-                        <div className="pt-64">
+                        <div className="">
                             <h2 className="text-4xl font-bold text-white">Agregar producto</h2>
                             <p className="text-lg text-white font-medium mt-2">
                                 Complete el formulario para agregar su producto
