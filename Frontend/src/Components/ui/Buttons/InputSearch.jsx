@@ -43,12 +43,12 @@ export default function InputSearch({ options, onProductSelect }) {
 
     const handleSearch = () => {
         let filteredProduct = state.dataCategorias;
-    
+
         // Filtrar por selectedOption
         if (selectedOption) {
             filteredProduct = filteredProduct.filter(product => product.id === selectedOption.id);
         }
-    
+
         // Filtrar por rango de fechas
         if (fechasSeleccionadas && fechasSeleccionadas.startDate && fechasSeleccionadas.endDate) {
             const startDate = fechasSeleccionadas.startDate.getTime();
@@ -58,7 +58,7 @@ export default function InputSearch({ options, onProductSelect }) {
                 return productStartDate >= startDate && productStartDate <= endDate;
             });
         }
-    
+
         onProductSelect(filteredProduct);
         console.log(filteredProduct)
     };

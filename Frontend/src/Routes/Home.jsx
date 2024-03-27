@@ -51,7 +51,6 @@ const Home = () => {
     const totalResults = state.dataCategorias.length;
     const totalResultsAletorios = state.data.length;
 
-
     useEffect(() => {
         // Recuperar categorías seleccionadas del localStorage al recargar el componente
         const savedCategories = JSON.parse(localStorage.getItem('selectedCategories'));
@@ -133,7 +132,7 @@ const Home = () => {
                 <Category handleCategorySelect={handleCategorySelect} selectedCategories={selectedCategories} />
                 {/*resultado busqueda*/}
                 <article>
-                    {selectedProductInfo && (
+                    {selectedProductInfo.length > 0 && (
                         <div className='mb-10'>
                             <div className='pb-4 flex flex-col'>
                                 <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Resultados</h3>
@@ -206,6 +205,7 @@ const Home = () => {
                             </section>
                         </div>
                     ))}
+
                     <div className='pb-4 flex flex-col'>
                         <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Recomendaciones</h3>
                         <p className="text-sm font-extralight text-gray-700 sm:text-base">{totalResultsAletorios} resultados</p>
