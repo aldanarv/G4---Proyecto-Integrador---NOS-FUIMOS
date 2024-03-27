@@ -19,6 +19,7 @@ const Header = () => {
                             src="/assets/logo3.png"
                             alt=""
                         />
+                        <h1 className="hidden">Nos Fuimos</h1>
                     </Link>
                 </div>
 
@@ -29,7 +30,7 @@ const Header = () => {
 
                 {/* Menú de login, registro y Avatar */}
                 <div className={styles.header__auth}>
-                    {state.isLoged || state.loged ?(
+                    {state.isLoged || state.loged ? (
                         <Avatar />
                     ) : (
                         <>

@@ -5,7 +5,7 @@ const ProtectedRoutesBooking = () => {
     const { state } = useContextGlobal();
 
     return (
-        state.isLoged || state.loged ? <Outlet /> : <Navigate to="/"/>
+        state.isLoged || state.loged ? <Outlet /> : <Navigate to="/" />
     )
 }
 

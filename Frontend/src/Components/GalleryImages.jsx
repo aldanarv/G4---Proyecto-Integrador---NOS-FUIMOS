@@ -109,7 +109,7 @@ export default function GalleryImages() {
                             </div>
                         </div>
 
-                        <div className={styles.carouselItem__gallery }>
+                        <div className={styles.carouselItem__gallery}>
                             {data?.urlImagenes.map((imagenes, index) => (
                                 <div
                                     className="contents"

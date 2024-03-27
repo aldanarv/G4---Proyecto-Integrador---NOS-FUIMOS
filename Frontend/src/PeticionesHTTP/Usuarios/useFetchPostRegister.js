@@ -1,7 +1,10 @@
 import axios from "axios";
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 export function useFetchPostRegister(url) {
+    const navigate = useNavigate()
+
     const fetchDataUsers = async (user) => {
         try {
             const response = await axios.post(url, user);
@@ -13,6 +16,7 @@ export function useFetchPostRegister(url) {
                     color: "#000000",
                     confirmButtonColor: "#E47F07",
                 });
+                navigate('/confirmRegister');
             }
         } catch (error) {
             if (error.response.status === 409) {

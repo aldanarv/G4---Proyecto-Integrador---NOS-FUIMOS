@@ -9,7 +9,7 @@ export function useFetchGetAll(url) {
             .get(url)
             .then((res) => setData(res.data))
             .catch((err) => console.log(err));
-    }, [data]);
+    }, []);
 
     return { data };
 }

@@ -19,7 +19,8 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 6rem; /* 96px */
+    margin-top: 6rem;
+    /* 96px */
 }
 
 @media (min-width: 640px) {
@@ -45,7 +46,8 @@
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-    max-width: 24rem; /* 384px */
+    max-width: 24rem;
+    /* 384px */
 }
 
 .input_form {
@@ -124,7 +126,8 @@
 .needLogin_enlace {
     font-weight: var(--font-weight-light);
     color: #000000;
-    margin-left: 0.5rem; /* 8px */
+    margin-left: 0.5rem;
+    /* 8px */
     font-weight: var(--font-weight-medium);
     text-decoration: underline;
 }

@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @Builder
 @Document(collection = "usuario")
@@ -18,22 +20,25 @@ public class Usuario {
     private String apellido;
     private String password;
     private String email;
+    private List<String> favoriteList;
     private boolean privilegios = false;
 
-    public Usuario(String id, String nombre, String apellido, String password, String email, boolean privilegios) {
+    public Usuario(String id, String nombre, String apellido, String password, String email, List<String> favoriteList, boolean privilegios) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.password = password;
         this.email = email;
+        this.favoriteList = favoriteList;
         this.privilegios = privilegios;
     }
 
-    public Usuario(String nombre, String apellido, String password, String email, boolean privilegios) {
+    public Usuario(String nombre, String apellido, String password, String email, List<String> favoriteList, boolean privilegios) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.password = password;
         this.email = email;
+        this.favoriteList = favoriteList;
         this.privilegios = privilegios;
     }
 
@@ -87,7 +92,13 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
+    public List<String> getFavoriteList() {
+        return favoriteList;
+    }
 
+    public void setFavoriteList(List<String> favoriteList) {
+        this.favoriteList = favoriteList;
+    }
     public boolean havePrivilegios() {
         return privilegios;
     }

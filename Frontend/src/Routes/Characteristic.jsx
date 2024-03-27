@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useMediaQuery } from "react-responsive";
@@ -11,7 +11,7 @@ import styles from "../styles/listProduct.module.css";
 const Characteristic = () => {
     const { data } = useFetchGetAllCaracteristicas("http://localhost:8080/admin/caracteristica");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const eliminarCaracteristica = async (characteristicId, characteristicNombre) => {
         try {

@@ -15,7 +15,7 @@ const UpdateCharacteristic = () => {
     const { data } = useFetchGetID("http://localhost:8080/admin/caracteristica/" + id);
     const { fetchDataCaracteristica } = useFetchUpdateCaracteristicas("http://localhost:8080/admin/caracteristica/actualizar");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const convertFileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -71,9 +71,9 @@ const UpdateCharacteristic = () => {
 
     const formik = useFormik({
         initialValues: {
-            id: data?.id,
-            nombre: data?.nombre,
-            icono: data?.icono,
+            id: data?.id || "",
+            nombre: data?.nombre || "",
+            icono: data?.icono || [],
         },
         validationSchema: Yup.object({
             id: Yup.string().trim().required("Requerido"),
@@ -96,6 +96,7 @@ const UpdateCharacteristic = () => {
             fetchDataCaracteristica(characteristic);
             resetForm();
         },
+        validateOnChange: false
     });
 
     useEffect(() => {
@@ -115,10 +116,10 @@ const UpdateCharacteristic = () => {
                     <Administration />
                     <form
                         onSubmit={formik.handleSubmit}
-                        id="crearCaracteristicaForm"
-                        className="flex flex-col gap-3 justify-center h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
+                        id="updateCaracteristicaForm"
+                        className="flex flex-col gap-3 justify-start h-screen w-full bg-[#01A9D6] overflow-x-scroll py-12 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
-                        <div className="pt-40">
+                        <div className="pt-16">
                             <h2 className="text-4xl font-bold text-white">Editar Característica</h2>
                             <p className="text-lg text-white font-medium mt-2">
                                 Complete el formulario para actualizar su característica

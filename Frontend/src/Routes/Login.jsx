@@ -42,6 +42,7 @@ const Login = () => {
             fetchDataUsers(user);
             resetForm();
         },
+        validateOnChange: false
     });
     return (
         <article className={styles.container_login}>
@@ -61,6 +62,7 @@ const Login = () => {
                                 type="email"
                                 placeholder="Correo electrónico"
                                 required
+                                autoComplete="email"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
@@ -87,6 +89,7 @@ const Login = () => {
                                 id="password"
                                 placeholder="Contraseña"
                                 required
+                                autocomplete="current-password"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.password}

@@ -1,0 +1,30 @@
+.container_login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 0 24px;
+    background-color: #FFE9CE;
+}
+
+@media (min-width: 1024px) {
+    .container_login {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+}
+
+.login_title {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 6rem;
+    /* 96px */
+}
+
+@media (min-width: 640px) {
+    .login_title {
+        width: 100%;
+    }
+}

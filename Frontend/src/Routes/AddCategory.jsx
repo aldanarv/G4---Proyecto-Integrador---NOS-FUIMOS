@@ -11,7 +11,7 @@ const AddCategory = () => {
 
     const { fetchData } = useFetchPostCategorias("http://localhost:8080/categorias/guardar");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const convertFileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -72,12 +72,11 @@ const AddCategory = () => {
         initialValues: {
             titulo: "",
             descripcion: "",
-            imagen: "",
-            idProductos: [],
+            imagen: [],
         },
         validationSchema: Yup.object({
             titulo: Yup.string().lowercase().trim().required("El nombre es requerido"),
-            descripcion: Yup.string().lowercase().trim().required("El nombre es requerido"),
+            descripcion: Yup.string().lowercase().trim().required("La descripcion es requerida"),
             imagen: Yup.array()
                 .length(1, "Solo puedes agregar 1 icono")
                 .required("El icono es requerido"),
@@ -89,7 +88,6 @@ const AddCategory = () => {
                 titulo: data.titulo,
                 descripcion: data.descripcion,
                 imagen: data.imagen[0],
-                idProductos: [],
             };
 
             console.log("category:", category);
@@ -97,6 +95,7 @@ const AddCategory = () => {
             fetchData(category);
             resetForm();
         },
+        validateOnChange: false
     });
 
     return (
@@ -109,9 +108,9 @@ const AddCategory = () => {
                     <form
                         onSubmit={formik.handleSubmit}
                         id="crearCaracteristicaForm"
-                        className="flex flex-col gap-3 justify-center h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
+                        className="flex flex-col gap-3 justify-start h-screen w-full bg-[#01A9D6] overflow-x-scroll py-12 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
-                        <div className="pt-40">
+                        <div className="pt-16">
                             <h2 className="text-4xl font-bold text-white">Agregar Categoría</h2>
                             <p className="text-lg text-white font-medium mt-2">
                                 Complete el formulario para agregar una categoría

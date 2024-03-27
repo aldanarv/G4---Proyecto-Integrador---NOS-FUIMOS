@@ -46,6 +46,7 @@ const Register = () => {
             fetchDataUsers(user);
             resetForm();
         },
+        validateOnChange: false
     });
 
     return (

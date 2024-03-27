@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useReducer } from 'react'
-import { createContext, useContext, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 const ContextGlobal = createContext();
 
@@ -8,6 +8,8 @@ const reducer = (state, action) => {
     switch (action.type) {
         case 'DATA_PRODUCTS':
             return { ...state, data: action.payload };
+        case 'DATA_PRODUCTS_CATEGORIES':
+            return { ...state, dataCategorias: action.payload };
         case 'DATA_USER':
             return { ...state, user: action.payload };
         case 'LOGOUT':
@@ -27,17 +29,26 @@ const reducer = (state, action) => {
 
 const initialState = {
     data: [],
+    dataCategorias: [],
     user: [],
-    loged: JSON.parse(localStorage.getItem("loged")) || false,
     isLoged: JSON.parse(localStorage.getItem("isLoged")) || false,
+    loged: JSON.parse(localStorage.getItem("loged")) || false,
 }
 
 const ContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const url = "http://localhost:8080/admin/productos";
+
     useEffect(() => {
-        axios("http://localhost:8080/admin/productos")
+        axios(url)
             .then(res => dispatch({ type: 'DATA_PRODUCTS', payload: res.data }))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
+
+    useEffect(() => {
+        axios(url)
+            .then(res => dispatch({ type: 'DATA_PRODUCTS_CATEGORIES', payload: res.data }))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 

@@ -12,7 +12,7 @@ import styles from "../styles/listProduct.module.css";
 const ListProduct = () => {
     const { data } = useFetchGetAll("http://localhost:8080/admin/productos");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     const eliminarProducto = async (productId, productNombre) => {
         try {
@@ -89,6 +89,13 @@ const ListProduct = () => {
                                                         scope="col"
                                                         className="px-4 py-4 text-base font-medium text-left text-[#E37B00]"
                                                     >
+                                                        Descripción
+                                                    </th>
+
+                                                    <th
+                                                        scope="col"
+                                                        className="px-4 py-4 text-base font-medium text-left text-[#E37B00]"
+                                                    >
                                                         Categoría
                                                     </th>
 
@@ -149,10 +156,13 @@ const ListProduct = () => {
                                                         <td className="px-4 py-4 text-base font-light text-black">
                                                             {product.nombre}
                                                         </td>
-                                                        <td className="px-4 py-4 text-base font-light text-black">
+                                                        <td className="px-4 py-4 text-base font-light text-black truncate max-w-72">
                                                             {product.destino}
                                                         </td>
-                                                        <td className="px-4 py-4 text-base font-light text-black">
+                                                        <td className="px-4 py-4 text-base font-light text-black truncate max-w-72">
+                                                            {product.descripcion}
+                                                        </td>
+                                                        <td className="px-4 py-4 text-base font-light text-black text-center">
                                                             {product.categoria}
                                                         </td>
                                                         <td style={{ maxHeight: '150px', flexWrap: 'wrap' }} className="px-4 py-4 text-base font-light text-black flex flex-col items-center">
