@@ -2,39 +2,101 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;500;600;700&family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700&display=swap"
+          rel="stylesheet" />
   <title>Confirmación de registro</title>
 </head>
 
-<body>
-<section class="max-w-2xl px-6 py-8 mx-auto bg-white">
+<body style="font-family: 'Nunito Sans'">
+<section style="
+        background-color: white;
+        max-width: 42rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        margin-left: auto;
+        margin-right: auto;
+      ">
+  <!--
   <header>
     <a href="#">
-      <img class="w-auto h-7 sm:h-6" src="./logoNosFuimos.png" alt="logo_nosFuimos">
+      <img style="width: auto; height: 1.75rem" src="https://drive.google.com/file/d/1IHMe02HWJy_Ws2MdHm3tIpUakYHyGM-p/view?usp=drive_link" alt="logo_nosFuimos" />
     </a>
   </header>
+  -->
 
-  <main class="mt-20 flex flex-col items-center justify-center gap-6">
-    <img class="w-auto h-7 sm:h-[72px]" src="./circleCheck.png" alt="logo_check">
-    <h2 class="text-[#E37B00] font-medium text-3xl">¡Hola Ana María!,</h2>
+  <main style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          margin-top: 5rem;
+        ">
+    <!--
+    <img style="width: auto; height: 5rem" src="https://drive.google.com/file/d/1EGuiBvbJZZK-nKpRRRv3HUX5PJX5DPua/view?usp=drive_links" alt="logo_check" />
+    -->
+    <h2 style="
+            color: #e37b00;
+            font-weight: 500;
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+          ">
+      ¡Hola Ana María!,
+    </h2>
 
-    <div class="flex flex-col text-lg text-center">
-      <p class="text-base text-black ">
+    <div style="
+            display: flex;
+            flex-direction: column;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            text-align: center;
+          ">
+      <p style="
+              font-size: 1rem;
+              line-height: 1.5rem;
+              color: black;
+              margin: 0;
+            ">
         Te has registrado exitosamente en Nos Fuimos,
       </p>
-      <p class="text-base text-black ">con el correo <span class="font-semibold ">ana.maria@example.com</span>.</p>
+      <p style="
+              font-size: 1rem;
+              line-height: 1.5rem;
+              color: black;
+              margin: 0;
+            ">
+        con el correo
+        <span style="font-weight: 600; text-decoration: none">ana.maria@example.com</span>.
+      </p>
     </div>
 
-    <button
-            class="px-6 py-2 mt-4 text-sm font-medium tracking-wider text-black capitalize transition-colors duration-300 transform bg-[#E37B00] rounded hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
-      Iniciar sesión
+    <button style="
+            border: none;
+            border-radius: 0.25rem;
+            letter-spacing: 0.05em;
+            text-transform: capitalize;
+            background-color: #e37b00;
+            color: black;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+          ">
+      <a style="text-decoration: none; color: black" href="http://nosfuimosbuckets3.s3-website-us-east-1.amazonaws.com/login">Iniciar sesión</a>
     </button>
   </main>
 </section>
-
 </body>
 
 </html>

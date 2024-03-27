@@ -23,6 +23,7 @@ public class ProductoService {
     }
 
     public ResponseEntity<?> addProducto(Producto producto){
+
         Optional<Producto> existingProduct = productoRepository.findByNombre(producto.getNombre());
         if (existingProduct.isPresent())
             return ResponseEntity.status(HttpStatus.CONFLICT).body("El producto con nombre '" + producto.getNombre() + "' ya existe en la base de datos");
@@ -40,6 +41,10 @@ public class ProductoService {
 
     public Producto actualizarProducto(Producto producto){
         return productoRepository.save(producto);
+    }
+
+    public List<Producto> getProductosByCategoria(String categoria) {
+        return productoRepository.findByCategoria(categoria);
     }
 
     public void deleteProducto(String id){

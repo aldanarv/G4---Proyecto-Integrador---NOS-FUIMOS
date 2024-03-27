@@ -28,8 +28,16 @@ public class CategoriaService {
         return categoriaRepository.findAll();
     }
 
-    public Categoria addCategoria(Categoria categoria){
-        return categoriaRepository.save(categoria);
+    public ResponseEntity<?> addCategoria(Categoria categoria){
+
+        Optional<Categoria> existingCategoria = categoriaRepository.findByTitulo(categoria.getTitulo());
+        if (existingCategoria.isPresent())
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("La categoria con nombre '" + categoria.getTitulo() + "' ya existe en la base de datos");
+
+        else{
+            Categoria savedCategoria = categoriaRepository.save(categoria);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedCategoria);
+        }
     }
 
     public Categoria getCategoriaById(String id){
