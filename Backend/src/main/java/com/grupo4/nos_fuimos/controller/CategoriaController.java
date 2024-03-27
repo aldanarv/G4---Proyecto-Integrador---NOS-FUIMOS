@@ -28,12 +28,6 @@ public class CategoriaController {
     public ResponseEntity<?> guardarCategoria(@RequestBody Categoria categoria){
         return categoriaService.addCategoria(categoria);
     }
-    /*
-    @PutMapping("/actualizar")
-    public ResponseEntity actualizarCategoria(@RequestBody Categoria categoria){
-        return categoriaService.actualizarCategoria(categoria);
-    }
-    */
 
     @PutMapping("/actualizar")
     public ResponseEntity actualizarCategoria(@RequestBody Categoria categoria) {
@@ -46,7 +40,7 @@ public class CategoriaController {
         }
         return ResponseEntity.ok("Categoría actualizada y productos actualizados");
     }
-    
+
     @GetMapping(value = "/listar")
     public List<Categoria> listarCategorias(Model model){
         return categoriaService.getAllCategoria();
