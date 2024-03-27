@@ -119,7 +119,7 @@ const UpdateCharacteristic = () => {
                         id="updateCaracteristicaForm"
                         className="flex flex-col gap-3 justify-start h-screen w-full bg-[#01A9D6] overflow-x-scroll py-12 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
-                        <div className="pt-40">
+                        <div className="pt-16">
                             <h2 className="text-4xl font-bold text-white">Editar Característica</h2>
                             <p className="text-lg text-white font-medium mt-2">
                                 Complete el formulario para actualizar su característica

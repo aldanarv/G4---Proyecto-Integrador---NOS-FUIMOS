@@ -88,6 +88,7 @@ const UpdateProduct = () => {
             nombre: data?.nombre || "",
             destino: data?.destino || "",
             descripcion: data?.descripcion || "",
+            idCategoria: data?.idCategoria || "",
             categoria: data?.categoria || "",
             salidaDate: data?.salidaDate || "",
             vueltaDate: data?.vueltaDate || "",
@@ -132,6 +133,7 @@ const UpdateProduct = () => {
                 nombre: data.nombre,
                 destino: data.destino,
                 descripcion: data.descripcion,
+                idCategoria: data.idCategoria,
                 categoria: data.categoria,
                 salidaDate: data.salidaDate,
                 vueltaDate: data.vueltaDate,
@@ -154,6 +156,7 @@ const UpdateProduct = () => {
             formik.setFieldValue("nombre", data?.nombre);
             formik.setFieldValue("destino", data?.destino);
             formik.setFieldValue("descripcion", data?.descripcion);
+            formik.setFieldValue("idCategoria", data?.idCategoria || "");
             formik.setFieldValue("categoria", data?.categoria);
             formik.setFieldValue("salidaDate", data?.salidaDate);
             formik.setFieldValue("vueltaDate", data?.vueltaDate);
@@ -275,7 +278,7 @@ const UpdateProduct = () => {
                                         htmlFor="categoria"
                                         className="text-base font-medium text-[#E47F07]"
                                     >
-                                        Categoría
+                                        Categoria
                                     </label>
                                     <div className="mt-2">
                                         <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
@@ -283,7 +286,11 @@ const UpdateProduct = () => {
                                                 id="categoria"
                                                 name="categoria"
                                                 required
-                                                onChange={formik.handleChange}
+                                                onChange={(e) => {
+                                                    const selectedCategory = categoria.find(cat => cat.titulo === e.target.value);
+                                                    formik.setFieldValue('idCategoria', selectedCategory.id);
+                                                    formik.setFieldValue('categoria', selectedCategory.titulo);
+                                                }}
                                                 onBlur={formik.handleBlur}
                                                 value={formik.values.categoria}
                                                 className="flex-1 border-0 bg-transparent rounded-md focus:bg-[#F4CE9F] py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 outline-none text-base"
@@ -392,12 +399,11 @@ const UpdateProduct = () => {
 
                             <div className="flex flex-col items-center justify-between gap-6">
                                 <div className="w-full">
-                                    <label
-                                        htmlFor="listCaracteristicas"
+                                <p
                                         className="text-base font-medium text-[#E47F07]"
                                     >
                                         Características
-                                    </label>
+                                    </p>
 
                                     <div className="mt-2">
                                         <div className="flex flex-wrap gap-2">
@@ -405,7 +411,7 @@ const UpdateProduct = () => {
                                                 dataCaracteristica.map((caracteristica) => (
                                                     <div key={caracteristica.id} className="inline-flex items-center">
                                                         <input
-                                                            id="listCaracteristicas"
+                                                            id={"listCaracteristicas" + caracteristica.id}
                                                             type="checkbox"
                                                             name="listCaracteristicas"
                                                             value={caracteristica.nombre}

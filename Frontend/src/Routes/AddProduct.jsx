@@ -83,6 +83,7 @@ const AddProduct = () => {
             salidaDate: "",
             vueltaDate: "",
             precio: "",
+            idCategoria: "",
             categoria: "",
             urlImagenes: [],
             listCaracteristicas: []
@@ -120,6 +121,7 @@ const AddProduct = () => {
                 vueltaDate: info.vueltaDate,
                 precio: info.precio,
                 urlImagenes: info.urlImagenes,
+                idCategoria: info.idCategoria,
                 categoria: info.categoria,
                 listCaracteristicas: caracteristicas
             };
@@ -152,9 +154,9 @@ const AddProduct = () => {
                     <form
                         onSubmit={formik.handleSubmit}
                         id="crearProductoForm"
-                        className="flex flex-col gap-3 justify-start h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
+                        className="flex flex-col gap-3 justify-start h-screen w-full bg-[#01A9D6] overflow-x-scroll py-12 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
-                        <div className="">
+                        <div className="pt-20">
                             <h2 className="text-4xl font-bold text-white">Agregar producto</h2>
                             <p className="text-lg text-white font-medium mt-2">
                                 Complete el formulario para agregar su producto
@@ -257,7 +259,11 @@ const AddProduct = () => {
                                                 id="categoria"
                                                 name="categoria"
                                                 required
-                                                onChange={formik.handleChange}
+                                                onChange={(e) => {
+                                                    const selectedCategory = categoria.find(cat => cat.titulo === e.target.value);
+                                                    formik.setFieldValue('idCategoria', selectedCategory.id);
+                                                    formik.setFieldValue('categoria', selectedCategory.titulo);
+                                                }}
                                                 onBlur={formik.handleBlur}
                                                 value={formik.values.categoria}
                                                 className="flex-1 border-0 bg-transparent rounded-md focus:bg-[#F4CE9F] py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 outline-none text-base"
@@ -366,12 +372,11 @@ const AddProduct = () => {
 
                             <div className="flex flex-col items-center justify-between gap-6">
                                 <div className="w-full">
-                                    <label
-                                        htmlFor="listCaracteristicas"
+                                    <p
                                         className="text-base font-medium text-[#E47F07]"
                                     >
                                         Características
-                                    </label>
+                                    </p>
 
                                     <div className="mt-2">
                                         <div className="flex flex-wrap gap-2">
@@ -380,7 +385,7 @@ const AddProduct = () => {
                                                     <div key={caracteristica.id} className="inline-flex items-center">
                                                         <input
                                                             type="checkbox"
-                                                            id="listCaracteristicas"
+                                                            id={"listCaracteristicas" + caracteristica.id}
                                                             name="listCaracteristicas"
                                                             value={caracteristica.nombre}
                                                             checked={formik.values.listCaracteristicas.includes(caracteristica.nombre)}

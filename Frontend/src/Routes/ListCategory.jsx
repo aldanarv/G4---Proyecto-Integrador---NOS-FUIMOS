@@ -28,7 +28,7 @@ const ListCategory = () => {
             });
 
             if (result.isConfirmed) {
-                const url = `http://localhost:8080/categorias/borrar/${categoryId}/${categoryName}`;
+                const url = `http://localhost:8080/categorias/borrar/${categoryId}`;
                 await axios.delete(url);
                 Swal.fire({
                     title: "Eliminada!",

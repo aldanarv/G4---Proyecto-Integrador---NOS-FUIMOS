@@ -19,6 +19,8 @@ public class Producto {
     @NotNull
     private String descripcion;
     @NotNull
+    private String idCategoria;
+    @NotNull
     private String categoria;
     @NotNull
     private LocalDate salidaDate;
@@ -30,11 +32,12 @@ public class Producto {
     private List<Caracteristica> listCaracteristicas;
     private List<String> listResena;
 
-    public Producto(String id, String nombre, String destino, String descripcion, String categoria, LocalDate salidaDate, LocalDate vueltaDate, Double precio, List<String> urlImagenes, List<Caracteristica> listCaracteristicas, List<String> listResena) {
+    public Producto(String id, String nombre, String destino, String descripcion, String idCategoria, String categoria, LocalDate salidaDate, LocalDate vueltaDate, Double precio, List<String> urlImagenes, List<Caracteristica> listCaracteristicas, List<String> listResena) {
         this.id = id;
         this.nombre = nombre;
         this.destino = destino;
         this.descripcion = descripcion;
+        this.idCategoria = idCategoria;
         this.categoria = categoria;
         this.salidaDate = salidaDate;
         this.vueltaDate = vueltaDate;
@@ -108,6 +111,14 @@ public class Producto {
 
     public void setUrlImagenes(List<String> urlImagenes) {
         this.urlImagenes = urlImagenes;
+    }
+
+    public String getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(String idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     public String getCategoria() {

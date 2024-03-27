@@ -28,12 +28,25 @@ public class CategoriaController {
     public ResponseEntity<?> guardarCategoria(@RequestBody Categoria categoria){
         return categoriaService.addCategoria(categoria);
     }
-
+    /*
     @PutMapping("/actualizar")
     public ResponseEntity actualizarCategoria(@RequestBody Categoria categoria){
         return categoriaService.actualizarCategoria(categoria);
     }
+    */
 
+    @PutMapping("/actualizar")
+    public ResponseEntity actualizarCategoria(@RequestBody Categoria categoria) {
+        categoriaService.actualizarCategoria(categoria);
+
+        List<Producto> productosConCategoria = productoService.getProductosByCategoriaId(categoria.getId());
+        for (Producto producto : productosConCategoria) {
+            producto.setCategoria(categoria.getTitulo());
+            productoService.actualizarProducto(producto);
+        }
+        return ResponseEntity.ok("Categoría actualizada y productos actualizados");
+    }
+    
     @GetMapping(value = "/listar")
     public List<Categoria> listarCategorias(Model model){
         return categoriaService.getAllCategoria();
@@ -44,16 +57,16 @@ public class CategoriaController {
         return categoriaService.getCategoriaById(id);
     }
 
-    @DeleteMapping("/borrar/{id}/{name}")
-    public ResponseEntity borrarCategoria(@PathVariable String id, @PathVariable String name) {
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity borrarCategoria(@PathVariable String id) {
         // Elimina la categoría de todos los productos que la tienen asignada
-        List<Producto> productosConCategoria = productoService.getProductosByCategoria(name);
+        List<Producto> productosConCategoria = productoService.getProductosByCategoriaId(id);
         for (Producto producto : productosConCategoria) {
+            producto.setIdCategoria(null);
             producto.setCategoria(null);
             productoService.actualizarProducto(producto);
         }
         categoriaService.eliminarCategoriaById(id);
         return ResponseEntity.ok("Categoría eliminada y productos actualizados");
     }
-
 }
