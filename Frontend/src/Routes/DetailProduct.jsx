@@ -141,7 +141,7 @@ const DetailProduct = () => {
                                         </fieldset>
                                     </div>
 
-                                    <Link to={"/product/" + id + "/puntuacion"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
+                                    <Link to={"/product/" + id + "/detailReserva"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
                                         Reservar
                                     </Link>
                                 </form>

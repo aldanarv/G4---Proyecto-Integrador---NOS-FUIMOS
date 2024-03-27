@@ -21,11 +21,11 @@ import ProtectedRoutes from './Routes/ProtectedRoutes';
 import ProtectedRoutesBooking from './Routes/ProtectedRoutesBooking';
 import ListUser from './Routes/ListUser';
 import ListCategory from './Routes/ListCategory';
-import './App.css'
-import PoliticasProducto from './Routes/PoliticasProducto';
+import DetailReserva from './Routes/DetailReserva';
 import ConfirmRegister from './Routes/ConfirmRegister';
 import UpdateCategory from './Routes/UpdateCategory';
 import AddPuntuacion from './Routes/AddPuntuacion';
+import './App.css'
 
 function App() {
   return (
@@ -54,8 +54,9 @@ function App() {
         <Route element={<ProtectedRoutesBooking />}>
           <Route path='/detailUser' element={<DetailUser />} />
           <Route path='/favorites' element={<ListFavoritos />} />
-          <Route path='/product/:id/puntuacion' element={<Puntuacion />} />
+          <Route path='/product/:id/detailReserva' element={<DetailReserva />} />
           <Route path='/product/:id/addPuntuacion' element={<AddPuntuacion />} />
+          
         </Route>
       </Routes>
       <Footer />
