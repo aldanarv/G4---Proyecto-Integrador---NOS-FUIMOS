@@ -93,7 +93,7 @@ const DetailProduct = () => {
                                 <h1 className="text-xl font-bold text-black sm:text-2xl">{data?.destino}</h1>
                             </div>
 
-                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md">
+                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md h-min">
                                 <div className="flex flex-col sm:flex-row items-start sm:items-end sm:gap-2">
                                     <p className="text-xl text-black">${data?.precio} USD</p>
                                     <h3 className="text-sm font-light text-black">precio por persona</h3>
@@ -141,7 +141,7 @@ const DetailProduct = () => {
                                         </fieldset>
                                     </div>
 
-                                    <Link to={"/product/" + id + "/puntuacion"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
+                                    <Link to={"/product/" + id + "/detailReserva"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
                                         Reservar
                                     </Link>
                                 </form>
@@ -161,9 +161,9 @@ const DetailProduct = () => {
                                 <div className="mt-10">
                                     <h3 className="text-lg font-medium text-black">Características</h3>
                                     <div className="mt-4">
-                                        {data?.listCaracteristicas.map((caracteristica, index) => (
-                                            <ul key={index} role="list" className="list-none pl-4 text-md">
-                                                <li className="flex items-center gap-4 mt-2">
+                                        <ul className="list-none pl-4 text-md flex flex-col sm:flex-wrap sm:max-h-64">
+                                            {data?.listCaracteristicas.map((caracteristica, index) => (
+                                                <li key={index} className="flex items-center gap-4 mt-2">
                                                     <img
                                                         src={"data:image;base64," + caracteristica.icono}
                                                         alt=""
@@ -171,8 +171,8 @@ const DetailProduct = () => {
                                                     />
                                                     <p className="text-black">{caracteristica.nombre}</p>
                                                 </li>
-                                            </ul>
-                                        ))}
+                                            ))}
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

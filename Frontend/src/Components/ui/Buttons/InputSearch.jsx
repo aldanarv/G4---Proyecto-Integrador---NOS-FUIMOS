@@ -55,7 +55,8 @@ export default function InputSearch({ options, onProductSelect }) {
             const endDate = fechasSeleccionadas.endDate.getTime();
             filteredProduct = filteredProduct.filter(product => {
                 const productStartDate = new Date(product.salidaDate).getTime();
-                return productStartDate >= startDate && productStartDate <= endDate;
+                const productEndDate = new Date(product.vueltaDate).getTime();
+                return productStartDate >= startDate && productStartDate <= endDate || productEndDate >= endDate && productEndDate <= startDate;
             });
         }
 

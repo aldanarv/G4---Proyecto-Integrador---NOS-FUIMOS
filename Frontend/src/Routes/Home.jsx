@@ -132,10 +132,10 @@ const Home = () => {
                 <Category handleCategorySelect={handleCategorySelect} selectedCategories={selectedCategories} />
                 {/*resultado busqueda*/}
                 <article>
-                    {selectedProductInfo.length > 0 && (
+                    {selectedProductInfo && (
                         <div className='mb-10'>
                             <div className='pb-4 flex flex-col'>
-                                <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Resultados</h3>
+                                {selectedProductInfo.length > 0 ? <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Resultados</h3> : ""}
                             </div>
                             <section className={styles.main__sectionCard}>
                                 {selectedProductInfo?.map((product) => (
