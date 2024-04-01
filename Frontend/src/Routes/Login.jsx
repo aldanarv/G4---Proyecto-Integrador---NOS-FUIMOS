@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useFetchPostLogin } from "../PeticionesHTTP/Usuarios/useFetchPostLogin";
@@ -62,7 +63,6 @@ const Login = () => {
                                 type="email"
                                 placeholder="Correo electrónico"
                                 required
-                                autoComplete="email"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
@@ -89,7 +89,6 @@ const Login = () => {
                                 id="password"
                                 placeholder="Contraseña"
                                 required
-                                autocomplete="current-password"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.password}
@@ -109,6 +108,11 @@ const Login = () => {
                             Iniciar sesión
                         </button>
                     </div>
+
+                    <p className={styles.needLogin}>
+                        ¿Aún no estás registrado?
+                        <Link to="/register" className={styles.needLogin_enlace}>Registrarme</Link>
+                    </p>
                 </form>
             </div>
         </article>

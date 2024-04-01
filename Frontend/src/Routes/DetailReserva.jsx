@@ -4,7 +4,6 @@ import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser"
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import GalleryImages from "../Components/GalleryImages";
 import styles from "../styles/detailProduct.module.css";
-import stylesForm from "../styles/login.module.css";
 
 const DetailReserva = () => {
 

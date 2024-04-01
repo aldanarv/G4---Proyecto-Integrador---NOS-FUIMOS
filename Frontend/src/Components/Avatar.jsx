@@ -8,7 +8,7 @@ const Avatar = () => {
     const { state, dispatch } = useContextGlobal();
     const id = localStorage.getItem("id");
     const { user } = useFetchGetIdUser("http://localhost:8080/usuario/" + id);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     // Verificar si state.avatar y state.avatar.name existen antes de dividir el nombre
     const firstName = user?.nombre ? user.nombre.split(' ')[0] : '';
