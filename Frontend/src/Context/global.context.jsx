@@ -23,6 +23,8 @@ const reducer = (state, action) => {
         case 'ADMIN_LOGED':
             localStorage.setItem("loged", JSON.stringify(true));
             return { ...state, loged: true };
+        case 'LOGIN_MENSAJE':
+            return { ...state, loginMsj: true };
         default: return state
     }
 }
@@ -33,6 +35,7 @@ const initialState = {
     user: [],
     isLoged: JSON.parse(localStorage.getItem("isLoged")) || false,
     loged: JSON.parse(localStorage.getItem("loged")) || false,
+    loginMsj: false,
 }
 
 const ContextProvider = ({ children }) => {
