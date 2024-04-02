@@ -10,6 +10,9 @@ const DetailReserva = () => {
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
 
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
     const userId = localStorage.getItem("id");
     const { user } = useFetchGetIdUser("http://localhost:8080/usuario/" + userId);
 
@@ -30,7 +33,14 @@ const DetailReserva = () => {
     }, [user]);
 
 
-
+    useEffect(() => {
+        const startDatelocalStorage = JSON.parse(localStorage.getItem('startDate'));
+        const endDatelocalStorage = JSON.parse(localStorage.getItem('endDate'));
+        if (startDatelocalStorage && endDatelocalStorage) {
+            setStartDate(startDatelocalStorage);
+            setEndDate(endDatelocalStorage);
+        }
+    }, []);
 
     return (
         <article className={styles.article}>
@@ -177,6 +187,28 @@ const DetailReserva = () => {
                                             </div>
                                             <a href="#" className="ml-3 text-sm font-light text-black hover:underline">10 Reseñas</a>
                                         </div>
+                                    </div>
+
+                                    <div className="mt-10">
+                                        <fieldset className="mt-4 border border-gray-300 rounded-md">
+                                            <div className="grid grid-rows sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                                                <div className="p-3 sm:border-r sm:border-gray-300 lg:border-r-0 xl:border-r xl:border-gray-300">
+                                                    <p className="text-sm font-medium text-black">Fecha salida</p>
+                                                    <div className="flex items-center gap-1 sm:gap-4">
+                                                        <p className="text-sm font-light text-black">{startDate ? startDate : 'dd/mm/aaaa'}</p>
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
+                                                    </div>
+                                                </div>
+
+                                                <div className="p-3 border-t border-gray-300 sm:border-t-0 lg:border-t lg:border-gray-300 xl:border-t-0">
+                                                    <p className="text-sm font-medium text-black">Fecha regreso</p>
+                                                    <div className="flex items-center gap-1 sm:gap-4">
+                                                        <p className="text-sm font-light text-black">{endDate ? startDate : 'dd/mm/aaaa'}</p>
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
                                     </div>
 
                                     <button type="submit" className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">

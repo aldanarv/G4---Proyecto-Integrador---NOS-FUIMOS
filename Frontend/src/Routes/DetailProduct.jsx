@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import GalleryImages from "../Components/GalleryImages";
@@ -12,6 +12,8 @@ const DetailProduct = () => {
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [fechasSeleccionadas, setFechasSeleccionadas] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const toggleCalendar = () => {
         setIsCalendarOpen(!isCalendarOpen);
@@ -19,7 +21,21 @@ const DetailProduct = () => {
 
     const handleDateSelect = (dates) => {
         setFechasSeleccionadas(dates);
+        localStorage.setItem('startDate', JSON.stringify(dates.startDate.toLocaleDateString('es-ES')));
+        localStorage.setItem('endDate', JSON.stringify(dates.endDate.toLocaleDateString('es-ES')));
     };
+
+    useEffect(() => {
+        const startDatelocalStorage = JSON.parse(localStorage.getItem('startDate'));
+        const endDatelocalStorage = JSON.parse(localStorage.getItem('endDate'));
+        if (startDatelocalStorage && endDatelocalStorage) {
+            setStartDate(startDatelocalStorage);
+            setEndDate(endDatelocalStorage);
+        } else {
+            localStorage.setItem('startDate', JSON.stringify('dd/mm/aaaa'));
+            localStorage.setItem('endDate', JSON.stringify('dd/mm/aaaa'));
+        }
+    }, []);
 
     return (
         <article className={styles.article}>
@@ -144,6 +160,7 @@ const DetailProduct = () => {
                                     <Link to={"/product/" + id + "/detailReserva"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
                                         Reservar
                                     </Link>
+
                                 </form>
                             </div>
 

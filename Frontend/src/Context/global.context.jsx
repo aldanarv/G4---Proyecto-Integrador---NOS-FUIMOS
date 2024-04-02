@@ -16,6 +16,8 @@ const reducer = (state, action) => {
             localStorage.removeItem("isLoged");
             localStorage.removeItem("loged");
             localStorage.removeItem("id");
+            localStorage.removeItem("startDate");
+            localStorage.removeItem("endDate");
             return { ...state, user: null, isLoged: false, loged: false };
         case 'USER_LOGED':
             localStorage.setItem("isLoged", JSON.stringify(true));
