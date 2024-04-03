@@ -69,7 +69,7 @@ const DetailUser = () => {
                                     name="nombre"
                                     id="nombre"
                                     placeholder='Nombres'
-                                    required
+                                    readOnly
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.nombre}
@@ -90,7 +90,7 @@ const DetailUser = () => {
                                     name="apellido"
                                     id="apellido"
                                     placeholder='Apellidos'
-                                    required
+                                    readOnly
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.apellido}
@@ -113,7 +113,7 @@ const DetailUser = () => {
                                 name="email"
                                 id="email"
                                 placeholder="Correo electrónico"
-                                required
+                                readOnly
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
