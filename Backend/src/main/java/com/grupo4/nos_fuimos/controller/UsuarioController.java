@@ -6,6 +6,7 @@ import com.grupo4.nos_fuimos.model.Usuario;
 import com.grupo4.nos_fuimos.service.EmailService;
 import com.grupo4.nos_fuimos.service.ProductoService;
 import com.grupo4.nos_fuimos.service.UsuarioService;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +42,15 @@ public class UsuarioController {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario registrado");
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
             Usuario usuarioCreado = usuarioService.guardarUsuario(usuario);
-            emailService.enviarCorreoConfirmacion(usuarioCreado.getEmail());
+            String nombre = "";
+            String apellido = "";
+            if(usuario.getNombre()!=null){
+                nombre = usuario.getNombre();
+            }
+            if(usuario.getApellido()!=null){
+                apellido = usuario.getApellido();
+            }
+            emailService.enviarCorreoConfirmacion(usuario.getEmail(), (nombre + " " + apellido));
             return ResponseEntity.ok().body(usuarioCreado);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
@@ -49,11 +58,19 @@ public class UsuarioController {
     }
 
     @PostMapping("/confirmacion-email")
-    public ResponseEntity reenviarEmail(@RequestBody Usuario usuario){
+    public ResponseEntity reenviarEmail(@RequestBody Usuario usuario) throws MessagingException {
         Optional<Usuario> usuarioEncontrado = usuarioService.findByEmail(usuario.getEmail());
         if(usuarioEncontrado.isPresent()){
-            String email = usuarioEncontrado.get().getEmail();
-            emailService.enviarCorreoConfirmacion(email);
+            String email = usuario.getEmail();
+            String nombre = "";
+            String apellido = "";
+            if(usuario.getNombre()!=null){
+                nombre = usuario.getNombre();
+            }
+            if(usuario.getApellido()!=null){
+                apellido = usuario.getApellido();
+            }
+            emailService.enviarCorreoConfirmacion(email, (nombre + " " + apellido));
             return ResponseEntity.ok().body("Email reenviado correctamente");
         }
         else{
