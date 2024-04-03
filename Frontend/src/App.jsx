@@ -26,8 +26,12 @@ import ConfirmRegister from './Routes/ConfirmRegister';
 import UpdateCategory from './Routes/UpdateCategory';
 import AddPuntuacion from './Routes/AddPuntuacion';
 import DetailReserva from './Routes/DetailReserva';
+import ButtonWhatsApp from './Components/ButtonWhatsApp';
+import { useContextGlobal } from "./Context/global.context";
 
 function App() {
+  const { state } = useContextGlobal();
+
   return (
     <>
       <Header />
@@ -59,6 +63,7 @@ function App() {
           <Route path='/product/:id/addPuntuacion' element={<AddPuntuacion />} />
         </Route>
       </Routes>
+      {!state.loged && <ButtonWhatsApp />}
       <Footer />
     </>
   )

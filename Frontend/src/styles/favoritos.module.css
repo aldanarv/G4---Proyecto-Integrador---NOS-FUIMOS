@@ -1,18 +1,24 @@
-.divMain {
-    height: 100%;
-}
-
 /*Estilos de la seccion de main del home*/
 .main {
-    display: grid;
-    place-items: center;
     background-color: var(--background-color-home);
     padding: 8rem 24px 4rem 24px;
-    gap: 30px;
 }
 
 @media (min-width: 1024px) {
     .main {
+        padding-left: 64px;
+        padding-right: 64px;
+    }
+}
+
+.mainDos {
+    background-color: var(--background-color-home);
+    padding: 8rem 24px 4rem 24px;
+    height: 100vh;
+}
+
+@media (min-width: 1024px) {
+    .mainDos {
         padding-left: 64px;
         padding-right: 64px;
     }

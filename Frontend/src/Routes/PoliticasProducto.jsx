@@ -69,6 +69,14 @@ const PoliticasProducto = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="xl:w-1/3 md:w-1/2 p-4">
+                        <div className="p-6 rounded-lg shadow-md bg-white h-full">
+                            <h2 className="text-lg text-gray-900 font-medium title-font mb-2">Política de Privacidad de WhatsApp</h2>
+                            <div className="flex flex-col gap-2">
+                                <p className="leading-relaxed text-base">- En WhatsApp, nos comprometemos a proteger la privacidad y seguridad de nuestros usuarios. Recopilamos información limitada necesaria para brindar nuestros servicios y mejorar su experiencia. No compartimos información personal con terceros sin consentimiento, excepto cuando sea necesario por ley o para proporcionar nuestros servicios. Los usuarios tienen derechos sobre sus datos y pueden acceder, corregir o eliminar su información en cualquier momento. Nos reservamos el derecho de modificar esta política en cualquier momento y comunicaremos cambios significativos a los usuarios.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section></div>
