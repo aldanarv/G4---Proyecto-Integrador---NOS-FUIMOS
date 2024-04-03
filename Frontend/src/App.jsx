@@ -14,6 +14,7 @@ import UpdateProduct from './Routes/UpdateProduct';
 import NotFound from './Routes/NotFound';
 import DetailUser from './Routes/DetailUser';
 import ListFavoritos from './Routes/ListFavoritos';
+import ListHistorial from './Routes/ListHistorial';
 import Characteristic from './Routes/Characteristic';
 import UpdateCharacteristic from './Routes/UpdateCharacteristic';
 import AddCharacteristic from './Routes/AddCharacteristic';
@@ -54,6 +55,7 @@ function App() {
         <Route element={<ProtectedRoutesBooking />}>
           <Route path='/detailUser' element={<DetailUser />} />
           <Route path='/favorites' element={<ListFavoritos />} />
+          <Route path='/history' element={<ListHistorial />} />
           {/*<Route path='/product/:id/puntuacion' element={<Puntuacion />} />*/}
           <Route path='/product/:id/detailReserva' element={<DetailReserva />} />
           <Route path='/product/:id/addPuntuacion' element={<AddPuntuacion />} />
