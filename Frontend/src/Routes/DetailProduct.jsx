@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser"
 import { useFetchPutFavorite } from "../PeticionesHTTP/Usuarios/useFetchPutFavorite";
@@ -68,26 +69,26 @@ const DetailProduct = () => {
             localStorage.setItem('endDate', JSON.stringify('dd/mm/aaaa'));
         }
     }, []);
-    
+
     useEffect(() => {
         const fetchData = async () => {
-            if (productData?.listResena) {
+            if (data?.listResena) {
                 // Mapear sobre la lista de reseñas y realizar las solicitudes de forma paralela
-                const reviews = await Promise.all(productData.listResena.map(async (idReview) => {
+                const reviews = await Promise.all(data.listResena.map(async (idReview) => {
                     try {
-                        const response = await axios.get("http://localhost:8080/resenas/" + idReview);
+                        const response = await axios.get("http://localhost:8080/resena/" + idReview);
                         return response.data;
                     } catch (error) {
                         console.error("Error fetching review:", error);
                         return null;
                     }
                 }));
-                setReviewsData(reviews);
+                setTotalResenas(data?.listResena.length);
                 calcularPromedioPuntuacion(reviews);
             }
         };
         fetchData();
-    }, [productData]);
+    }, [data]);
 
     const calcularPromedioPuntuacion = (resenas) => {
         if (resenas && resenas.length > 0) {
@@ -96,11 +97,22 @@ const DetailProduct = () => {
                 totalPuntuacion += resena.puntuacion;
             });
             const promedio = totalPuntuacion / resenas.length;
-            setPromedioPuntuacion(promedio.toFixed(1));
-            setTotalResenas(resenas.length);
+            setPromedioPuntuacion(promedio);
         }
     };
 
+    // Función para renderizar las estrellas según la puntuación
+    const renderStars = (rating) => {
+        const stars = [];
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            } else {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            }
+        }
+        return stars;
+    };
 
     return (
         <article className={styles.article}>
@@ -181,27 +193,7 @@ const DetailProduct = () => {
                                 </div>
                                 <div className="mt-6">
                                     <div className="flex items-center">
-                                        {[...Array(5)].map((_, index) => (
-                                            <svg
-                                                key={index}
-                                                width="20"
-                                                height="20"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="#E47F07"
-                                                strokeWidth="1"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className={`icon icon-tabler icons-tabler-outline icon-tabler-star ${index + 1 <= promedioPuntuacion ? 'fill-current' : ''
-                                                    }`}
-                                            >
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
-                                                    fill={totalResenas > 0 ? "#E47F07" : "none"}
-                                                />
-                                            </svg>
-                                        ))}
+                                        {renderStars(promedioPuntuacion)}
                                         <a href="#" className="ml-3 text-sm font-light text-black hover:underline">
                                             {totalResenas} Reseñas
                                         </a>
@@ -263,7 +255,7 @@ const DetailProduct = () => {
                                             {data?.listCaracteristicas.map((caracteristica, index) => (
                                                 <li key={index} className="flex items-center gap-4 mt-2">
                                                     <img
-                                                        src={"data:image;base64," + caracteristica.icono}
+                                                        src={"data:image;base64," + caracteristica?.icono}
                                                         alt=""
                                                         className="w-6 h-6"
                                                     />
