@@ -150,6 +150,7 @@ const Home = () => {
                                         precio={product.precio}
                                         urlImagenes={product.urlImagenes}
                                         fav={product.fav}
+                                        listResena={product.listResena}
                                         onFavChange={handleFavChange}
                                     />
                                 ))}
@@ -198,6 +199,7 @@ const Home = () => {
                                             precio={product.precio}
                                             urlImagenes={product.urlImagenes}
                                             fav={product.fav}
+                                            listResena={product.listResena}
                                             onFavChange={handleFavChange}
                                         />
                                     ))}
@@ -222,6 +224,7 @@ const Home = () => {
                                 precio={product.precio}
                                 urlImagenes={product.urlImagenes}
                                 fav={product.fav}
+                                listResena={product.listResena}
                                 onFavChange={handleFavChange}
                             />
                         ))}

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import { useFetchPutFavorite } from "../PeticionesHTTP/Usuarios/useFetchPutFavorite";
 import styles from "../styles/card.module.css"
 
-const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio, urlImagenes, fav, onFavChange }) => {
+const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio, urlImagenes, fav, onFavChange, listResena }) => {
     const [esFavorito, setEsFavorito] = useState(fav);
     const { fetchPutFavorite } = useFetchPutFavorite(`http://localhost:8080/usuario/addFav/${localStorage.getItem("id")}/${id}`);
 
@@ -19,6 +20,53 @@ const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio
             .catch(error => {
                 console.error("Error al actualizar el producto:", error);
             });
+    };
+
+    const [totalResenas, setTotalResenas] = useState(0);
+    const [promedioPuntuacion, setPromedioPuntuacion] = useState(0);
+    console.log(listResena);
+    useEffect(() => {
+        const fetchData = async () => {
+            if (listResena) {
+                // Mapear sobre la lista de reseñas y realizar las solicitudes de forma paralela
+                const reviews = await Promise.all(listResena.map(async (idReview) => {
+                    try {
+                        const response = await axios.get("http://localhost:8080/resena/" + idReview);
+                        return response.data;
+                    } catch (error) {
+                        console.error("Error fetching review:", error);
+                        return null;
+                    }
+                }));
+                setTotalResenas(listResena.length);
+                calcularPromedioPuntuacion(reviews);
+            }
+        };
+        fetchData();
+    }, [listResena]);
+
+    const calcularPromedioPuntuacion = (resenas) => {
+        if (resenas && resenas.length > 0) {
+            let totalPuntuacion = 0;
+            resenas.forEach((resena) => {
+                totalPuntuacion += resena.puntuacion;
+            });
+            const promedio = totalPuntuacion / resenas.length;
+            setPromedioPuntuacion(promedio);
+        }
+    };
+
+    // Función para renderizar las estrellas según la puntuación
+    const renderStars = (rating) => {
+        const stars = [];
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            } else {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            }
+        }
+        return stars;
     };
 
     return (
@@ -42,13 +90,9 @@ const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio
                     <div className="mb-3">
                         <div className="flex items-center justify-end">
                             <div className="flex items-center">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                {renderStars(promedioPuntuacion)}
                             </div>
-                            <a href="#" className="ml-3 text-sm font-light text-black hover:underline">10 Reseñas</a>
+                            <a href="#" className="ml-3 text-sm font-light text-black hover:underline">{totalResenas} Reseñas</a>
                         </div>
                     </div>
                     <Link to={"/product/" + id}>
