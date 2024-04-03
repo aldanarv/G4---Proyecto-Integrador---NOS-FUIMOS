@@ -27,7 +27,13 @@ export function useFetchPostCaracteristicas(url) {
                     confirmButtonColor: "#E47F07",
                 });
             } else {
-                console.error('Error fetching data:', error);
+                Swal.fire({
+                    title: "Error al crear caracteristica!",
+                    text: error.response.data,
+                    icon: "error",
+                    color: "#000000",
+                    confirmButtonColor: "#E47F07",
+                });
             }
         }
     };

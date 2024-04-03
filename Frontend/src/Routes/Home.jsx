@@ -52,17 +52,17 @@ const Home = () => {
     const totalResultsAletorios = state.data.length;
 
     useEffect(() => {
+        // Guardar categorías seleccionadas en el localStorage antes de desmontar el componente
+        localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
+    }, [selectedCategories]);
+
+    useEffect(() => {
         // Recuperar categorías seleccionadas del localStorage al recargar el componente
         const savedCategories = JSON.parse(localStorage.getItem('selectedCategories'));
         if (savedCategories) {
             setSelectedCategories(savedCategories);
         }
     }, []);
-
-    useEffect(() => {
-        // Guardar categorías seleccionadas en el localStorage antes de desmontar el componente
-        localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
-    }, [selectedCategories]);
 
     //Paginacion
     const pageSize = 10;
@@ -186,7 +186,6 @@ const Home = () => {
                             </div>
                             <section className={styles.main__sectionCard}>
                                 {filteredProducts.filter(product => product.categoria === category.titulo)
-                                    .slice(pagInicio, pagFinal)
                                     .map((product) => (
                                         <Card
                                             key={product.id}

@@ -20,7 +20,15 @@ public class CaracteristicaController {
     }
 
     @PostMapping("/caracteristica/guardar")
-    public ResponseEntity<?> guardarCaracteristica(@RequestBody Caracteristica caracteristica){
+    public ResponseEntity<?> guardarCaracteristica(@RequestBody Caracteristica caracteristica) {
+
+        List<Caracteristica> listCaracteristica = caracteristicaService.getAllCaracteristica();
+        for (Caracteristica item : listCaracteristica) {
+            if (item.getIcono().equals(caracteristica.getIcono())) {
+                return ResponseEntity.badRequest().body("El icono ya existe. Elija uno diferente.");
+            }
+        }
+
         return caracteristicaService.addCaracteristica(caracteristica);
     }
 

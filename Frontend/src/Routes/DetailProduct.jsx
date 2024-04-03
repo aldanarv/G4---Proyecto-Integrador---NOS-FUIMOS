@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
+import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser"
+import { useFetchPutFavorite } from "../PeticionesHTTP/Usuarios/useFetchPutFavorite";
 import GalleryImages from "../Components/GalleryImages";
 import CompartirRedes from "../Components/CompartirRedes";
 import Calendario from "../Components/Calendario";
@@ -8,12 +10,42 @@ import Reviews from "../Components/Reviews";
 import styles from "../styles/detailProduct.module.css";
 
 const DetailProduct = () => {
+    const [productData, setProductData] = useState(null);
+    const [esFavorito, setEsFavorito] = useState(null);
+
+    const [totalResenas, setTotalResenas] = useState(0);
+    const [promedioPuntuacion, setPromedioPuntuacion] = useState(0);
+
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
+
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [fechasSeleccionadas, setFechasSeleccionadas] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+
+    const idUser = localStorage.getItem("id");
+    const { user } = idUser ? useFetchGetIdUser("http://localhost:8080/usuario/" + idUser) : { user: undefined };
+
+    useEffect(() => {
+        if (user && data && user.favoriteList != null) {
+            setEsFavorito(user.favoriteList.includes(data.id));
+            setProductData(data);
+        }
+    }, [user, data]);
+
+    const handlerFav = async (id, nombre) => {
+        const { fetchPutFavorite } = useFetchPutFavorite(`http://localhost:8080/usuario/addFav/${localStorage.getItem("id")}/${id}`);
+        fetchPutFavorite(id)
+            .then(res => {
+                if (res.status == 200) {
+                    setEsFavorito(res.data);
+                }
+            })
+            .catch(error => {
+                console.error("Error al actualizar el producto:", error);
+            });
+    };
 
     const toggleCalendar = () => {
         setIsCalendarOpen(!isCalendarOpen);
@@ -36,6 +68,39 @@ const DetailProduct = () => {
             localStorage.setItem('endDate', JSON.stringify('dd/mm/aaaa'));
         }
     }, []);
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            if (productData?.listResena) {
+                // Mapear sobre la lista de reseñas y realizar las solicitudes de forma paralela
+                const reviews = await Promise.all(productData.listResena.map(async (idReview) => {
+                    try {
+                        const response = await axios.get("http://localhost:8080/resenas/" + idReview);
+                        return response.data;
+                    } catch (error) {
+                        console.error("Error fetching review:", error);
+                        return null;
+                    }
+                }));
+                setReviewsData(reviews);
+                calcularPromedioPuntuacion(reviews);
+            }
+        };
+        fetchData();
+    }, [productData]);
+
+    const calcularPromedioPuntuacion = (resenas) => {
+        if (resenas && resenas.length > 0) {
+            let totalPuntuacion = 0;
+            resenas.forEach((resena) => {
+                totalPuntuacion += resena.puntuacion;
+            });
+            const promedio = totalPuntuacion / resenas.length;
+            setPromedioPuntuacion(promedio.toFixed(1));
+            setTotalResenas(resenas.length);
+        }
+    };
+
 
     return (
         <article className={styles.article}>
@@ -99,9 +164,9 @@ const DetailProduct = () => {
                     <div>
                         <div className="flex justify-end gap-4 mx-auto px-4 pt-10 sm:px-6 lg:max-w-7xl lg:px-8">
                             <CompartirRedes />
-                            <div className="flex items-center gap-2">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-heart"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                                <p className="text-sm hover:underline capitalize text-black font-normal">Guardar</p>
+                            <div className="flex items-center gap-2" onClick={() => handlerFav(productData.id, productData.name)}>
+                                <svg className={`icon icon-tabler icons-tabler-outline icon-tabler-heart ${productData && esFavorito ? "fill-[#fe0000]" : ""}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                                <p className="text-sm hover:underline capitalize text-black font-normal">{productData && esFavorito ? "Favorito" : "Guardar"}</p>
                             </div>
                         </div>
                         <div className="mx-auto px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:px-8 lg:pb-24 lg:pt-16">
@@ -116,14 +181,30 @@ const DetailProduct = () => {
                                 </div>
                                 <div className="mt-6">
                                     <div className="flex items-center">
-                                        <div className="flex items-center">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                        </div>
-                                        <a href="#" className="ml-3 text-sm font-light text-black hover:underline">10 Reseñas</a>
+                                        {[...Array(5)].map((_, index) => (
+                                            <svg
+                                                key={index}
+                                                width="20"
+                                                height="20"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="#E47F07"
+                                                strokeWidth="1"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className={`icon icon-tabler icons-tabler-outline icon-tabler-star ${index + 1 <= promedioPuntuacion ? 'fill-current' : ''
+                                                    }`}
+                                            >
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
+                                                    fill={totalResenas > 0 ? "#E47F07" : "none"}
+                                                />
+                                            </svg>
+                                        ))}
+                                        <a href="#" className="ml-3 text-sm font-light text-black hover:underline">
+                                            {totalResenas} Reseñas
+                                        </a>
                                     </div>
                                 </div>
 

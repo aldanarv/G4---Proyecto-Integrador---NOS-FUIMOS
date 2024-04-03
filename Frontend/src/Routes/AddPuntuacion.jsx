@@ -1,11 +1,69 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { format } from 'date-fns';
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
+import { useFetchPostReviews } from "../PeticionesHTTP/Reviews/useFetchPostReviews";
+import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
 import Card from "../Components/Card";
+import StarRating from "../Components/ui/Buttons/StarRating";
 
 const AddPuntuacion = () => {
     const { id } = useParams();
+    const userId = localStorage.getItem("id");
+    const { user } = useFetchGetIdUser("http://localhost:8080/usuario/" + userId);
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
+    const { fetchDataReview } = useFetchPostReviews("http://localhost:8080/resena/" + id);
+
+    const today = new Date();
+    const formattedDate = format(today, 'dd/MM/yyyy');
+
+    const formik = useFormik({
+        initialValues: {
+            usuarioId: user?.id || "",
+            usuarioNombre: user?.nombre || "",
+            usuarioApellido: user?.apellido || "",
+            puntuacion: 0,
+            fecha: formattedDate || "",
+            comentario: "",
+        },
+        validationSchema: Yup.object({
+            comentario: Yup.string().lowercase().trim(),
+        }),
+        onSubmit: (info, { resetForm }) => {
+            console.log("Submitted Data:", info);
+
+            let dataReview = {
+                usuarioId: info.usuarioId,
+                usuarioNombre: info.usuarioNombre,
+                usuarioApellido: info.usuarioApellido,
+                puntuacion: info.puntuacion,
+                fecha: info.fecha,
+                comentario: info.comentario,
+            };
+
+            console.log("review:", dataReview);
+
+            fetchDataReview(dataReview);
+            resetForm();
+        },
+        validateOnChange: false
+    });
+
+    useEffect(() => {
+        if (data) {
+            formik.setFieldValue("usuarioId", user?.id);
+            formik.setFieldValue("usuarioNombre", user?.nombre);
+            formik.setFieldValue("usuarioApellido", user?.apellido);
+            formik.setFieldValue("fecha", formattedDate);
+        }
+    }, [data]);
+
+    const handleRatingChange = (value) => {
+        formik.setFieldValue("puntuacion", value);
+    };
+
     return (
         <section className="body-font overflow-hidden bg-[#FFE9CE]">
             <div className="container px-5 py-24 lg:py-40 mx-auto">
@@ -53,18 +111,20 @@ const AddPuntuacion = () => {
                     </div>
                     <div className="lg:w-1/2 w-full max-w-[472px]">
                         <section className="max-w-4xl p-6 mx-auto bg-white rounded-lg">
-                            <form>
+                            <form
+                                onSubmit={formik.handleSubmit}
+                                id="addReview"
+                            >
                                 <p className="text-base sm:text-lg font-bold text-black mb-1">¡Nos encantaría conocer tu calificación!</p>
-                                <div className="flex items-center">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                </div>
+                                <StarRating onChange={handleRatingChange} />
                                 <div className='mt-4'>
-                                    <label className="text-base font-normal text-black" htmlFor="username">¿Deseás dejarnos una reseña? (Opcional)</label>
-                                    <textarea id="username" name="textarea" rows="10" cols="50" className="h-full w-full mt-1 border border-gray-300 bg-white rounded-md focus:ring-1 focus:ring-[#E47F07] focus:border-0 p-1 text-gray-900 outline-none text-base"></textarea>
+                                    <label className="text-base font-normal text-black" htmlFor="comentario">¿Deseás dejarnos una reseña? (Opcional)</label>
+                                    <textarea name="comentario" id="comentario" cols="50" rows="10" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.comentario} className="h-full w-full mt-1 border border-gray-300 bg-white rounded-md focus:ring-1 focus:ring-[#E47F07] focus:border-0 p-1 text-gray-900 outline-none text-base"></textarea>
+                                    {formik.touched.comentario && formik.errors.comentario ? (
+                                        <div className="text-red-400 font-light text-sm">
+                                            {formik.errors.comentario}
+                                        </div>
+                                    ) : null}
                                 </div>
 
                                 <button

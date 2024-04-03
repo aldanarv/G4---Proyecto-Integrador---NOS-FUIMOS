@@ -153,7 +153,7 @@ public class UsuarioController {
         Optional <Usuario> usuario = usuarioService.findById(id);
         if(usuario.isPresent()){
             Usuario usuarioEncontrado = usuario.get();
-            return (usuarioEncontrado.getNombre() + usuarioEncontrado.getApellido());
+            return (usuarioEncontrado.getNombre() + " " + usuarioEncontrado.getApellido());
         }
         return "Usuario no encontrado";
     }

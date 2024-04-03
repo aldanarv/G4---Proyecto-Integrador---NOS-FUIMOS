@@ -16,20 +16,16 @@ const ListFavoritos = () => {
     const dataProducts = state.data;
 
     useEffect(() => {
-        if (user == undefined) {
-            setListProducts(dataProducts);
-        }
-
         if (user && user.favoriteList != null) {
-            const updatedDataProducts = dataProducts.map(element => {
-                const updatedElement = { ...element };
-                const isFavorite = user.favoriteList.includes(element.id);
-                updatedElement['fav'] = isFavorite;
-                console.log("updatedElement" + updatedElement)
-                console.log("isFavorite" + isFavorite)
-                return updatedElement;
+            const filteredFav = dataProducts.filter(element => {
+                if (user.favoriteList.includes(element.id)) {
+                    element['fav'] = true;
+                    return true;
+                } else {
+                    return false;
+                }
             });
-            setListProducts(updatedDataProducts);
+            setListProducts(filteredFav);
         }
     }, [user, dataProducts]);
 
