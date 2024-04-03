@@ -194,9 +194,9 @@ const DetailProduct = () => {
                                 <div className="mt-6">
                                     <div className="flex items-center">
                                         {renderStars(promedioPuntuacion)}
-                                        <a href="#" className="ml-3 text-sm font-light text-black hover:underline">
+                                        <p className="ml-3 text-sm font-light text-black">
                                             {totalResenas} Reseñas
-                                        </a>
+                                        </p>
                                     </div>
                                 </div>
 

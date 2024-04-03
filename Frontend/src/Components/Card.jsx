@@ -92,7 +92,7 @@ const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio
                             <div className="flex items-center">
                                 {renderStars(promedioPuntuacion)}
                             </div>
-                            <a href="#" className="ml-3 text-sm font-light text-black hover:underline">{totalResenas} Reseñas</a>
+                            <p className="ml-3 text-sm font-light text-black">{totalResenas} Reseñas</p>
                         </div>
                     </div>
                     <Link to={"/product/" + id}>

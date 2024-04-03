@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
+import { useFetchPostReserve } from '../PeticionesHTTP/Reservas/useFetchPostReserve';
 import GalleryImages from "../Components/GalleryImages";
 import styles from "../styles/detailProduct.module.css";
 
@@ -9,38 +13,156 @@ const DetailReserva = () => {
 
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
-
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-
     const userId = localStorage.getItem("id");
+    const { fetchPostReserve } = useFetchPostReserve("http://localhost:8080/reserva/guardar");
     const { user } = useFetchGetIdUser("http://localhost:8080/usuario/" + userId);
 
-    const [formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
-        email: '',
+    const [totalResenas, setTotalResenas] = useState(0);
+    const [promedioPuntuacion, setPromedioPuntuacion] = useState(0);
+
+    /*
+        const formik = useFormik({
+        initialValues: {
+            usuarioId: user?.id || "",
+            nombre: user?.nombre || "",
+            apellido: user?.apellido || "",
+            email: user?.email || "",
+            idProducto: data?.id || "",
+            nombreProducto: data?.nombre || "",
+            destinoProducto: data?.destino || "",
+            descripcionProducto: data?.descripcion || "",
+            salidaDate: data?.salidaDate || "",
+            vueltaDate: data?.vueltaDate || "",
+            precioProducto: data?.precio || "",
+        },
+        validationSchema: Yup.object({
+            usuarioId: Yup.string().trim().required("Requerido"),
+            nombre: Yup.string().lowercase().trim().required("El nombre es requerido"),
+            apellido: Yup.string().lowercase().trim().required("El apellido es requerido"),
+            email: Yup.string().email("Debe ser un correo electrónico válido").lowercase().trim().required("El correo electrónico es requerido"),
+            idProducto: Yup.string().trim().required("Requerido"),
+            nombreProducto: Yup.string().lowercase().trim().required("El nombre es requerido"),
+            destinoProducto: Yup.string().lowercase().trim().required("El destino es requerido"),
+            descripcionProducto: Yup.string().lowercase().trim().required("La descripcion es requerida"),
+            salidaDate: Yup.date().required("La fecha de salida es requerida"),
+            vueltaDate: Yup.date().required("La fecha de regreso requerida"),
+            precioProducto: Yup.number().min(1).positive("El precio debe ser un número positivo").required("El precio es requerido"),
+        }),
+        onSubmit: (data) => {
+            console.log("Submitted Data:", data);
+
+            let reserve = {
+                usuarioId: user.id,
+                nombre: user.nombre,
+                apellido: data.apellido,
+                email: data.email,
+                idProducto: data.id,
+                nombreProducto: data.nombre,
+                destinoProducto: data.destino,
+                descripcionProducto: data.descripcion,
+                salidaDate: data.salidaDate,
+                vueltaDate: data.vueltaDate,
+                precioProducto: data.precioProducto,
+            };
+
+            console.log("reserva:", reserve);
+
+            fetchPutReserve(reserve);
+        },
+        validateOnChange: false
     });
 
     useEffect(() => {
         if (user) {
-            setFormData({
-                nombre: user.nombre,
-                apellido: user.apellido,
-                email: user.email,
-            });
+            formik.setFieldValue('usuarioId', user?.id);
+            formik.setFieldValue('nombre', user?.nombre);
+            formik.setFieldValue('apellido', user?.apellido);
+            formik.setFieldValue('email', user?.email);
+            formik.setFieldValue('idProducto', data?.id);
+            formik.setFieldValue('nombreProducto', data?.nombre);
+            formik.setFieldValue('destinoProducto', data?.destino);
+            formik.setFieldValue('descripcionProducto', data?.descripcion);
+            formik.setFieldValue('salidaDate', data?.salidaDate);
+            formik.setFieldValue('vueltaDate', data?.vueltaDate);
+            formik.setFieldValue('precioProducto', data?.precio);
+        }
+    }, [user]);
+    */
+
+    const formik = useFormik({
+        initialValues: {
+            usuarioId: user?.id || "",
+            productoId: data?.id || "",
+        },
+        validationSchema: Yup.object({
+            usuarioId: Yup.string().trim(),
+            productoId: Yup.string().trim(),
+        }),
+        onSubmit: (data) => {
+            console.log("Submitted Data:", data);
+
+            let reserve = {
+                usuarioId: user.id,
+                productoId: data.id,
+            };
+
+            console.log("reserva:", reserve);
+
+            fetchPostReserve(reserve);
+        },
+        validateOnChange: false
+    });
+
+    useEffect(() => {
+        if (user) {
+            formik.setFieldValue('usuarioId', user?.id);
+            formik.setFieldValue('productoId', data?.id);
         }
     }, [user]);
 
-
     useEffect(() => {
-        const startDatelocalStorage = JSON.parse(localStorage.getItem('startDate'));
-        const endDatelocalStorage = JSON.parse(localStorage.getItem('endDate'));
-        if (startDatelocalStorage && endDatelocalStorage) {
-            setStartDate(startDatelocalStorage);
-            setEndDate(endDatelocalStorage);
+        const fetchData = async () => {
+            if (data?.listResena) {
+                // Mapear sobre la lista de reseñas y realizar las solicitudes de forma paralela
+                const reviews = await Promise.all(data.listResena.map(async (idReview) => {
+                    try {
+                        const response = await axios.get("http://localhost:8080/resena/" + idReview);
+                        return response.data;
+                    } catch (error) {
+                        console.error("Error fetching review:", error);
+                        return null;
+                    }
+                }));
+                setTotalResenas(data?.listResena.length);
+                calcularPromedioPuntuacion(reviews);
+            }
+        };
+        fetchData();
+    }, [data]);
+
+    const calcularPromedioPuntuacion = (resenas) => {
+        if (resenas && resenas.length > 0) {
+            let totalPuntuacion = 0;
+            resenas.forEach((resena) => {
+                totalPuntuacion += resena.puntuacion;
+            });
+            const promedio = totalPuntuacion / resenas.length;
+            setPromedioPuntuacion(promedio);
         }
-    }, []);
+    };
+
+    // Función para renderizar las estrellas según la puntuación
+    const renderStars = (rating) => {
+        const stars = [];
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            } else {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            }
+        }
+        return stars;
+    };
 
     return (
         <article className={styles.article}>
@@ -145,20 +267,41 @@ const DetailReserva = () => {
 
                                 {/*Datos del usuario */}
 
-                                <form className={`mt-5`}>
+                                <form onSubmit={formik.handleSubmit} className={`mt-5`}>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label htmlFor="nombre" className="text-sm font-semibold text-black">Nombre</label>
-                                            <input type="text" name="nombre" value={formData.nombre} readOnly className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]" />
+                                            <input
+                                                type="text"
+                                                name="nombre"
+                                                id="nombre"
+                                                readOnly
+                                                value={user?.nombre}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                            />
                                         </div>
                                         <div>
                                             <label htmlFor="apellido" className="text-sm font-semibold text-black">Apellido</label>
-                                            <input type="text" name="apellido" value={formData.apellido} readOnly className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]" />
+                                            <input
+                                                type="text"
+                                                name="apellido"
+                                                id="apellido"
+                                                readOnly
+                                                value={user?.apellido}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                            />
                                         </div>
                                     </div>
                                     <div className="mt-4">
                                         <label htmlFor="email" className="text-sm font-semibold text-black">Email</label>
-                                        <input type="email" name="email" value={formData.email} readOnly className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]" />
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            id="email"
+                                            readOnly
+                                            value={user?.email}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                        />
                                     </div>
                                 </form>
 
@@ -179,13 +322,9 @@ const DetailReserva = () => {
                                     <div className="mt-6">
                                         <div className="flex items-center">
                                             <div className="flex items-center">
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                {renderStars(promedioPuntuacion)}
                                             </div>
-                                            <a href="#" className="ml-3 text-sm font-light text-black hover:underline">10 Reseñas</a>
+                                            <p className="ml-3 text-sm font-light text-black">{totalResenas} Reseñas</p>
                                         </div>
                                     </div>
 
@@ -194,18 +333,12 @@ const DetailReserva = () => {
                                             <div className="grid grid-rows sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                                                 <div className="p-3 sm:border-r sm:border-gray-300 lg:border-r-0 xl:border-r xl:border-gray-300">
                                                     <p className="text-sm font-medium text-black">Fecha salida</p>
-                                                    <div className="flex items-center gap-1 sm:gap-4">
-                                                        <p className="text-sm font-light text-black">{startDate ? startDate : 'dd/mm/aaaa'}</p>
-                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
-                                                    </div>
+                                                    <p className="text-sm font-light text-black">{data?.salidaDate}</p>
                                                 </div>
 
                                                 <div className="p-3 border-t border-gray-300 sm:border-t-0 lg:border-t lg:border-gray-300 xl:border-t-0">
                                                     <p className="text-sm font-medium text-black">Fecha regreso</p>
-                                                    <div className="flex items-center gap-1 sm:gap-4">
-                                                        <p className="text-sm font-light text-black">{endDate ? startDate : 'dd/mm/aaaa'}</p>
-                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
-                                                    </div>
+                                                    <p className="text-sm font-light text-black">{data?.vueltaDate}</p>
                                                 </div>
                                             </div>
                                         </fieldset>
