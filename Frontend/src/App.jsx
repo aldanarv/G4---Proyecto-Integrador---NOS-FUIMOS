@@ -25,7 +25,6 @@ import DetailReserva from './Routes/DetailReserva';
 import ConfirmRegister from './Routes/ConfirmRegister';
 import UpdateCategory from './Routes/UpdateCategory';
 import AddPuntuacion from './Routes/AddPuntuacion';
-import DetailReserva from './Routes/DetailReserva';
 import ListHistorial from './Routes/ListHistorial';
 import ButtonWhatsApp from './Components/ButtonWhatsApp';
 import { useContextGlobal } from "./Context/global.context";
