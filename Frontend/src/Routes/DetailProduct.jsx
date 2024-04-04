@@ -22,8 +22,6 @@ const DetailProduct = () => {
 
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [fechasSeleccionadas, setFechasSeleccionadas] = useState({ startDate: data?.salidaDate, endDate: data?.vueltaDate });
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
 
     const idUser = localStorage.getItem("id");
     const { user } = idUser ? useFetchGetIdUser("http://localhost:8080/usuario/" + idUser) : { user: undefined };

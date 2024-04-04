@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "../styles/Calendar.css";
 import es from "date-fns/locale/es";
+import AlertCalendario from "./ui/Buttons/AlertCalendario";
 
 function Calendario({ fechasSeleccionadas }) {
   const [monthsToShow, setMonthsToShow] = useState(
     window.innerWidth <= 768 ? 1 : 2
   );
+  const [showAlert, setShowAlert] = useState(false);
 
   const startDateString = fechasSeleccionadas.startDate;
   const parts = startDateString.split('-');
@@ -23,6 +25,23 @@ function Calendario({ fechasSeleccionadas }) {
   const monthDos = parseInt(partsDos[1]) - 1;
   const dayDos = parseInt(partsDos[2]);
   const endDate = new Date(yearDos, monthDos, dayDos);
+
+  const handleDateChange = (ranges) => {
+    const selectedStartDate = ranges.selection.startDate;
+    const selectedEndDate = ranges.selection.endDate;
+    if (
+      selectedStartDate < startDate ||
+      selectedEndDate > endDate ||
+      selectedStartDate > selectedEndDate
+    ) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
+    } else {
+      setShowAlert(false);
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,16 +62,16 @@ function Calendario({ fechasSeleccionadas }) {
   return (
     <div className="calendario-container">
       <div className="calendario-card">
+        {showAlert && <AlertCalendario />}
         <DateRange
           ranges={[{ startDate, endDate, key: 'selection' }]}
-          onChange={() => { }}
+          onChange={handleDateChange}
           rangeColors={["#01A9D6"]}
           showDateDisplay={false}
           direction="horizontal"
           months={monthsToShow}
           locale={es}
           minDate={new Date()}
-          disabled
         />
       </div>
     </div>
