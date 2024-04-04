@@ -52,17 +52,17 @@ const Home = () => {
     const totalResultsAletorios = state.data.length;
 
     useEffect(() => {
+        // Guardar categorías seleccionadas en el localStorage antes de desmontar el componente
+        localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
+    }, [selectedCategories]);
+
+    useEffect(() => {
         // Recuperar categorías seleccionadas del localStorage al recargar el componente
         const savedCategories = JSON.parse(localStorage.getItem('selectedCategories'));
         if (savedCategories) {
             setSelectedCategories(savedCategories);
         }
     }, []);
-
-    useEffect(() => {
-        // Guardar categorías seleccionadas en el localStorage antes de desmontar el componente
-        localStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
-    }, [selectedCategories]);
 
     //Paginacion
     const pageSize = 10;
@@ -132,10 +132,10 @@ const Home = () => {
                 <Category handleCategorySelect={handleCategorySelect} selectedCategories={selectedCategories} />
                 {/*resultado busqueda*/}
                 <article>
-                    {selectedProductInfo.length > 0 && (
+                    {selectedProductInfo && (
                         <div className='mb-10'>
                             <div className='pb-4 flex flex-col'>
-                                <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Resultados</h3>
+                                {selectedProductInfo.length > 0 ? <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Resultados</h3> : ""}
                             </div>
                             <section className={styles.main__sectionCard}>
                                 {selectedProductInfo?.map((product) => (
@@ -150,6 +150,7 @@ const Home = () => {
                                         precio={product.precio}
                                         urlImagenes={product.urlImagenes}
                                         fav={product.fav}
+                                        listResena={product.listResena}
                                         onFavChange={handleFavChange}
                                     />
                                 ))}
@@ -186,7 +187,6 @@ const Home = () => {
                             </div>
                             <section className={styles.main__sectionCard}>
                                 {filteredProducts.filter(product => product.categoria === category.titulo)
-                                    .slice(pagInicio, pagFinal)
                                     .map((product) => (
                                         <Card
                                             key={product.id}
@@ -199,6 +199,7 @@ const Home = () => {
                                             precio={product.precio}
                                             urlImagenes={product.urlImagenes}
                                             fav={product.fav}
+                                            listResena={product.listResena}
                                             onFavChange={handleFavChange}
                                         />
                                     ))}
@@ -223,6 +224,7 @@ const Home = () => {
                                 precio={product.precio}
                                 urlImagenes={product.urlImagenes}
                                 fav={product.fav}
+                                listResena={product.listResena}
                                 onFavChange={handleFavChange}
                             />
                         ))}

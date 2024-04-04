@@ -26,6 +26,12 @@ public class CategoriaController {
 
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarCategoria(@RequestBody Categoria categoria){
+        List<Categoria> listCategoria = categoriaService.getAllCategoria();
+        for (Categoria item : listCategoria) {
+            if (item.getImagen().equals(categoria.getImagen())) {
+                return ResponseEntity.badRequest().body("El icono ya existe. Elija uno diferente.");
+            }
+        }
         return categoriaService.addCategoria(categoria);
     }
 

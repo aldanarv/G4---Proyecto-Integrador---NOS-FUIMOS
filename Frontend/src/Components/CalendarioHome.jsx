@@ -29,8 +29,10 @@ function CalendarioHome({ onDateSelect }) {
 
   useEffect(() => {
     const reservationsFromServer = [
+      /*
       { start: "2024-04-12", end: "2024-04-18" },
       { start: "2024-04-27", end: "2024-04-30" },
+      */
     ];
 
     const disabledDates = [];

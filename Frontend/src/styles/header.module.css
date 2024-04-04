@@ -46,8 +46,15 @@
 }
 
 .img {
-    height: 28px;
+    height: 25px;
     width: auto;
+}
+
+@media (min-width: 540px) {
+    .img {
+        height: 28px;
+        width: auto;
+    }
 }
 
 /*Estilos menu de login y registro*/

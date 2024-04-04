@@ -1,5 +1,6 @@
 package com.grupo4.nos_fuimos.service;
 
+import com.grupo4.nos_fuimos.model.Reserva;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +20,46 @@ public class EmailService {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public void enviarCorreoConfirmacion(String destinatario) {
+    public void enviarCorreoConfirmacion(String email, String nombreUsuario) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-        try {
-            helper.setTo(destinatario);
-            helper.setSubject("Confirmación de registro");
-            String htmlContent = cargarTemplate();
-            helper.setText(htmlContent, true);
-        } catch (MessagingException e) {
-            // Manejar la excepción
-        }
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(email);
+        helper.setSubject("Asunto del correo electrónico");
+
+
+        String htmlBody = htmlConfirmacion(email, nombreUsuario);
+        helper.setText(htmlBody, true);
+
         emailSender.send(message);
     }
 
-    private String cargarTemplate() {
+    private String htmlConfirmacion(String email, String nombreUsuario) {
         Context context = new Context();
+        context.setVariable("nombreUsuario", nombreUsuario);
+        context.setVariable("email", email);
         return templateEngine.process("confirmacion", context);
     }
+
+
+    public void enviarCorreoReserva(String email, String destino, String nombreUsuario) throws MessagingException {
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(email);
+        helper.setSubject("Asunto del correo electrónico");
+
+        String htmlBody = htmlReserva(destino, nombreUsuario);
+        helper.setText(htmlBody, true);
+
+        emailSender.send(message);
+    }
+
+    private String htmlReserva(String destino, String nombreUsuario) {
+        Context context = new Context();
+        context.setVariable("nombreUsuario", nombreUsuario);
+        context.setVariable("destino", destino);
+        return templateEngine.process("reserva", context);
+    }
+
 }

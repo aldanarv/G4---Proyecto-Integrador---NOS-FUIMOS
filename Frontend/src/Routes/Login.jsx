@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useFetchPostLogin } from "../PeticionesHTTP/Usuarios/useFetchPostLogin";
+import { useContextGlobal } from "../Context/global.context";
 import styles from "../styles/login.module.css";
 
 const Login = () => {
     const { fetchDataUsers } = useFetchPostLogin("http://localhost:8080/usuario/iniciar-sesion");
+    const { state } = useContextGlobal();
 
     //Mostrar contraseña
     const [showPassword, setShowPassword] = useState(false);
@@ -48,6 +51,17 @@ const Login = () => {
         <article className={styles.container_login}>
             <div className={styles.login_title}>
                 <h2 className={styles.login_subtitle}>Iniciar sesión</h2>
+                {state.loginMsj &&
+                    <div className="mb-10">
+                        <p className={styles.needLogin}>
+                            Para poder realizar su reserva es necesario estar logueado.
+                        </p>
+                        <p className={styles.needLogin}>
+                            ¿Aún no estás registrado?
+                            <Link to="/register" className={styles.needLogin_enlace}>Registrarme</Link>
+                        </p>
+                    </div>
+                }
             </div>
             <div className={styles.containerForm}>
                 <form className={styles.input_form} onSubmit={formik.handleSubmit}>
@@ -62,7 +76,6 @@ const Login = () => {
                                 type="email"
                                 placeholder="Correo electrónico"
                                 required
-                                autoComplete="email"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
@@ -89,7 +102,6 @@ const Login = () => {
                                 id="password"
                                 placeholder="Contraseña"
                                 required
-                                autocomplete="current-password"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.password}
@@ -109,6 +121,13 @@ const Login = () => {
                             Iniciar sesión
                         </button>
                     </div>
+
+                    {!state.loginMsj &&
+                        <p className={styles.needLogin}>
+                            ¿Aún no estás registrado?
+                            <Link to="/register" className={styles.needLogin_enlace}>Registrarme</Link>
+                        </p>
+                    }
                 </form>
             </div>
         </article>

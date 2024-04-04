@@ -42,13 +42,8 @@
     <!--
     <img style="width: auto; height: 5rem" src="https://drive.google.com/file/d/1EGuiBvbJZZK-nKpRRRv3HUX5PJX5DPua/view?usp=drive_links" alt="logo_check" />
     -->
-    <h2 style="
-            color: #e37b00;
-            font-weight: 500;
-            font-size: 1.875rem;
-            line-height: 2.25rem;
-          ">
-      ¡Hola Ana María!,
+    <h2 style="color: #e37b00; font-weight: 500; font-size: 1.875rem; line-height: 2.25rem;">
+      ¡Hola <span th:text="${nombreUsuario}"></span>!,
     </h2>
 
     <div style="
@@ -73,7 +68,7 @@
               margin: 0;
             ">
         con el correo
-        <span style="font-weight: 600; text-decoration: none">ana.maria@example.com</span>.
+        <span style="font-weight: 600; text-decoration: none"><span th:text="${email}"></span>!</span>.
       </p>
     </div>
 

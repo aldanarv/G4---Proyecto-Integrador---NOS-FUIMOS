@@ -16,6 +16,8 @@ const reducer = (state, action) => {
             localStorage.removeItem("isLoged");
             localStorage.removeItem("loged");
             localStorage.removeItem("id");
+            localStorage.removeItem("startDate");
+            localStorage.removeItem("endDate");
             return { ...state, user: null, isLoged: false, loged: false };
         case 'USER_LOGED':
             localStorage.setItem("isLoged", JSON.stringify(true));
@@ -23,6 +25,8 @@ const reducer = (state, action) => {
         case 'ADMIN_LOGED':
             localStorage.setItem("loged", JSON.stringify(true));
             return { ...state, loged: true };
+        case 'LOGIN_MENSAJE':
+            return { ...state, loginMsj: true };
         default: return state
     }
 }
@@ -33,6 +37,7 @@ const initialState = {
     user: [],
     isLoged: JSON.parse(localStorage.getItem("isLoged")) || false,
     loged: JSON.parse(localStorage.getItem("loged")) || false,
+    loginMsj: false,
 }
 
 const ContextProvider = ({ children }) => {

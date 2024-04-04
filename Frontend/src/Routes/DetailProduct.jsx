@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
+import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser"
+import { useFetchPutFavorite } from "../PeticionesHTTP/Usuarios/useFetchPutFavorite";
 import GalleryImages from "../Components/GalleryImages";
 import CompartirRedes from "../Components/CompartirRedes";
 import Calendario from "../Components/Calendario";
@@ -8,10 +11,42 @@ import Reviews from "../Components/Reviews";
 import styles from "../styles/detailProduct.module.css";
 
 const DetailProduct = () => {
+    const [productData, setProductData] = useState(null);
+    const [esFavorito, setEsFavorito] = useState(null);
+
+    const [totalResenas, setTotalResenas] = useState(0);
+    const [promedioPuntuacion, setPromedioPuntuacion] = useState(0);
+
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
+
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [fechasSeleccionadas, setFechasSeleccionadas] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
+    const idUser = localStorage.getItem("id");
+    const { user } = idUser ? useFetchGetIdUser("http://localhost:8080/usuario/" + idUser) : { user: undefined };
+
+    useEffect(() => {
+        if (user && data && user.favoriteList != null) {
+            setEsFavorito(user.favoriteList.includes(data.id));
+            setProductData(data);
+        }
+    }, [user, data]);
+
+    const handlerFav = async (id, nombre) => {
+        const { fetchPutFavorite } = useFetchPutFavorite(`http://localhost:8080/usuario/addFav/${localStorage.getItem("id")}/${id}`);
+        fetchPutFavorite(id)
+            .then(res => {
+                if (res.status == 200) {
+                    setEsFavorito(res.data);
+                }
+            })
+            .catch(error => {
+                console.error("Error al actualizar el producto:", error);
+            });
+    };
 
     const toggleCalendar = () => {
         setIsCalendarOpen(!isCalendarOpen);
@@ -19,6 +54,64 @@ const DetailProduct = () => {
 
     const handleDateSelect = (dates) => {
         setFechasSeleccionadas(dates);
+        localStorage.setItem('startDate', JSON.stringify(dates.startDate.toLocaleDateString('es-ES')));
+        localStorage.setItem('endDate', JSON.stringify(dates.endDate.toLocaleDateString('es-ES')));
+    };
+
+    useEffect(() => {
+        const startDatelocalStorage = JSON.parse(localStorage.getItem('startDate'));
+        const endDatelocalStorage = JSON.parse(localStorage.getItem('endDate'));
+        if (startDatelocalStorage && endDatelocalStorage) {
+            setStartDate(startDatelocalStorage);
+            setEndDate(endDatelocalStorage);
+        } else {
+            localStorage.setItem('startDate', JSON.stringify('dd/mm/aaaa'));
+            localStorage.setItem('endDate', JSON.stringify('dd/mm/aaaa'));
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (data?.listResena) {
+                // Mapear sobre la lista de reseñas y realizar las solicitudes de forma paralela
+                const reviews = await Promise.all(data.listResena.map(async (idReview) => {
+                    try {
+                        const response = await axios.get("http://localhost:8080/resena/" + idReview);
+                        return response.data;
+                    } catch (error) {
+                        console.error("Error fetching review:", error);
+                        return null;
+                    }
+                }));
+                setTotalResenas(data?.listResena.length);
+                calcularPromedioPuntuacion(reviews);
+            }
+        };
+        fetchData();
+    }, [data]);
+
+    const calcularPromedioPuntuacion = (resenas) => {
+        if (resenas && resenas.length > 0) {
+            let totalPuntuacion = 0;
+            resenas.forEach((resena) => {
+                totalPuntuacion += resena.puntuacion;
+            });
+            const promedio = totalPuntuacion / resenas.length;
+            setPromedioPuntuacion(promedio);
+        }
+    };
+
+    // Función para renderizar las estrellas según la puntuación
+    const renderStars = (rating) => {
+        const stars = [];
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            } else {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            }
+        }
+        return stars;
     };
 
     return (
@@ -83,9 +176,9 @@ const DetailProduct = () => {
                     <div>
                         <div className="flex justify-end gap-4 mx-auto px-4 pt-10 sm:px-6 lg:max-w-7xl lg:px-8">
                             <CompartirRedes />
-                            <div className="flex items-center gap-2">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-heart"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                                <p className="text-sm hover:underline capitalize text-black font-normal">Guardar</p>
+                            <div className="flex items-center gap-2" onClick={() => handlerFav(productData.id, productData.name)}>
+                                <svg className={`icon icon-tabler icons-tabler-outline icon-tabler-heart ${productData && esFavorito ? "fill-[#fe0000]" : ""}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                                <p className="text-sm hover:underline capitalize text-black font-normal">{productData && esFavorito ? "Favorito" : "Guardar"}</p>
                             </div>
                         </div>
                         <div className="mx-auto px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:px-8 lg:pb-24 lg:pt-16">
@@ -93,21 +186,17 @@ const DetailProduct = () => {
                                 <h1 className="text-xl font-bold text-black sm:text-2xl">{data?.destino}</h1>
                             </div>
 
-                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md">
+                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md h-min">
                                 <div className="flex flex-col sm:flex-row items-start sm:items-end sm:gap-2">
                                     <p className="text-xl text-black">${data?.precio} USD</p>
                                     <h3 className="text-sm font-light text-black">precio por persona</h3>
                                 </div>
                                 <div className="mt-6">
                                     <div className="flex items-center">
-                                        <div className="flex items-center">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                        </div>
-                                        <a href="#" className="ml-3 text-sm font-light text-black hover:underline">10 Reseñas</a>
+                                        {renderStars(promedioPuntuacion)}
+                                        <p className="ml-3 text-sm font-light text-black">
+                                            {totalResenas} Reseñas
+                                        </p>
                                     </div>
                                 </div>
 
@@ -144,6 +233,7 @@ const DetailProduct = () => {
                                     <Link to={"/product/" + id + "/detailReserva"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
                                         Reservar
                                     </Link>
+
                                 </form>
                             </div>
 
@@ -161,18 +251,18 @@ const DetailProduct = () => {
                                 <div className="mt-10">
                                     <h3 className="text-lg font-medium text-black">Características</h3>
                                     <div className="mt-4">
-                                        {data?.listCaracteristicas.map((caracteristica, index) => (
-                                            <ul key={index} role="list" className="list-none pl-4 text-md">
-                                                <li className="flex items-center gap-4 mt-2">
+                                        <ul className="list-none pl-4 text-md flex flex-col sm:flex-wrap sm:max-h-64">
+                                            {data?.listCaracteristicas.map((caracteristica, index) => (
+                                                <li key={index} className="flex items-center gap-4 mt-2">
                                                     <img
-                                                        src={"data:image;base64," + caracteristica.icono}
+                                                        src={"data:image;base64," + caracteristica?.icono}
                                                         alt=""
                                                         className="w-6 h-6"
                                                     />
                                                     <p className="text-black">{caracteristica.nombre}</p>
                                                 </li>
-                                            </ul>
-                                        ))}
+                                            ))}
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
