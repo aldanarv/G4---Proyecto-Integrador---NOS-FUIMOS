@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import { Link, useParams } from 'react-router-dom';
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Alert from './ui/Buttons/Alert';
 
 
 const styleButton = {
@@ -21,6 +22,7 @@ export default function CompartirRedes() {
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
     const isSmallScreen = useMediaQuery('(max-width:768px)');
+    const [copied, setCopied] = React.useState(false);
 
     const style = {
         position: 'absolute',
@@ -35,6 +37,16 @@ export default function CompartirRedes() {
         p: isSmallScreen ? 2 : 4,
         bgcolor: 'background.paper',
 
+    };
+
+    const handleShareButtonClick = () => {
+        const productURL = `http://nosfuimosbuckets3.s3-website-us-east-1.amazonaws.com/admin/productos/${id}`;
+        navigator.clipboard.writeText(productURL)
+            .then(() => {
+                setCopied(true); // Cambiar el estado a true cuando se copie el enlace
+                setTimeout(() => setCopied(false), 7000); // Cambiar el estado a false después de 7 segundos
+            })
+            .catch((error) => console.error('Error al copiar el enlace:', error));
     };
 
     return (
@@ -81,14 +93,14 @@ export default function CompartirRedes() {
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-brand-facebook"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" /></svg>
                             </a>
 
-                            <a target="_blank" href={`https://www.facebook.com/share_channel/?link=http://nosfuimosbuckets3.s3-website-us-east-1.amazonaws.com/admin/productos/ + ${id}`}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-link"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
-                            </a>
+                            <div>
+                                <svg onClick={handleShareButtonClick} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-link hover:underline"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+                            </div>
                         </div>
                     </div>
-
                 </Box>
             </Modal>
+            {copied ? <Alert /> : null}
         </div>
     );
 }

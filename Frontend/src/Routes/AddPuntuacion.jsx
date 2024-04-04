@@ -29,7 +29,7 @@ const AddPuntuacion = () => {
             comentario: "",
         },
         validationSchema: Yup.object({
-            puntuacion: Yup.number().min(1).required("La puntuación es requerida"),
+            puntuacion: Yup.number().min(1,"Debes agregar minimo 1 estrella").required("La puntuación es requerida"),
             comentario: Yup.string().lowercase().trim(),
         }),
         onSubmit: (info, { resetForm }) => {
@@ -117,7 +117,14 @@ const AddPuntuacion = () => {
                                 id="addReview"
                             >
                                 <p className="text-base sm:text-lg font-bold text-black mb-1">¡Nos encantaría conocer tu calificación!</p>
-                                <StarRating onChange={handleRatingChange} />
+                                <>
+                                    <StarRating onChange={handleRatingChange} />
+                                    {formik.touched.puntuacion && formik.errors.puntuacion ? (
+                                        <div className="text-red-400 font-light text-sm">
+                                            {formik.errors.puntuacion}
+                                        </div>
+                                    ) : null}
+                                </>
                                 <div className='mt-4'>
                                     <label className="text-base font-normal text-black" htmlFor="comentario">¿Deseás dejarnos una reseña? (Opcional)</label>
                                     <textarea name="comentario" id="comentario" cols="50" rows="10" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.comentario} className="h-full w-full mt-1 border border-gray-300 bg-white rounded-md focus:ring-1 focus:ring-[#E47F07] focus:border-0 p-1 text-gray-900 outline-none text-base"></textarea>
