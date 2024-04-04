@@ -125,7 +125,7 @@ const Home = () => {
     return (
         <div className={styles.divMain}>
             <div className={styles.main__searchButton}>
-                <h2 className="text-3xl font-light text-white text-center lg:text-4xl">Busca ofertas en hoteles, casas y mucho más</h2>
+                <h2 className="text-3xl font-light text-white text-center lg:text-4xl">¡Encontrá tu destino ideal!</h2>
                 <InputSearch options={state.dataCategorias} onProductSelect={handleProductSelect} />
             </div>
             <main className={styles.main}>
