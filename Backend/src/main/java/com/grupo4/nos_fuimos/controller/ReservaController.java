@@ -10,6 +10,7 @@ import com.grupo4.nos_fuimos.service.ReservaService;
 import com.grupo4.nos_fuimos.service.UsuarioService;
 import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +68,7 @@ public class ReservaController {
     }
 
     @GetMapping("/buscar/usuario-id/{usuarioId}")
-    public ResponseEntity<Reserva> buscarPorUsuarioId(@PathVariable String usuarioId){
+    public List<Reserva> buscarPorUsuarioId(@PathVariable String usuarioId){
         return reservaService.findReservaByUsuarioId(usuarioId);
     }
 

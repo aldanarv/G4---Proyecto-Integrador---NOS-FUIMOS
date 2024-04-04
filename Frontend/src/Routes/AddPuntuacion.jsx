@@ -29,6 +29,7 @@ const AddPuntuacion = () => {
             comentario: "",
         },
         validationSchema: Yup.object({
+            puntuacion: Yup.number().min(1).required("La puntuación es requerida"),
             comentario: Yup.string().lowercase().trim(),
         }),
         onSubmit: (info, { resetForm }) => {
