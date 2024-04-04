@@ -48,7 +48,7 @@ const ListFavoritos = () => {
                 <main className={styles.main}>
                     <article>
                         <div className='pb-4'>
-                            <h3 className="text-xl font-normal text-black lg:text-2xl capitalize">Mis favoritos</h3>
+                            <h3 className="font-normal text-2xl sm:text-4xl text-[#DE8716] capitalize">Mis favoritos</h3>
                         </div>
                         <section className={styles.main__sectionCard}>
                             {listProducts && listProducts.map((product) => (
@@ -72,7 +72,7 @@ const ListFavoritos = () => {
                 <main className={styles.mainDos}>
                     <article className='h-full'>
                         <div className='pb-4'>
-                            <h3 className="font-normal text-black text-2xl capitalize">Mis favoritos</h3>
+                            <h3 className="font-normal text-2xl sm:text-4xl text-[#DE8716] capitalize">Mis favoritos</h3>
                         </div>
                         <div className='flex flex-col items-center justify-center h-full text-center'>
                             <h3 className="font-normal text-black text-2xl capitalize mb-4">No tienes favoritos aún</h3>
