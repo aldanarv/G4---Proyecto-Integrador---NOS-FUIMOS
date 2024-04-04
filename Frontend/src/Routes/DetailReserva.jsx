@@ -98,12 +98,12 @@ const DetailReserva = () => {
             usuarioId: Yup.string().trim(),
             productoId: Yup.string().trim(),
         }),
-        onSubmit: (data) => {
-            console.log("Submitted Data:", data);
+        onSubmit: (info) => {
+            console.log("Submitted Data:", info);
 
             let reserve = {
-                usuarioId: user.id,
-                productoId: data.id,
+                usuarioId: info.usuarioId,
+                productoId: info.productoId,
             };
 
             console.log("reserva:", reserve);
@@ -114,11 +114,11 @@ const DetailReserva = () => {
     });
 
     useEffect(() => {
-        if (user) {
+        if (data && user) {
             formik.setFieldValue('usuarioId', user?.id);
             formik.setFieldValue('productoId', data?.id);
         }
-    }, [user]);
+    }, [user, data]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -263,11 +263,11 @@ const DetailReserva = () => {
 
                             {/* card blanca*/}
 
-                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md h-min">
+                            <form onSubmit={formik.handleSubmit} className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md h-min">
 
                                 {/*Datos del usuario */}
 
-                                <form onSubmit={formik.handleSubmit} className={`mt-5`}>
+                                <div className={`mt-5`}>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label htmlFor="nombre" className="text-sm font-semibold text-black">Nombre</label>
@@ -303,7 +303,7 @@ const DetailReserva = () => {
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
                                         />
                                     </div>
-                                </form>
+                                </div>
 
                                 <div className="mt-7">
                                     <fieldset className="mt-4 border border-gray-300">
@@ -312,7 +312,7 @@ const DetailReserva = () => {
 
                                 {/*Datos del producto */}
 
-                                <form className="mt-6">
+                                <div className="mt-6">
 
                                     <div className="flex flex-col sm:flex-row items-start sm:items-end sm:gap-2">
                                         <p className="text-xl text-black">${data?.precio} USD</p>
@@ -348,10 +348,8 @@ const DetailReserva = () => {
                                         Confirmar reserva
                                     </button>
 
-                                </form>
-                            </div>
-
-
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
