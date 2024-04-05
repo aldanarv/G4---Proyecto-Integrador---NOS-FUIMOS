@@ -65,7 +65,7 @@ const Home = () => {
     }, []);
 
     //Paginacion
-    const pageSize = 10;
+    const pageSize = 4;
     const pagInicio = (page - 1) * pageSize;
     const pagFinal = pagInicio + pageSize;
     const totalPages = Math.ceil(state.data.length / pageSize);
