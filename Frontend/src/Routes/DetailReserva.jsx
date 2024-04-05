@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { format } from 'date-fns';
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import { useFetchPostReserve } from '../PeticionesHTTP/Reservas/useFetchPostReserve';
@@ -20,83 +21,28 @@ const DetailReserva = () => {
     const [totalResenas, setTotalResenas] = useState(0);
     const [promedioPuntuacion, setPromedioPuntuacion] = useState(0);
 
-    /*
-        const formik = useFormik({
-        initialValues: {
-            usuarioId: user?.id || "",
-            nombre: user?.nombre || "",
-            apellido: user?.apellido || "",
-            email: user?.email || "",
-            idProducto: data?.id || "",
-            nombreProducto: data?.nombre || "",
-            destinoProducto: data?.destino || "",
-            descripcionProducto: data?.descripcion || "",
-            salidaDate: data?.salidaDate || "",
-            vueltaDate: data?.vueltaDate || "",
-            precioProducto: data?.precio || "",
-        },
-        validationSchema: Yup.object({
-            usuarioId: Yup.string().trim().required("Requerido"),
-            nombre: Yup.string().lowercase().trim().required("El nombre es requerido"),
-            apellido: Yup.string().lowercase().trim().required("El apellido es requerido"),
-            email: Yup.string().email("Debe ser un correo electrónico válido").lowercase().trim().required("El correo electrónico es requerido"),
-            idProducto: Yup.string().trim().required("Requerido"),
-            nombreProducto: Yup.string().lowercase().trim().required("El nombre es requerido"),
-            destinoProducto: Yup.string().lowercase().trim().required("El destino es requerido"),
-            descripcionProducto: Yup.string().lowercase().trim().required("La descripcion es requerida"),
-            salidaDate: Yup.date().required("La fecha de salida es requerida"),
-            vueltaDate: Yup.date().required("La fecha de regreso requerida"),
-            precioProducto: Yup.number().min(1).positive("El precio debe ser un número positivo").required("El precio es requerido"),
-        }),
-        onSubmit: (data) => {
-            console.log("Submitted Data:", data);
-
-            let reserve = {
-                usuarioId: user.id,
-                nombre: user.nombre,
-                apellido: data.apellido,
-                email: data.email,
-                idProducto: data.id,
-                nombreProducto: data.nombre,
-                destinoProducto: data.destino,
-                descripcionProducto: data.descripcion,
-                salidaDate: data.salidaDate,
-                vueltaDate: data.vueltaDate,
-                precioProducto: data.precioProducto,
-            };
-
-            console.log("reserva:", reserve);
-
-            fetchPutReserve(reserve);
-        },
-        validateOnChange: false
-    });
-
-    useEffect(() => {
-        if (user) {
-            formik.setFieldValue('usuarioId', user?.id);
-            formik.setFieldValue('nombre', user?.nombre);
-            formik.setFieldValue('apellido', user?.apellido);
-            formik.setFieldValue('email', user?.email);
-            formik.setFieldValue('idProducto', data?.id);
-            formik.setFieldValue('nombreProducto', data?.nombre);
-            formik.setFieldValue('destinoProducto', data?.destino);
-            formik.setFieldValue('descripcionProducto', data?.descripcion);
-            formik.setFieldValue('salidaDate', data?.salidaDate);
-            formik.setFieldValue('vueltaDate', data?.vueltaDate);
-            formik.setFieldValue('precioProducto', data?.precio);
-        }
-    }, [user]);
-    */
+    const today = new Date();
+    const formattedDate = format(today, 'dd/MM/yyyy');
 
     const formik = useFormik({
         initialValues: {
             usuarioId: user?.id || "",
             productoId: data?.id || "",
+            fechaReserva: formattedDate || "",
+            nombreProducto: data?.nombre || "",
+            destinoProducto: data?.destino || "",
+            fechaIdaProducto: data?.salidaDate || "",
+            fechaRegresoProducto: data?.vueltaDate || "",
         },
         validationSchema: Yup.object({
             usuarioId: Yup.string().trim(),
             productoId: Yup.string().trim(),
+            /*
+            nombreProducto: Yup.string().lowercase().trim(),
+            destinoProducto: Yup.string().lowercase().trim(),
+            fechaIdaProducto: Yup.date(),
+            fechaRegresoProducto: Yup.date(),
+            */
         }),
         onSubmit: (info) => {
             console.log("Submitted Data:", info);
@@ -104,6 +50,11 @@ const DetailReserva = () => {
             let reserve = {
                 usuarioId: info.usuarioId,
                 productoId: info.productoId,
+                fechaReserva: info.fechaReserva,
+                nombreProducto: info.nombreProducto,
+                destinoProducto: info.destinoProducto,
+                fechaIdaProducto: info.fechaIdaProducto,
+                fechaRegresoProducto: info.fechaRegresoProducto,
             };
 
             console.log("reserva:", reserve);
@@ -117,6 +68,11 @@ const DetailReserva = () => {
         if (data && user) {
             formik.setFieldValue('usuarioId', user?.id);
             formik.setFieldValue('productoId', data?.id);
+            formik.setFieldValue('fechaReserva', formattedDate);
+            formik.setFieldValue('nombreProducto', data?.nombre);
+            formik.setFieldValue('destinoProducto', data?.destino);
+            formik.setFieldValue('fechaIdaProducto', data?.salidaDate);
+            formik.setFieldValue('fechaRegresoProducto', data?.vueltaDate);
         }
     }, [user, data]);
 
