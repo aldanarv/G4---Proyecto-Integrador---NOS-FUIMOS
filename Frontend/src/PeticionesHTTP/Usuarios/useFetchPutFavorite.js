@@ -16,7 +16,7 @@ export function useFetchPutFavorite(url) {
                 text: "Error: " + error,
                 icon: "error",
                 color: "#000000",
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
             });
             throw error;
         }

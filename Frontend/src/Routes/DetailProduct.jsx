@@ -21,9 +21,7 @@ const DetailProduct = () => {
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
 
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-    const [fechasSeleccionadas, setFechasSeleccionadas] = useState(null);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [fechasSeleccionadas, setFechasSeleccionadas] = useState({ startDate: data?.salidaDate, endDate: data?.vueltaDate });
 
     const idUser = localStorage.getItem("id");
     const { user } = idUser ? useFetchGetIdUser("http://localhost:8080/usuario/" + idUser) : { user: undefined };
@@ -54,21 +52,7 @@ const DetailProduct = () => {
 
     const handleDateSelect = (dates) => {
         setFechasSeleccionadas(dates);
-        localStorage.setItem('startDate', JSON.stringify(dates.startDate.toLocaleDateString('es-ES')));
-        localStorage.setItem('endDate', JSON.stringify(dates.endDate.toLocaleDateString('es-ES')));
     };
-
-    useEffect(() => {
-        const startDatelocalStorage = JSON.parse(localStorage.getItem('startDate'));
-        const endDatelocalStorage = JSON.parse(localStorage.getItem('endDate'));
-        if (startDatelocalStorage && endDatelocalStorage) {
-            setStartDate(startDatelocalStorage);
-            setEndDate(endDatelocalStorage);
-        } else {
-            localStorage.setItem('startDate', JSON.stringify('dd/mm/aaaa'));
-            localStorage.setItem('endDate', JSON.stringify('dd/mm/aaaa'));
-        }
-    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -208,10 +192,11 @@ const DetailProduct = () => {
                                                     <p className="text-sm font-medium text-black">Fecha salida - Fecha regreso</p>
                                                     <div className="flex items-center gap-1 sm:gap-4">
                                                         <p onClick={toggleCalendar} className="relative text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1">
-                                                            {fechasSeleccionadas ?
-                                                                `${fechasSeleccionadas.startDate.toLocaleDateString('es-ES')} - ${fechasSeleccionadas.endDate.toLocaleDateString('es-ES')}`
-                                                                : 'dd/mm/aaaa - dd/mm/aaaa'
-                                                            }                                                        </p>
+                                                            {data?.salidaDate && data?.vueltaDate ?
+                                                                `${data.salidaDate} - ${data.vueltaDate}` :
+                                                                'dd/mm/aaaa - dd/mm/aaaa'
+                                                            }
+                                                        </p>
                                                         <svg onClick={toggleCalendar} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
                                                     </div>
                                                     {isCalendarOpen && (
@@ -222,7 +207,7 @@ const DetailProduct = () => {
                                                                 right: "50%"
                                                             }}
                                                         >
-                                                            <Calendario onDateSelect={handleDateSelect} />
+                                                            <Calendario fechasSeleccionadas={{ startDate: data?.salidaDate, endDate: data?.vueltaDate }} />
                                                         </div>
                                                     )}
                                                 </div>
@@ -230,7 +215,7 @@ const DetailProduct = () => {
                                         </fieldset>
                                     </div>
 
-                                    <Link to={"/product/" + id + "/detailReserva"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
+                                    <Link to={"/product/" + id + "/detailReserva"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#005B8D] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#005B8D] hover:border hover:border-[#005B8D] focus:outline-none">
                                         Reservar
                                     </Link>
 

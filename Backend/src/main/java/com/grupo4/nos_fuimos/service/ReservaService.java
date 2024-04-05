@@ -52,14 +52,10 @@ public class ReservaService {
         }
     }
 
-    public ResponseEntity<Reserva> findReservaByUsuarioId(String usuarioId) {
-        Optional<Reserva> reserva = reservaRepository.findByUsuarioId(usuarioId);
-        if (reserva.isPresent()) {
-            return ResponseEntity.ok(reserva.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public List<Reserva> findReservaByUsuarioId(String usuarioId) {
+        return reservaRepository.findByUsuarioId(usuarioId);
     }
+
 
     public ResponseEntity<Reserva> findReservaByProductoId(String productoId) {
         Optional<Reserva> reserva = reservaRepository.findByProductoId(productoId);

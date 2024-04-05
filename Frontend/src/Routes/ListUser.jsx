@@ -73,7 +73,11 @@ const ListUser = () => {
                     title: "¡Cambios guardados!",
                     icon: "success",
                     color: "#000000",
+<<<<<<< HEAD
                     confirmButtonColor: "#E47F07",
+=======
+                    confirmButtonColor: "#ED9707",
+>>>>>>> Rosa_Pineros
                 }).then(() => {
                     // Recargar la página después de guardar los cambios
                     window.location.reload();
@@ -85,7 +89,7 @@ const ListUser = () => {
                     title: "Error al guardar cambios",
                     icon: "error",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             });
     };

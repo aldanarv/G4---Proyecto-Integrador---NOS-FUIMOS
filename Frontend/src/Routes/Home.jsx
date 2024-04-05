@@ -65,7 +65,7 @@ const Home = () => {
     }, []);
 
     //Paginacion
-    const pageSize = 10;
+    const pageSize = 4;
     const pagInicio = (page - 1) * pageSize;
     const pagFinal = pagInicio + pageSize;
     const totalPages = Math.ceil(state.data.length / pageSize);
@@ -125,7 +125,7 @@ const Home = () => {
     return (
         <div className={styles.divMain}>
             <div className={styles.main__searchButton}>
-                <h2 className="text-3xl font-light text-white text-center lg:text-4xl">¡Encontrá tu destino ideal!</h2>
+                <h2 className="text-3xl font-light text-[#303030] text-center lg:text-4xl">¡Encontrá tu destino ideal!</h2>
                 <InputSearch options={state.dataCategorias} onProductSelect={handleProductSelect} />
             </div>
             <main className={styles.main}>
@@ -160,7 +160,7 @@ const Home = () => {
 
                     {selectedCategories && selectedCategories.length > 0 ? (
                         <p className="text-sm font-extralight text-gray-700 sm:text-base text-right">
-                            {totalCounts} productos encontrados
+                            {totalCounts} destinos encontrados
                         </p>
                     ) : null}
                     {selectedCategories && selectedCategories.length > 0 ? (

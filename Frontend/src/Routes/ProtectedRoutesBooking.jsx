@@ -11,7 +11,7 @@ const ProtectedRoutesBooking = () => {
             Swal.fire({
                 title: "Lo sentimos, no puedes acceder a esta sección hasta que inicies sesión.",
                 icon: "warning",
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
                 confirmButtonText: "Ok",
             })
             dispatch({ type: "LOGIN_MENSAJE" });

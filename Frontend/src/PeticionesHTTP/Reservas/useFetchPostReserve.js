@@ -2,22 +2,15 @@ import axios from "axios";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-export function useFetchPostReserve(url){
+export function useFetchPostReserve(url) {
     const navigate = useNavigate()
 
     const fetchPostReserve = async (reserve) => {
         try {
             const response = await axios.post(url, reserve);
-            Swal.fire({
-                title: "¡Reserva realizada exitosamente!",
-                icon: "success",
-                color: "#000000",
-                confirmButtonColor: "#E47F07",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    navigate('/');
-                }
-            });
+            if (response.status == 200) {
+                navigate('/ConfirmReserva');
+            }
             return response;
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -26,7 +19,7 @@ export function useFetchPostReserve(url){
                 text: error.response.data,
                 icon: "error",
                 color: "#000000",
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
             });
             throw error;
         }

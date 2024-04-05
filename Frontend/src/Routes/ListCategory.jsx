@@ -12,6 +12,7 @@ const ListCategory = () => {
     const { categoria } = useFetchGetAllCategorias("http://localhost:8080/categorias/listar");
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
     const [categoryNames, setCategoryNames] = useState({});
 
     useEffect(() => {
@@ -32,7 +33,7 @@ const ListCategory = () => {
                 text: 'Al eliminar la categoría, se quedaran productos sin categoria asociada.',
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
                 cancelButtonColor: "#01A9D6",
                 color: "#000000",
                 confirmButtonText: "Confirmar",
@@ -47,7 +48,7 @@ const ListCategory = () => {
                     text: `La categoría ${categoryName} ha sido eliminada exitosamente.`,
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 }).then(() => {
                     // Recargar la página después de eliminar la categoría
                     window.location.reload();

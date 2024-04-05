@@ -3,6 +3,7 @@ import Autocomplete from "@mui/joy/Autocomplete";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useContextGlobal } from "../../../Context/global.context";
 import CalendarioHome from "../../CalendarioHome";
+import backgroundImage from "../../../assets/search.png";
 
 export default function InputSearch({ options, onProductSelect }) {
     const { state } = useContextGlobal();
@@ -24,22 +25,6 @@ export default function InputSearch({ options, onProductSelect }) {
     };
 
     const isSmallScreen = useMediaQuery('(max-width:639px)');
-
-    /*
-    const handleSearch = () => {
-        if (selectedOption) {
-            const selectedProduct = state.dataCategorias.find(product => product.id === selectedOption.id);
-
-            if (selectedProduct) {
-                onProductSelect(selectedProduct);
-            } else {
-                onProductSelect(null);
-            }
-        } else {
-            onProductSelect(null);
-        }
-    };
-    */
 
     const handleSearch = () => {
         let filteredProduct = state.dataCategorias;
@@ -75,6 +60,7 @@ export default function InputSearch({ options, onProductSelect }) {
                     flexDirection: isSmallScreen ? 'column' : 'row',
                 }}
             >
+
                 <Autocomplete
                     placeholder="Explora destinos"
                     options={options}
@@ -88,10 +74,17 @@ export default function InputSearch({ options, onProductSelect }) {
                         borderRadius: "0.5rem",
                         border: "none",
                         padding: "8px 10px",
+                        backgroundImage: `url(${backgroundImage})`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "contain",
+                        backgroundPosition: "right 10px center",
+                        backgroundSize: "30px",
                         "@media (min-width: 768px)": {
                             width: "60%",
                         },
                     }}
+                    freeSolo
+                    disableClearable
                     renderOption={(props, option) => (
                         <div
                             {...props}
@@ -121,6 +114,8 @@ export default function InputSearch({ options, onProductSelect }) {
                     }}
                 />
 
+
+
                 <p onClick={toggleCalendar} className="relative min-w-52 border-0 bg-white rounded-md py-2 px-2.5 text-[#7a7e82] focus:outline focus:outline-2 focus:outline-offset-0 font-light text-base">
                     {fechasSeleccionadas ?
                         `${formatDate(fechasSeleccionadas?.startDate)} - ${formatDate(fechasSeleccionadas?.endDate)}`
@@ -128,7 +123,7 @@ export default function InputSearch({ options, onProductSelect }) {
                     }
                 </p>
 
-                <button onClick={handleSearch} className="px-6 py-2 mx-auto sm:m-0 font-medium text-white bg-[#01A9D6] rounded-md focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+                <button onClick={handleSearch} className="px-6 py-2 mx-auto sm:m-0 font-medium text-white bg-[#005B8D] border border-black rounded-md focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                     Buscar
                 </button>
             </div>

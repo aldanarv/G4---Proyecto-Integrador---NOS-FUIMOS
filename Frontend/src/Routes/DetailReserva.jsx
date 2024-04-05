@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { format } from 'date-fns';
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import { useFetchPostReserve } from '../PeticionesHTTP/Reservas/useFetchPostReserve';
@@ -20,90 +21,40 @@ const DetailReserva = () => {
     const [totalResenas, setTotalResenas] = useState(0);
     const [promedioPuntuacion, setPromedioPuntuacion] = useState(0);
 
-    /*
-        const formik = useFormik({
-        initialValues: {
-            usuarioId: user?.id || "",
-            nombre: user?.nombre || "",
-            apellido: user?.apellido || "",
-            email: user?.email || "",
-            idProducto: data?.id || "",
-            nombreProducto: data?.nombre || "",
-            destinoProducto: data?.destino || "",
-            descripcionProducto: data?.descripcion || "",
-            salidaDate: data?.salidaDate || "",
-            vueltaDate: data?.vueltaDate || "",
-            precioProducto: data?.precio || "",
-        },
-        validationSchema: Yup.object({
-            usuarioId: Yup.string().trim().required("Requerido"),
-            nombre: Yup.string().lowercase().trim().required("El nombre es requerido"),
-            apellido: Yup.string().lowercase().trim().required("El apellido es requerido"),
-            email: Yup.string().email("Debe ser un correo electrónico válido").lowercase().trim().required("El correo electrónico es requerido"),
-            idProducto: Yup.string().trim().required("Requerido"),
-            nombreProducto: Yup.string().lowercase().trim().required("El nombre es requerido"),
-            destinoProducto: Yup.string().lowercase().trim().required("El destino es requerido"),
-            descripcionProducto: Yup.string().lowercase().trim().required("La descripcion es requerida"),
-            salidaDate: Yup.date().required("La fecha de salida es requerida"),
-            vueltaDate: Yup.date().required("La fecha de regreso requerida"),
-            precioProducto: Yup.number().min(1).positive("El precio debe ser un número positivo").required("El precio es requerido"),
-        }),
-        onSubmit: (data) => {
-            console.log("Submitted Data:", data);
-
-            let reserve = {
-                usuarioId: user.id,
-                nombre: user.nombre,
-                apellido: data.apellido,
-                email: data.email,
-                idProducto: data.id,
-                nombreProducto: data.nombre,
-                destinoProducto: data.destino,
-                descripcionProducto: data.descripcion,
-                salidaDate: data.salidaDate,
-                vueltaDate: data.vueltaDate,
-                precioProducto: data.precioProducto,
-            };
-
-            console.log("reserva:", reserve);
-
-            fetchPutReserve(reserve);
-        },
-        validateOnChange: false
-    });
-
-    useEffect(() => {
-        if (user) {
-            formik.setFieldValue('usuarioId', user?.id);
-            formik.setFieldValue('nombre', user?.nombre);
-            formik.setFieldValue('apellido', user?.apellido);
-            formik.setFieldValue('email', user?.email);
-            formik.setFieldValue('idProducto', data?.id);
-            formik.setFieldValue('nombreProducto', data?.nombre);
-            formik.setFieldValue('destinoProducto', data?.destino);
-            formik.setFieldValue('descripcionProducto', data?.descripcion);
-            formik.setFieldValue('salidaDate', data?.salidaDate);
-            formik.setFieldValue('vueltaDate', data?.vueltaDate);
-            formik.setFieldValue('precioProducto', data?.precio);
-        }
-    }, [user]);
-    */
+    const today = new Date();
+    const formattedDate = format(today, 'dd/MM/yyyy');
 
     const formik = useFormik({
         initialValues: {
             usuarioId: user?.id || "",
             productoId: data?.id || "",
+            fechaReserva: formattedDate || "",
+            nombreProducto: data?.nombre || "",
+            destinoProducto: data?.destino || "",
+            fechaIdaProducto: data?.salidaDate || "",
+            fechaRegresoProducto: data?.vueltaDate || "",
         },
         validationSchema: Yup.object({
             usuarioId: Yup.string().trim(),
             productoId: Yup.string().trim(),
+            /*
+            nombreProducto: Yup.string().lowercase().trim(),
+            destinoProducto: Yup.string().lowercase().trim(),
+            fechaIdaProducto: Yup.date(),
+            fechaRegresoProducto: Yup.date(),
+            */
         }),
-        onSubmit: (data) => {
-            console.log("Submitted Data:", data);
+        onSubmit: (info) => {
+            console.log("Submitted Data:", info);
 
             let reserve = {
-                usuarioId: user.id,
-                productoId: data.id,
+                usuarioId: info.usuarioId,
+                productoId: info.productoId,
+                fechaReserva: info.fechaReserva,
+                nombreProducto: info.nombreProducto,
+                destinoProducto: info.destinoProducto,
+                fechaIdaProducto: info.fechaIdaProducto,
+                fechaRegresoProducto: info.fechaRegresoProducto,
             };
 
             console.log("reserva:", reserve);
@@ -114,11 +65,16 @@ const DetailReserva = () => {
     });
 
     useEffect(() => {
-        if (user) {
+        if (data && user) {
             formik.setFieldValue('usuarioId', user?.id);
             formik.setFieldValue('productoId', data?.id);
+            formik.setFieldValue('fechaReserva', formattedDate);
+            formik.setFieldValue('nombreProducto', data?.nombre);
+            formik.setFieldValue('destinoProducto', data?.destino);
+            formik.setFieldValue('fechaIdaProducto', data?.salidaDate);
+            formik.setFieldValue('fechaRegresoProducto', data?.vueltaDate);
         }
-    }, [user]);
+    }, [user, data]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -196,7 +152,7 @@ const DetailReserva = () => {
                     <div>
                         <div className="mx-auto px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:px-8">
                             <div className="lg:col-span-2 lg:pr-4">
-                                <h1 className="text-xl font-semibold text-[#E47F07] sm:text-2xl">{data?.nombre}</h1>
+                                <h1 className="text-xl font-semibold text-[#C15205] sm:text-2xl">{data?.nombre}</h1>
                             </div>
 
                             {/* Galeria de imagenes*/}
@@ -263,11 +219,11 @@ const DetailReserva = () => {
 
                             {/* card blanca*/}
 
-                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md h-min">
+                            <form onSubmit={formik.handleSubmit} className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md h-min">
 
                                 {/*Datos del usuario */}
 
-                                <form onSubmit={formik.handleSubmit} className={`mt-5`}>
+                                <div className={`mt-5`}>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label htmlFor="nombre" className="text-sm font-semibold text-black">Nombre</label>
@@ -277,7 +233,7 @@ const DetailReserva = () => {
                                                 id="nombre"
                                                 readOnly
                                                 value={user?.nombre}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#ED9707]"
                                             />
                                         </div>
                                         <div>
@@ -288,7 +244,7 @@ const DetailReserva = () => {
                                                 id="apellido"
                                                 readOnly
                                                 value={user?.apellido}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#ED9707]"
                                             />
                                         </div>
                                     </div>
@@ -300,10 +256,10 @@ const DetailReserva = () => {
                                             id="email"
                                             readOnly
                                             value={user?.email}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#ED9707]"
                                         />
                                     </div>
-                                </form>
+                                </div>
 
                                 <div className="mt-7">
                                     <fieldset className="mt-4 border border-gray-300">
@@ -312,7 +268,7 @@ const DetailReserva = () => {
 
                                 {/*Datos del producto */}
 
-                                <form className="mt-6">
+                                <div className="mt-6">
 
                                     <div className="flex flex-col sm:flex-row items-start sm:items-end sm:gap-2">
                                         <p className="text-xl text-black">${data?.precio} USD</p>
@@ -344,14 +300,12 @@ const DetailReserva = () => {
                                         </fieldset>
                                     </div>
 
-                                    <button type="submit" className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
+                                    <button type="submit" className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#005B8D] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#005B8D] hover:border hover:border-[#005B8D] focus:outline-none">
                                         Confirmar reserva
                                     </button>
 
-                                </form>
-                            </div>
-
-
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

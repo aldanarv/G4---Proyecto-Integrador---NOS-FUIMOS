@@ -3,11 +3,18 @@ import { Link, useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import AvatarReview from './AvatarReview';
 import axios from "axios";
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const Reviews = () => {
+    const navigate = useNavigate()
+
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
     const [reviewsData, setReviewsData] = useState([]);
+
+    const idUser = localStorage.getItem("id");
+    const [hasFinishedReservation, setHasFinishedReservation] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,12 +48,34 @@ const Reviews = () => {
         return stars;
     };
 
+    const checkReservation = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/reserva/buscar/usuario-id/${idUser}`);
+            const reservations = response.data;
+            const hasFinished = reservations.some(reservation => reservation.productoId === id && reservation.usuarioId === idUser);
+            setHasFinishedReservation(hasFinished);
+            if (!hasFinished) {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Para dejar una reseña, es necesario haber reservado este producto previamente.",
+                    icon: "error",
+                    color: "#000000",
+                    confirmButtonColor: "#ED9707",
+                });
+            } else {
+                navigate(`/product/${id}/addPuntuacion`);
+            }
+        } catch (error) {
+            console.error("Error fetching reservations:", error);
+        }
+    };
+
     return (
         <section className="text-gray-600 body-font">
             <div className="">
                 <div className='flex flex-col md:flex-row mb-6 mt-10 justify-between'>
                     <h1 className="text-2xl sm:text-3xl font-medium title-font text-black text-center mb-3 md:mb-0">Calificaciones y reseñas</h1>
-                    <Link to={"/product/" + id + "/addPuntuacion"}>
+                    <button onClick={checkReservation}>
                         <div className="h-full bg-gray-100 py-3 px-6 rounded-xl shadow-xl">
                             <div className='flex sm:justify-between gap-0 md:gap-6'>
                                 <div className="inline-flex items-center gap-4">
@@ -71,7 +100,7 @@ const Reviews = () => {
                                 </div>
                             </div>
                         </div>
-                    </Link>
+                    </button>
                 </div>
                 {reviewsData?.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
@@ -85,7 +114,7 @@ const Reviews = () => {
                                     <div className='flex flex-col-reverse sm:flex-row justify-between'>
                                         <div className="flex items-start flex-col ">
                                             <div className='flex items-center'>
-                                                <div className="flex items-center justify-center w-12 h-12  bg-[#01A9D6] rounded-full shrink-0">
+                                                <div className="flex items-center justify-center w-12 h-12  bg-[#005B8D] rounded-full shrink-0">
                                                     <span className="font-light text-lg text-white ">{review?.usuarioNombre ? review.usuarioNombre.split(' ')[0].charAt(0) : ''}{review?.usuarioApellido ? review.usuarioApellido.split(' ')[0].charAt(0) : ''}</span>
                                                 </div>
                                                 <span className="flex-grow flex flex-col pl-4">

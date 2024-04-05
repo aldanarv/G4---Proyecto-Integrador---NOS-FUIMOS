@@ -26,6 +26,7 @@ import ConfirmRegister from './Routes/ConfirmRegister';
 import UpdateCategory from './Routes/UpdateCategory';
 import AddPuntuacion from './Routes/AddPuntuacion';
 import ListHistorial from './Routes/ListHistorial';
+import ConfirmReserva from './Routes/ConfirmReserva';
 import ButtonWhatsApp from './Components/ButtonWhatsApp';
 import { useContextGlobal } from "./Context/global.context";
 
@@ -60,6 +61,7 @@ function App() {
           <Route path='/favorites' element={<ListFavoritos />} />
           {/*<Route path='/product/:id/puntuacion' element={<Puntuacion />} />*/}
           <Route path='/product/:id/detailReserva' element={<DetailReserva />} />
+          <Route path='/ConfirmReserva' element={<ConfirmReserva />} />
           <Route path='/history' element={<ListHistorial />} />
           <Route path='/product/:id/addPuntuacion' element={<AddPuntuacion />} />
           

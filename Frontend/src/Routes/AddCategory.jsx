@@ -53,7 +53,7 @@ const AddCategory = () => {
             icon: "warning",
             color: "#000000",
             showCancelButton: true,
-            confirmButtonColor: "#E47F07",
+            confirmButtonColor: "#ED9707",
             cancelButtonColor: "#01A9D6",
             confirmButtonText: "Confirmar",
             cancelButtonText: "Cancelar",
@@ -122,12 +122,12 @@ const AddCategory = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="titulo"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Titulo
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="text"
                                                 name="titulo"
@@ -150,12 +150,12 @@ const AddCategory = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="nombre"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Descripcion
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="text"
                                                 name="descripcion"
@@ -177,12 +177,12 @@ const AddCategory = () => {
 
                                 <div className="flex flex-col items-center justify-between gap-6">
                                     <div className="w-full">
-                                        <p className="text-base font-medium text-[#E47F07]">Imagen</p>
-                                        <div className="mt-2 flex justify-center flex-col items-center gap-4 rounded-lg border border-dashed border-gray-300 px-6 py-8 hover:border-[#E47F07]">
+                                        <p className="text-base font-medium text-[#ED9707]">Imagen</p>
+                                        <div className="mt-2 flex justify-center flex-col items-center gap-4 rounded-lg border border-dashed border-gray-300 px-6 py-8 hover:border-[#ED9707]">
                                             <div className="flex text-base text-gray-600">
                                                 <label
                                                     htmlFor="imagen"
-                                                    className="rounded-md border border-solid border-gray-300 px-6 py-2 text-base font-light hover:shadow-lg cursor-pointer text-[#E47F07] hover:bg-[#E47F07] hover:text-white hover:border-white"
+                                                    className="rounded-md border border-solid border-gray-300 px-6 py-2 text-base font-light hover:shadow-lg cursor-pointer text-[#ED9707] hover:bg-[#ED9707] hover:text-white hover:border-white"
                                                 >
                                                     <svg
                                                         className="mx-auto h-12 w-12 text-gray-300"
@@ -228,7 +228,7 @@ const AddCategory = () => {
                                                             <img
                                                                 src={"data:image;base64," + url}
                                                                 className={`w-full h-full object-cover rounded-md ${index === formik.values.selectedImageIndex
-                                                                    ? "border-2 border-[#E47F07]"
+                                                                    ? "border-2 border-[#ED9707]"
                                                                     : ""
                                                                     }`}
                                                             />

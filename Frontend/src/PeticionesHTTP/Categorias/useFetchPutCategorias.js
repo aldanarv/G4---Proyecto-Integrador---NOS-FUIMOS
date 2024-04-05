@@ -19,7 +19,7 @@ export function useFetchPutCategorias(url) {
                     text: "Su categoria ha sida actualizada exitosamente.",
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
                 navigate('/administracion/category');
             }
@@ -30,7 +30,7 @@ export function useFetchPutCategorias(url) {
                 text: "Error: " + error,
                 icon: "error",
                 color: "#000000",
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
             });
         }
     };

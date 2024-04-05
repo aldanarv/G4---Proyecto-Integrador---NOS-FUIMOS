@@ -43,7 +43,7 @@
     font-size: var(--font-size-xl);
     line-height: var(--line-height-xl);
     font-weight: var(--font-weight-medium);
-    color: #CB7A10;
+    color: #C15205;
 }
 
 @media (min-width: 640px) {
@@ -281,7 +281,7 @@
 }
 
 .details__buttonsRerservar {
-    background: #E47F07;
+    background: #ED9707;
     border: none;
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);

@@ -1,59 +1,46 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "../styles/Calendar.css";
 import es from "date-fns/locale/es";
+import AlertCalendario from "./ui/Buttons/AlertCalendario";
 
-function Calendario({ onDateSelect }) {
-  const [fechasOcupadas, setFechasOcupadas] = useState([]);
-
+function Calendario({ fechasSeleccionadas }) {
   const [monthsToShow, setMonthsToShow] = useState(
     window.innerWidth <= 768 ? 1 : 2
   );
+  const [showAlert, setShowAlert] = useState(false);
 
-  const now = new Date(); // Fecha y hora actual en el huso horario local
-  const offset = now.getTimezoneOffset() * 60000; // Offset en milisegundos
+  const startDateString = fechasSeleccionadas.startDate;
+  const parts = startDateString.split('-');
+  const year = parseInt(parts[0]);
+  const month = parseInt(parts[1]) - 1;
+  const day = parseInt(parts[2]);
+  const startDate = new Date(year, month, day);
 
-  // Crear las fechas para startDate y endDate ajustadas al huso horario de Argentina (UTC-3)
-  const startDate = new Date(now - offset - (3 * 60 * 60 * 1000)); // Restar 3 horas en milisegundos
-  const endDate = new Date(now - offset - (3 * 60 * 60 * 1000)); // Restar 3 horas en milisegundos
+  const endDateString = fechasSeleccionadas.endDate;
+  const partsDos = endDateString.split('-');
+  const yearDos = parseInt(partsDos[0]);
+  const monthDos = parseInt(partsDos[1]) - 1;
+  const dayDos = parseInt(partsDos[2]);
+  const endDate = new Date(yearDos, monthDos, dayDos);
 
-  const [selectionRange, setSelectionRange] = useState({
-    startDate,
-    endDate,
-    key: "selection",
-  });
-  console.log(selectionRange.startDate?.toISOString().split("T").shift());
-  console.log(selectionRange.endDate?.toISOString().split("T").shift());
-
-  useEffect(() => {
-    const reservationsFromServer = [
-      { start: "2024-04-12", end: "2024-04-18" },
-      { start: "2024-04-27", end: "2024-04-30" },
-    ];
-
-    const disabledDates = [];
-
-    reservationsFromServer.forEach((reservation) => {
-      const { start, end } = reservation;
-      const startDate = new Date(start + "T00:00:00-03:00");
-
-      const endDate = new Date(end + "T00:00:00-03:00");
-
-      const currentDate = startDate;
-      while (currentDate <= endDate) {
-        disabledDates.push(new Date(currentDate));
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-    });
-
-    setFechasOcupadas(disabledDates);
-  }, []);
-
-  const handleSelect = (ranges) => {
-    setSelectionRange(ranges.selection);
-    onDateSelect(ranges.selection);
+  const handleDateChange = (ranges) => {
+    const selectedStartDate = ranges.selection.startDate;
+    const selectedEndDate = ranges.selection.endDate;
+    if (
+      selectedStartDate < startDate ||
+      selectedEndDate > endDate ||
+      selectedStartDate > selectedEndDate
+    ) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
+    } else {
+      setShowAlert(false);
+    }
   };
 
   useEffect(() => {
@@ -75,14 +62,14 @@ function Calendario({ onDateSelect }) {
   return (
     <div className="calendario-container">
       <div className="calendario-card">
+        {showAlert && <AlertCalendario />}
         <DateRange
-          ranges={[selectionRange]}
-          onChange={handleSelect}
-          rangeColors={["#01A9D6"]}
-          disabledDates={fechasOcupadas}
+          ranges={[{ startDate, endDate, key: 'selection' }]}
+          onChange={handleDateChange}
+          rangeColors={["#005B8D"]}
           showDateDisplay={false}
-          months={monthsToShow}
           direction="horizontal"
+          months={monthsToShow}
           locale={es}
           minDate={new Date()}
         />

@@ -4,7 +4,7 @@ import { useContextGlobal } from "../Context/global.context";
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
 import Swal from "sweetalert2";
 
-const Avatar = () => {
+const AvatarMobile = () => {
     const { state, dispatch } = useContextGlobal();
     const id = localStorage.getItem("id");
     const { user } = useFetchGetIdUser("http://localhost:8080/usuario/" + id);
@@ -68,10 +68,6 @@ const Avatar = () => {
                         <div className="flex items-center justify-center w-10 h-10  bg-[#005B8D] rounded-full shrink-0">
                             <span className="font-light text-base text-white ">{firstLetterFirstName + firstLetterLastName}</span>
                         </div>
-                        <div className="flex flex-col items-start gap-0">
-                            <h1 className="text-base font-medium text-black">{firstName} {lastName}</h1>
-                            <button type="button" onClick={handleLogout} className="text-sm font-extralight text-gray-700">Cerrar sesión</button>
-                        </div>
                     </div>
                     <button
                         onClick={toggleDropdown}
@@ -116,6 +112,12 @@ const Avatar = () => {
                                 </Link>
                             </li> : ""
                         }
+                        <li>
+                            <div onClick={handleLogout} className="px-4 py-2 text-base font-light text-black hover:bg-gray-100 rounded-lg flex items-center justify-between">
+                                Cerrar sesión
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -123,4 +125,4 @@ const Avatar = () => {
     );
 };
 
-export default Avatar;
+export default AvatarMobile;

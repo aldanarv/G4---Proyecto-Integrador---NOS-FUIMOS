@@ -80,7 +80,7 @@ function CalendarioHome({ onDateSelect }) {
         <DateRange
           ranges={[selectionRange]}
           onChange={handleSelect}
-          rangeColors={["#01A9D6"]}
+          rangeColors={["#005B8D"]}
           disabledDates={fechasOcupadas}
           showDateDisplay={false}
           months={monthsToShow}
