@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -13,6 +13,19 @@ const ListProduct = () => {
     const { data } = useFetchGetAll("http://localhost:8080/admin/productos");
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+    const [idNames, setIdNames] = useState({}); // Utiliza useState para inicializar el estado
+
+    useEffect(() => {
+        // Aquí defines los nombres descriptivos para cada ID
+        if (data) {
+            const updatedIdNames = {};
+            data.forEach((product, index) => {
+                updatedIdNames[product.id] = `PACK-${index + 1}`;
+            });
+            setIdNames(updatedIdNames); // Utiliza setIdNames para actualizar el estado
+        }
+    }, [data, setIdNames]);
 
     const eliminarProducto = async (productId, productNombre) => {
         try {
@@ -37,6 +50,9 @@ const ListProduct = () => {
                     icon: "success",
                     color: "#000000",
                     confirmButtonColor: "#E47F07",
+                }).then(() => {
+                    // Recargar la página después de eliminar el producto
+                    window.location.reload();
                 });
             }
         } catch (error) {
@@ -151,7 +167,7 @@ const ListProduct = () => {
                                                 {data?.map((product) => (
                                                     <tr key={product.id}>
                                                         <td className="px-4 py-4 text-base font-light text-black">
-                                                            {product.id}
+                                                            {idNames[product.id]}
                                                         </td>
                                                         <td className="px-4 py-4 text-base font-light text-black">
                                                             {product.nombre}

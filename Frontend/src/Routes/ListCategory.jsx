@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useMediaQuery } from "react-responsive";
@@ -12,6 +12,19 @@ const ListCategory = () => {
     const { categoria } = useFetchGetAllCategorias("http://localhost:8080/categorias/listar");
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+    const [categoryNames, setCategoryNames] = useState({});
+
+    useEffect(() => {
+        // Aquí defines los nombres descriptivos para cada categoría
+        if (categoria) {
+            const updatedCategoryNames = {};
+            categoria.forEach((category, index) => {
+                updatedCategoryNames[category.id] = `CAT-${index + 1}`;
+            });
+            setCategoryNames(updatedCategoryNames);
+        }
+    }, [categoria, setCategoryNames]);
 
     const eliminarCategoria = async (categoryId, categoryName) => {
         try {
@@ -36,6 +49,9 @@ const ListCategory = () => {
                     icon: "success",
                     color: "#000000",
                     confirmButtonColor: "#E47F07",
+                }).then(() => {
+                    // Recargar la página después de eliminar la categoría
+                    window.location.reload();
                 });
             }
         } catch (error) {
@@ -106,7 +122,7 @@ const ListCategory = () => {
                                                 {categoria?.map((category) => (
                                                     <tr key={category.id}>
                                                         <td className="px-4 py-4 text-base font-light text-black">
-                                                            {category.id}
+                                                            {categoryNames[category.id]}
                                                         </td>
                                                         <td className="px-4 py-4 text-base font-light text-black">
                                                             {category.titulo}

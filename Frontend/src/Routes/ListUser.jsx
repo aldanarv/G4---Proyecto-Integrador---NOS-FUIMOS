@@ -13,6 +13,18 @@ const ListUser = () => {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const { state, dispatch } = useContextGlobal();
     const [userData, setUserData] = useState(null);
+    const [idNames, setIdNames] = useState({});
+
+    useEffect(() => {
+        // Aquí defines los nombres descriptivos para cada ID
+        if (userData) {
+            const updatedIdNames = {};
+            userData.forEach((user, index) => {
+                updatedIdNames[user.id] = `USER-${index + 1}`;
+            });
+            setIdNames(updatedIdNames);
+        }
+    }, [userData]);
 
 
     const handleUserRoleChange = (userId) => {
@@ -62,6 +74,9 @@ const ListUser = () => {
                     icon: "success",
                     color: "#000000",
                     confirmButtonColor: "#E47F07",
+                }).then(() => {
+                    // Recargar la página después de guardar los cambios
+                    window.location.reload();
                 });
             })
             .catch((error) => {
@@ -141,7 +156,7 @@ const ListUser = () => {
                                                 {userData?.map((user) => (
                                                     <tr key={user.id}>
                                                         <td className="px-4 py-4 text-base font-light text-black">
-                                                            {user.id}
+                                                            {idNames[user.id]}
                                                         </td>
                                                         <td className="px-4 py-4 text-base font-light text-black">
                                                             {user.nombre}

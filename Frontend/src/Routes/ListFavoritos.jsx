@@ -38,6 +38,7 @@ const ListFavoritos = () => {
             return product;
         });
         setListProducts(updatedList);
+        window.location.reload();
     };
 
     console.log(listProducts)

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useMediaQuery } from "react-responsive";
@@ -12,6 +12,19 @@ const Characteristic = () => {
     const { data } = useFetchGetAllCaracteristicas("http://localhost:8080/admin/caracteristica");
 
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+    const [idNames, setIdNames] = useState({});
+
+    useEffect(() => {
+        // Aquí defines los nombres descriptivos para cada ID
+        if (data) {
+            const updatedIdNames = {};
+            data.forEach((characteristic, index) => {
+                updatedIdNames[characteristic.id] = `CAR-${index + 1}`;
+            });
+            setIdNames(updatedIdNames);
+        }
+    }, [data, setIdNames]);
 
     const eliminarCaracteristica = async (characteristicId, characteristicNombre) => {
         try {
@@ -36,6 +49,9 @@ const Characteristic = () => {
                     icon: "success",
                     color: "#000000",
                     confirmButtonColor: "#E47F07",
+                }).then(() => {
+                    // Recargar la página después de eliminar la caracteristica
+                    window.location.reload();
                 });
             }
         } catch (error) {
@@ -100,7 +116,7 @@ const Characteristic = () => {
                                                 {data?.map((characteristic) => (
                                                     <tr key={characteristic.id}>
                                                         <td className="px-4 py-4 text-base font-light text-black">
-                                                            {characteristic.id}
+                                                            {idNames[characteristic.id]}
                                                         </td>
                                                         <td className="px-4 py-4 text-base font-light text-black">
                                                             {characteristic.nombre}
