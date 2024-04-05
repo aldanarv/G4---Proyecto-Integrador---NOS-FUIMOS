@@ -10,46 +10,46 @@ const ListHistorial = () => {
             <main className="bg-[#FFE9CE] pt-32 px-6 pb-16 h-screen lg:px-16">
                 <article className='h-full'>
                     <div className='pb-4'>
-                        <h3 className="font-normal text-2xl sm:text-4xl text-[#DE8716] capitalize">Historial de reservas</h3>
+                        <h3 className="font-normal text-2xl sm:text-4xl text-[#C15205] capitalize">Historial de reservas</h3>
                     </div>
                     <div className='overflow-x-scroll h-full'>
                         <div className='inline-block min-w-full'>
                         <div className="overflow-hidden rounded-2xl">
                             <table className="min-w-full border-0">
-                                <thead className="bg-[#F2FCFF] border-b border-[#006A9E]">
+                                <thead className="bg-[#F2FCFF] border-b border-[#005B8D]">
 
                                     <tr>
                                         <th
                                             scope="col"
-                                            className="px-4 py-4 text-base font-semibold text-left text-[#006A9E]"
+                                            className="px-4 py-4 text-base font-semibold text-left text-[#005B8D]"
                                         >
                                             Fecha de reserva
                                         </th>
 
                                         <th
                                             scope="col"
-                                            className="px-4 py-4 text-base font-semibold text-left text-[#006A9E]"
+                                            className="px-4 py-4 text-base font-semibold text-left text-[#005B8D]"
                                         >
                                             Viaje reservado
                                         </th>
 
                                         <th
                                             scope="col"
-                                            className="px-4 py-4 text-base font-semibold text-left text-[#006A9E]"
+                                            className="px-4 py-4 text-base font-semibold text-left text-[#005B8D]"
                                         >
                                             Destino
                                         </th>
 
                                         <th
                                             scope="col"
-                                            className="px-4 py-4 text-base font-semibold text-left text-[#006A9E]"
+                                            className="px-4 py-4 text-base font-semibold text-left text-[#005B8D]"
                                         >
                                             Fecha de ida
                                         </th>
 
                                         <th
                                             scope="col"
-                                            className="px-4 py-4 text-base font-semibold text-left text-[#006A9E]"
+                                            className="px-4 py-4 text-base font-semibold text-left text-[#005B8D]"
                                         >
                                             Fecha de regreso
                                         </th>

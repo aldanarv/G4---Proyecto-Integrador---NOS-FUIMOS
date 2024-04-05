@@ -80,7 +80,7 @@ export default function CompartirRedes() {
                             </a>
                             <p className="mb-3 font-normal text-gray-700 ">{data?.descripcion}</p>
 
-                            <Link onClick={handleClose} to={"/product/" + id} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#E47F07] rounded-lg hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none ">
+                            <Link onClick={handleClose} to={"/product/" + id} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#ED9707] rounded-lg hover:bg-white hover:text-[#ED9707] hover:border hover:border-[#ED9707] focus:outline-none ">
                                 Ver viaje
                             </Link>
                         </div>

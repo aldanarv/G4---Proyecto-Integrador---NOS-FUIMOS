@@ -21,34 +21,36 @@
 /* Estilos para el selector del año */
 .rdrYearPicker>select {
   background-color: white;
-  border: 1px solid #E47F07;
+  border: 1px solid #005B8D;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100px;
-  color: black;
+  color: #005B8D;
 }
 
 .rdrMonthPicker>select {
   background-color: white;
-  border: 1px solid #E47F07;
+  border: 1px solid #005B8D;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100px;
   text-transform: capitalize;
-  color: black;
+  color: #005B8D;
 }
 
+/*
 .rdrMonthPicker>select:hover {
-  background-color: #E47F07;
+  border: 2px solid #005B8D;
 }
 
 .rdrYearPicker>select:hover {
-  background-color: #E47F07;
+  border: 2px solid #005B8D;
 }
+*/
 
 .rdrMonthName {
   text-transform: capitalize;
-  color: black;
+  color: #005B8D;
   font-size: 1rem;
   font-weight: 300;
 }
@@ -77,9 +79,11 @@
 
 .rdrMonthAndYearWrapper>button {
   background-color: white;
-  border: 1px solid #E47F07;
+  border: 1px solid #D35600;
 }
 
+/*
 .rdrMonthAndYearWrapper>button:hover {
-  background-color: #E47F07;
+  border: 2px solid #005B8D;
 }
+*/

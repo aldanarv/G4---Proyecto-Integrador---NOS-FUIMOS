@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
@@ -127,6 +128,11 @@ const DetailUser = () => {
                         ) : null}
                     </div>
                 </form>
+            </div>
+            <div className="flex items-center justify-center mt-4">
+                <Link to="/" className="bg-[#005B8D] text-white mt-6 py-2.5 px-8 rounded-md">
+                    Volver al Inicio
+                </Link>
             </div>
         </article>
     )

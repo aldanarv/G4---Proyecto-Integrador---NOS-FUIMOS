@@ -78,8 +78,8 @@
     border: var(--button-primary-border);
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
-    font-weight: var(--font-weight-light);
-    color: var(--text-color-black);
+    font-weight: var(--font-weight-medium);
+    color: #005B8D;
     border-radius: var(--button-primary-border-radius);
     padding: var(--button-primary-padding);
     text-decoration: none;

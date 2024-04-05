@@ -39,7 +39,7 @@
 
   /*Styles buttons*/
   --button-primary-background: #ffffff;
-  --button-primary-border: 1px solid var(--border-color-gray);
+  --button-primary-border: 1px solid #005B8D;
   --button-primary-border-radius: 6px;
   --button-primary-padding: 8px 10px;
 

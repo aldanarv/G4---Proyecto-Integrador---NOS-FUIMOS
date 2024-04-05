@@ -152,7 +152,7 @@ const DetailReserva = () => {
                     <div>
                         <div className="mx-auto px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:px-8">
                             <div className="lg:col-span-2 lg:pr-4">
-                                <h1 className="text-xl font-semibold text-[#E47F07] sm:text-2xl">{data?.nombre}</h1>
+                                <h1 className="text-xl font-semibold text-[#C15205] sm:text-2xl">{data?.nombre}</h1>
                             </div>
 
                             {/* Galeria de imagenes*/}
@@ -233,7 +233,7 @@ const DetailReserva = () => {
                                                 id="nombre"
                                                 readOnly
                                                 value={user?.nombre}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#ED9707]"
                                             />
                                         </div>
                                         <div>
@@ -244,7 +244,7 @@ const DetailReserva = () => {
                                                 id="apellido"
                                                 readOnly
                                                 value={user?.apellido}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#ED9707]"
                                             />
                                         </div>
                                     </div>
@@ -256,7 +256,7 @@ const DetailReserva = () => {
                                             id="email"
                                             readOnly
                                             value={user?.email}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#E47F07]"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#ED9707]"
                                         />
                                     </div>
                                 </div>
@@ -300,7 +300,7 @@ const DetailReserva = () => {
                                         </fieldset>
                                     </div>
 
-                                    <button type="submit" className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
+                                    <button type="submit" className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#005B8D] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#005B8D] hover:border hover:border-[#005B8D] focus:outline-none">
                                         Confirmar reserva
                                     </button>
 

@@ -60,7 +60,7 @@ const Reviews = () => {
                     text: "Para dejar una reseña, es necesario haber reservado este producto previamente.",
                     icon: "error",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             } else {
                 navigate(`/product/${id}/addPuntuacion`);
@@ -114,7 +114,7 @@ const Reviews = () => {
                                     <div className='flex flex-col-reverse sm:flex-row justify-between'>
                                         <div className="flex items-start flex-col ">
                                             <div className='flex items-center'>
-                                                <div className="flex items-center justify-center w-12 h-12  bg-[#01A9D6] rounded-full shrink-0">
+                                                <div className="flex items-center justify-center w-12 h-12  bg-[#005B8D] rounded-full shrink-0">
                                                     <span className="font-light text-lg text-white ">{review?.usuarioNombre ? review.usuarioNombre.split(' ')[0].charAt(0) : ''}{review?.usuarioApellido ? review.usuarioApellido.split(' ')[0].charAt(0) : ''}</span>
                                                 </div>
                                                 <span className="flex-grow flex flex-col pl-4">

@@ -75,7 +75,7 @@ const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio
                 <div className={styles.containerImage}>
                     {localStorage.getItem('id') != null ? (
                         <div className="relative" onClick={() => handlerFav(id, nombre)}>
-                            <svg width="30" height="30" viewBox="0 0 24 24" fill="#00000080" stroke="#ffffff" className={`icon icon-tabler icons-tabler-outline icon-tabler-heart absolute right-3 top-3 hover:scale-110 ${esFavorito ? "fill-[#fe0000]" : ""}`} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="#00000080" stroke="#ffffff" className={`icon icon-tabler icons-tabler-outline icon-tabler-heart absolute right-3 top-3 hover:scale-110 ${esFavorito ? "fill-[#fe0000]" : ""}`} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
                         </div>
                     ) : null}
                     <Link to={"/product/" + id}>
@@ -87,18 +87,19 @@ const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio
                     </Link>
                 </div>
                 <div className={styles.containerText}>
-                    <div className="mb-3">
-                        <div className="flex items-center justify-end">
-                            <div className="flex items-center">
-                                {renderStars(promedioPuntuacion)}
-                            </div>
-                            <p className="ml-3 text-sm font-light text-black">{totalResenas} Reseñas</p>
-                        </div>
-                    </div>
                     <Link to={"/product/" + id}>
                         <h3 className={styles.title}>
                             {nombre}
                         </h3>
+
+                        <div className="mb-3">
+                            <div className="flex items-center justify-start">
+                                <div className="flex items-center">
+                                    {renderStars(promedioPuntuacion)}
+                                </div>
+                                <p className="ml-3 text-sm font-light text-black">{totalResenas} Reseñas</p>
+                            </div>
+                        </div>
 
                         <p className={styles.detalle}>
                             {descripcion}
@@ -110,7 +111,7 @@ const Card = ({ id, nombre, destino, descripcion, salidaDate, vueltaDate, precio
                             <p className={styles.detallePrecio}>${precio} USD</p>
                         </div>
                         <div className="ml-auto sm:m-0">
-                            <Link to={"/product/" + id} className="p-2 font-medium text-black text-sm bg-white rounded-md border-2 border-[#E37B00] hover:bg-[#E37B00] focus:outline-none">
+                            <Link to={"/product/" + id} className="p-2 font-medium text-black text-sm bg-white rounded-md border-2 border-[#ED9707] hover:bg-[#ED9707] focus:outline-none">
                                 Ver más
                             </Link>
                         </div>

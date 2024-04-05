@@ -35,7 +35,7 @@ const ConfirmRegister = () => {
           <div className='flex flex-col sm:flex-row gap-4 items-center sm:items-start'>
             <img className="w-20 h-20" src="../../public/assets/circleCheck.png" alt="check-icon" />
             <div className='text-center sm:text-start'>
-              <h2 className='text-2xl sm:text-4xl text-[#DE8716] font-semibold'>¡Te has registrado con éxito!</h2>
+              <h2 className='text-2xl sm:text-4xl text-[#C15205] font-semibold'>¡Te has registrado con éxito!</h2>
               <p className='text-base mt-4 sm:mt-1'>Enviamos un correo de confirmación a su bandeja de entrada.</p>
             </div>
           </div>
@@ -61,7 +61,7 @@ const ConfirmRegister = () => {
                     {formik.errors.email}
                   </div>
                 ) : null}
-                <button type='submit' className='underline text-base text-[#DE8716] mt-5'>Reenviar correo</button>
+                <button type='submit' className='underline text-base text-[#C15205] mt-5'>Reenviar correo</button>
               </div>
             </form>
           </div>

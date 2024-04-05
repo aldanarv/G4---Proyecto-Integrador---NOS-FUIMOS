@@ -11,7 +11,7 @@ export function useFetchPostConfirmRegister(url) {
                     title: "Email reenviado correctamente",
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             }
         } catch (error) {
@@ -21,7 +21,7 @@ export function useFetchPostConfirmRegister(url) {
                     title: "Error no existe un usuario registrado con estos datos!",
                     icon: "error",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             } else if (error.response.status !== 200) {
                 console.log("Error: " + error.response.data);
@@ -29,7 +29,7 @@ export function useFetchPostConfirmRegister(url) {
                     title: "Lo sentimos, algo salió mal. Por favor, inténtalo de nuevo más tarde.",
                     icon: "error",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             }
             else {

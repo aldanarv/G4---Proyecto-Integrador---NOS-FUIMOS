@@ -14,11 +14,11 @@
     align-items: center;
     gap: 5px;
     background: var(--button-primary-background);
-    border: none;
+    border: var(--button-primary-border);
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
     font-weight: var(--font-weight-light);
-    color: var(--text-color-black);
+    color: #005B8D;
     border-radius: 0.5rem;
     /* 8px */
     padding: var(--button-primary-padding);
@@ -28,7 +28,7 @@
 }
 
 .category__buttons:hover {
-    background-color: #EAA353;
+    background-color: #005B8D;
     color: white;
 }
 
@@ -39,6 +39,5 @@
 }
 
 .selected {
-    border: 2px solid #E47F07;
-    /* Por ejemplo, puedes ajustar el color y el grosor del borde según tus preferencias */
+    border: 2px solid #005B8D;
 }

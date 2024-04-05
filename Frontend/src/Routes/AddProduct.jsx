@@ -57,7 +57,7 @@ const AddProduct = () => {
             icon: "warning",
             color: "#000000",
             showCancelButton: true,
-            confirmButtonColor: "#E47F07",
+            confirmButtonColor: "#ED9707",
             cancelButtonColor: "#01A9D6",
             confirmButtonText: "Confirmar",
             cancelButtonText: "Cancelar",
@@ -168,12 +168,12 @@ const AddProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="nombre"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Nombre
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="text"
                                                 name="nombre"
@@ -195,12 +195,12 @@ const AddProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="destino"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Destino
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="text"
                                                 name="destino"
@@ -222,12 +222,12 @@ const AddProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="descripcion"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Descripción
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="text"
                                                 name="descripcion"
@@ -249,12 +249,12 @@ const AddProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="categoria"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Categoria
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <select
                                                 id="categoria"
                                                 name="categoria"
@@ -289,12 +289,12 @@ const AddProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="salidaDate"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Fecha de salida
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="date"
                                                 name="salidaDate"
@@ -316,12 +316,12 @@ const AddProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="vueltaDate"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Fecha de regreso
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="date"
                                                 name="vueltaDate"
@@ -343,12 +343,12 @@ const AddProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="precio"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Precio
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="number"
                                                 name="precio"
@@ -373,7 +373,7 @@ const AddProduct = () => {
                             <div className="flex flex-col items-center justify-between gap-6">
                                 <div className="w-full">
                                     <p
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Características
                                     </p>
@@ -396,7 +396,7 @@ const AddProduct = () => {
                                                                     eliminarCaracteristica(caracteristica.nombre);
                                                                 }
                                                             }}
-                                                            className="form-checkbox h-5 w-5 text-[#F4CE9F] focus:ring-[#E47F07] border-gray-300 rounded-md"
+                                                            className="form-checkbox h-5 w-5 text-[#F4CE9F] focus:ring-[#ED9707] border-gray-300 rounded-md"
                                                         />
                                                         <span className="ml-2 text-gray-900">{caracteristica.nombre}</span>
                                                     </div>
@@ -413,12 +413,12 @@ const AddProduct = () => {
                                     </div>
                                 </div>
                                 <div className="w-full">
-                                    <p className="text-base font-medium text-[#E47F07]">Imágenes</p>
-                                    <div className="mt-2 flex justify-center flex-col items-center gap-4 rounded-lg border border-dashed border-gray-300 px-6 py-12 hover:border-[#E47F07]">
+                                    <p className="text-base font-medium text-[#ED9707]">Imágenes</p>
+                                    <div className="mt-2 flex justify-center flex-col items-center gap-4 rounded-lg border border-dashed border-gray-300 px-6 py-12 hover:border-[#ED9707]">
                                         <div className="flex text-base text-gray-600">
                                             <label
                                                 htmlFor="urlImagenes"
-                                                className="rounded-md border border-solid border-gray-300 px-6 py-2 text-base font-light hover:shadow-lg cursor-pointer text-[#E47F07] hover:bg-[#E47F07] hover:text-white hover:border-white"
+                                                className="rounded-md border border-solid border-gray-300 px-6 py-2 text-base font-light hover:shadow-lg cursor-pointer text-[#ED9707] hover:bg-[#ED9707] hover:text-white hover:border-white"
                                             >
                                                 <svg
                                                     className="mx-auto h-12 w-12 text-gray-300"
@@ -465,7 +465,7 @@ const AddProduct = () => {
                                                         <img
                                                             src={"data:image;base64," + url}
                                                             className={`w-full h-full object-cover rounded-md ${index === formik.values.selectedImageIndex
-                                                                ? "border-2 border-[#E47F07]"
+                                                                ? "border-2 border-[#ED9707]"
                                                                 : ""
                                                                 }`}
                                                         />

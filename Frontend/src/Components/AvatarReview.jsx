@@ -13,7 +13,7 @@ const AvatarReview = () => {
     const firstLetterLastName = lastName ? lastName.charAt(0) : '';
 
     return (
-        <div className="flex items-center justify-center w-12 h-12  bg-[#01A9D6] rounded-full shrink-0">
+        <div className="flex items-center justify-center w-12 h-12  bg-[#005B8D] rounded-full shrink-0">
             <span className="font-light text-base text-white ">{firstLetterFirstName + firstLetterLastName}</span>
         </div>
     );

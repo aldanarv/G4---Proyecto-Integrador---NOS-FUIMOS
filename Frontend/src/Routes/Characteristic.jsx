@@ -33,7 +33,7 @@ const Characteristic = () => {
                 text: characteristicNombre,
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
                 cancelButtonColor: "#01A9D6",
                 color: "#000000",
                 confirmButtonText: "Confirmar",
@@ -48,7 +48,7 @@ const Characteristic = () => {
                     text: "Su caracteristica ha sido eliminada exitosamente.",
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 }).then(() => {
                     // Recargar la página después de eliminar la caracteristica
                     window.location.reload();

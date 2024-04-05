@@ -4,7 +4,7 @@ import { useContextGlobal } from "../Context/global.context";
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
 import Swal from "sweetalert2";
 
-const Avatar = () => {
+const AvatarMobile = () => {
     const { state, dispatch } = useContextGlobal();
     const id = localStorage.getItem("id");
     const { user } = useFetchGetIdUser("http://localhost:8080/usuario/" + id);
@@ -123,4 +123,4 @@ const Avatar = () => {
     );
 };
 
-export default Avatar;
+export default AvatarMobile;

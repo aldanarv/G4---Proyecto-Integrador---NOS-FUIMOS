@@ -16,7 +16,7 @@ export function useFetchUpdateCaracteristicas(url) {
                     text: "Su caracteristica ha sido actualizada exitosamente.",
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
                 navigate('/administracion/characteristic');
             }
@@ -27,7 +27,7 @@ export function useFetchUpdateCaracteristicas(url) {
                 text: "Error: " + error,
                 icon: "error",
                 color: "#000000",
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
             });
         }
     };

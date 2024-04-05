@@ -39,7 +39,7 @@
     line-height: 40px;
     font-weight: var(--font-weight-semibold);
     margin-bottom: 35px;
-    color: #000000;
+    color: #C15205;
 }
 
 .containerForm {
@@ -103,13 +103,13 @@
 }
 
 .button {
-    background: #E37B00 !important;
+    background: #005B8D !important;
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
     font-weight: var(--font-weight-light);
     color: #ffffff;
     border-radius: var(--button-primary-border-radius);
-    padding: var(--button-primary-padding);
+    padding: 10px 30px;
     text-decoration: none;
     font-weight: var(--font-weight-medium);
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);

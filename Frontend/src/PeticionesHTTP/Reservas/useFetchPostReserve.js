@@ -19,7 +19,7 @@ export function useFetchPostReserve(url) {
                 text: error.response.data,
                 icon: "error",
                 color: "#000000",
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
             });
             throw error;
         }

@@ -17,7 +17,7 @@ export function useFetchPostReviews(url) {
                     text: "Su reseña ha sido creada exitosamente.",
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 }).then((result) => {
                     if (result.isConfirmed) {
                         navigate("/product/" + id);
