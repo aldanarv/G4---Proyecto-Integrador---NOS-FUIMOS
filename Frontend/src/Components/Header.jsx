@@ -27,7 +27,7 @@ const Header = () => {
                 {/*Menu mobile*/}
                 <div className={styles.menuMobile}>
                     {/*<NavMobile />*/}
-                    <AvatarMobile />
+                    {state.loged || state.isLoged ? <AvatarMobile /> : null}
                 </div>
 
                 {/* Menú de login, registro y Avatar */}
