@@ -42,4 +42,16 @@ public class UsuarioService {
         }
 
     }
+
+    public ResponseEntity eliminarUsuarioById(String id){
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
+        if(optionalUsuario.isPresent()){
+            Usuario usuario = optionalUsuario.get();
+            usuarioRepository.delete(usuario);
+            return ResponseEntity.ok("Usuario eliminado exitosamente");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
+    }
 }

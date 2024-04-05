@@ -12,7 +12,7 @@ import Administration from "../Components/Administration";
 import MobileAdministration from "../Components/MobileAdministration";
 
 const UpdateProduct = () => {
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
     const dataCaracteristica = useFetchGetAll("http://localhost:8080/admin/caracteristica").data;
@@ -58,7 +58,7 @@ const UpdateProduct = () => {
             icon: "warning",
             color: "#000000",
             showCancelButton: true,
-            confirmButtonColor: "#E47F07",
+            confirmButtonColor: "#ED9707",
             cancelButtonColor: "#01A9D6",
             confirmButtonText: "Confirmar",
             cancelButtonText: "Cancelar",
@@ -84,21 +84,24 @@ const UpdateProduct = () => {
 
     const formik = useFormik({
         initialValues: {
-            id: data?.id,
-            nombre: data?.nombre,
-            destino: data?.destino,
-            categoria: data?.categoria,
-            salidaDate: data?.salidaDate,
-            vueltaDate: data?.vueltaDate,
-            precio: data?.precio,
-            urlImagenes: data?.urlImagenes,
-            listCaracteristicas: data?.listCaracteristicas
+            id: data?.id || "",
+            nombre: data?.nombre || "",
+            destino: data?.destino || "",
+            descripcion: data?.descripcion || "",
+            idCategoria: data?.idCategoria || "",
+            categoria: data?.categoria || "",
+            salidaDate: data?.salidaDate || "",
+            vueltaDate: data?.vueltaDate || "",
+            precio: data?.precio || "",
+            urlImagenes: data?.urlImagenes || [],
+            listCaracteristicas: data?.listCaracteristicas || []
         },
         validationSchema: Yup.object({
             id: Yup.string().trim().required("Requerido"),
             nombre: Yup.string().min(4, "El nombre debe tener al menos 4 caracteres.").lowercase().trim().required("El nombre es requerido"),
             destino: Yup.string().min(4, "El destino debe tener al menos 4 caracteres.").lowercase().trim().required("El destino es requerido"),
-            salidaDate: Yup.date().min(new Date(), "La fecha no puede ser menor al dia de hoy").required("La fecha de salida es requerida"),
+            descripcion: Yup.string().min(4, "La descripcion debe tener al menos 4 caracteres.").lowercase().trim().required("La descripcion es requerida"),
+            salidaDate: Yup.date().required("La fecha de salida es requerida"),
             vueltaDate: Yup.date().min(Yup.ref('salidaDate'), 'La fecha de regreso no puede ser anterior a la fecha de salida').required("La fecha de regreso requerida"),
             precio: Yup.number().min(1).positive("El precio debe ser un número positivo").required("El precio es requerido"),
             categoria: Yup.string().lowercase().trim().required("La categoría es requerida"),
@@ -129,6 +132,8 @@ const UpdateProduct = () => {
                 id: data?.id,
                 nombre: data.nombre,
                 destino: data.destino,
+                descripcion: data.descripcion,
+                idCategoria: data.idCategoria,
                 categoria: data.categoria,
                 salidaDate: data.salidaDate,
                 vueltaDate: data.vueltaDate,
@@ -142,6 +147,7 @@ const UpdateProduct = () => {
 
             fetchDataProducto(product);
         },
+        validateOnChange: false
     });
 
     useEffect(() => {
@@ -149,6 +155,8 @@ const UpdateProduct = () => {
             formik.setFieldValue("id", data?.id);
             formik.setFieldValue("nombre", data?.nombre);
             formik.setFieldValue("destino", data?.destino);
+            formik.setFieldValue("descripcion", data?.descripcion);
+            formik.setFieldValue("idCategoria", data?.idCategoria || "");
             formik.setFieldValue("categoria", data?.categoria);
             formik.setFieldValue("salidaDate", data?.salidaDate);
             formik.setFieldValue("vueltaDate", data?.vueltaDate);
@@ -171,9 +179,9 @@ const UpdateProduct = () => {
                     <Administration />
                     <form
                         onSubmit={formik.handleSubmit}
-                        id="crearProductoForm"
+                        id="updateProductoForm"
                         encType="multipart/form-data"
-                        className="flex flex-col gap-3 justify-center h-screen w-full bg-[#01A9D6] overflow-x-scroll py-32 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
+                        className="flex flex-col gap-3 justify-start h-screen w-full bg-[#01A9D6] overflow-x-scroll py-12 px-6 border-l-[0.5px] border-[#00000054] lg:px-12"
                     >
                         <div className="pt-20">
                             <h2 className="text-4xl font-bold text-white">Actualizar producto</h2>
@@ -187,12 +195,12 @@ const UpdateProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="nombre"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Nombre
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="text"
                                                 name="nombre"
@@ -214,12 +222,12 @@ const UpdateProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="destino"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Destino
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="text"
                                                 name="destino"
@@ -240,18 +248,49 @@ const UpdateProduct = () => {
                                 </div>
                                 <div className="col-span-full">
                                     <label
-                                        htmlFor="categoria"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        htmlFor="descripcion"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
-                                        Categoría
+                                        Descripción
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
+                                            <input
+                                                type="text"
+                                                name="descripcion"
+                                                id="descripcion"
+                                                required
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.descripcion}
+                                                className="flex-1 border-0 bg-transparent rounded-md focus:bg-[#F4CE9F] py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 outline-none text-base"
+                                            />
+                                        </div>
+                                        {formik.touched.descripcion && formik.errors.descripcion ? (
+                                            <div className="text-red-400 font-light text-sm">
+                                                {formik.errors.descripcion}
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </div>
+                                <div className="col-span-full">
+                                    <label
+                                        htmlFor="categoria"
+                                        className="text-base font-medium text-[#ED9707]"
+                                    >
+                                        Categoria
+                                    </label>
+                                    <div className="mt-2">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <select
                                                 id="categoria"
                                                 name="categoria"
                                                 required
-                                                onChange={formik.handleChange}
+                                                onChange={(e) => {
+                                                    const selectedCategory = categoria.find(cat => cat.titulo === e.target.value);
+                                                    formik.setFieldValue('idCategoria', selectedCategory.id);
+                                                    formik.setFieldValue('categoria', selectedCategory.titulo);
+                                                }}
                                                 onBlur={formik.handleBlur}
                                                 value={formik.values.categoria}
                                                 className="flex-1 border-0 bg-transparent rounded-md focus:bg-[#F4CE9F] py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 outline-none text-base"
@@ -277,12 +316,12 @@ const UpdateProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="salidaDate"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Fecha de salida
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="date"
                                                 name="salidaDate"
@@ -304,12 +343,12 @@ const UpdateProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="vueltaDate"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Fecha de regreso
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="date"
                                                 name="vueltaDate"
@@ -331,12 +370,12 @@ const UpdateProduct = () => {
                                 <div className="col-span-full">
                                     <label
                                         htmlFor="precio"
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Precio
                                     </label>
                                     <div className="mt-2">
-                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#E47F07] max-w-md">
+                                        <div className="flex rounded-md ring-1 ring-gray-300 focus-within:ring-[#ED9707] max-w-md">
                                             <input
                                                 type="number"
                                                 name="precio"
@@ -360,12 +399,11 @@ const UpdateProduct = () => {
 
                             <div className="flex flex-col items-center justify-between gap-6">
                                 <div className="w-full">
-                                    <label
-                                        htmlFor="listCaracteristicas"
-                                        className="text-base font-medium text-[#E47F07]"
+                                <p
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Características
-                                    </label>
+                                    </p>
 
                                     <div className="mt-2">
                                         <div className="flex flex-wrap gap-2">
@@ -373,7 +411,7 @@ const UpdateProduct = () => {
                                                 dataCaracteristica.map((caracteristica) => (
                                                     <div key={caracteristica.id} className="inline-flex items-center">
                                                         <input
-                                                            id="listCaracteristicas"
+                                                            id={"listCaracteristicas" + caracteristica.id}
                                                             type="checkbox"
                                                             name="listCaracteristicas"
                                                             value={caracteristica.nombre}
@@ -385,7 +423,7 @@ const UpdateProduct = () => {
                                                                     eliminarCaracteristica(caracteristica.nombre);
                                                                 }
                                                             }}
-                                                            className="form-checkbox h-5 w-5 text-[#F4CE9F] focus:ring-[#E47F07] border-gray-300 rounded-md"
+                                                            className="form-checkbox h-5 w-5 text-[#F4CE9F] focus:ring-[#ED9707] border-gray-300 rounded-md"
                                                         />
                                                         <span className="ml-2 text-gray-900">{caracteristica.nombre}</span>
                                                     </div>
@@ -403,15 +441,15 @@ const UpdateProduct = () => {
                                 </div>
                                 <div className="w-full">
                                     <p
-                                        className="text-base font-medium text-[#E47F07]"
+                                        className="text-base font-medium text-[#ED9707]"
                                     >
                                         Imágenes
                                     </p>
-                                    <div className="mt-2 flex justify-center flex-col items-center gap-4 rounded-lg border border-dashed border-gray-300 px-6 py-12 hover:border-[#E47F07]">
+                                    <div className="mt-2 flex justify-center flex-col items-center gap-4 rounded-lg border border-dashed border-gray-300 px-6 py-12 hover:border-[#ED9707]">
                                         <div className="flex text-base text-gray-600">
                                             <label
                                                 htmlFor="urlImagenes"
-                                                className="rounded-md border border-solid border-gray-300 px-6 py-2 text-base font-light hover:shadow-lg cursor-pointer text-[#E47F07] hover:bg-[#E47F07] hover:text-white hover:border-white"
+                                                className="rounded-md border border-solid border-gray-300 px-6 py-2 text-base font-light hover:shadow-lg cursor-pointer text-[#ED9707] hover:bg-[#ED9707] hover:text-white hover:border-white"
                                             >
                                                 <svg
                                                     className="mx-auto h-12 w-12 text-gray-300"
@@ -449,7 +487,7 @@ const UpdateProduct = () => {
                                         <div className="flex mt-2 flex-wrap gap-1">
                                             {formik.values.urlImagenes && formik.values.urlImagenes.map((url, index) => (
                                                 <div key={index} className="w-16 h-16" onClick={() => formik.setFieldValue("selectedImageIndex", index)} onDoubleClick={() => handleImageRemove(index)}>
-                                                    <img src={"data:image;base64," + url} className={`w-full h-full object-cover rounded-md ${index === formik.values.selectedImageIndex ? 'border-2 border-[#E47F07]' : ''}`} />
+                                                    <img src={"data:image;base64," + url} className={`w-full h-full object-cover rounded-md ${index === formik.values.selectedImageIndex ? 'border-2 border-[#ED9707]' : ''}`} />
                                                 </div>
                                             ))}
                                         </div>
@@ -469,7 +507,7 @@ const UpdateProduct = () => {
                                     </Link>
                                     <button
                                         type="submit"
-                                        className="rounded-lg bg-[#E47F07] shadow-md px-6 py-2 text-base font-semibold text-white shadow-gray-300 hover:shadow-lg hover:bg-[#57BEE1]"
+                                        className="rounded-lg bg-[#ED9707] shadow-md px-6 py-2 text-base font-semibold text-white shadow-gray-300 hover:shadow-lg hover:bg-[#57BEE1]"
                                     >
                                         Editar producto
                                     </button>

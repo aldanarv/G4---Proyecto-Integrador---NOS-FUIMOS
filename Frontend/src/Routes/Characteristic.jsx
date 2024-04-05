@@ -11,7 +11,20 @@ import styles from "../styles/listProduct.module.css";
 const Characteristic = () => {
     const { data } = useFetchGetAllCaracteristicas("http://localhost:8080/admin/caracteristica");
 
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+    const [idNames, setIdNames] = useState({});
+
+    useEffect(() => {
+        // Aquí defines los nombres descriptivos para cada ID
+        if (data) {
+            const updatedIdNames = {};
+            data.forEach((characteristic, index) => {
+                updatedIdNames[characteristic.id] = `CAR-${index + 1}`;
+            });
+            setIdNames(updatedIdNames);
+        }
+    }, [data, setIdNames]);
 
     const eliminarCaracteristica = async (characteristicId, characteristicNombre) => {
         try {
@@ -20,7 +33,7 @@ const Characteristic = () => {
                 text: characteristicNombre,
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
                 cancelButtonColor: "#01A9D6",
                 color: "#000000",
                 confirmButtonText: "Confirmar",
@@ -35,7 +48,10 @@ const Characteristic = () => {
                     text: "Su caracteristica ha sido eliminada exitosamente.",
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
+                }).then(() => {
+                    // Recargar la página después de eliminar la caracteristica
+                    window.location.reload();
                 });
             }
         } catch (error) {
@@ -100,7 +116,7 @@ const Characteristic = () => {
                                                 {data?.map((characteristic) => (
                                                     <tr key={characteristic.id}>
                                                         <td className="px-4 py-4 text-base font-light text-black">
-                                                            {characteristic.id}
+                                                            {idNames[characteristic.id]}
                                                         </td>
                                                         <td className="px-4 py-4 text-base font-light text-black">
                                                             {characteristic.nombre}

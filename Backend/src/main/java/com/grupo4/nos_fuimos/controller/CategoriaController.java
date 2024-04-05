@@ -25,8 +25,26 @@ public class CategoriaController {
     }
 
     @PostMapping("/guardar")
-    public Categoria guardarCategoria(@RequestBody Categoria categoria){
+    public ResponseEntity<?> guardarCategoria(@RequestBody Categoria categoria){
+        List<Categoria> listCategoria = categoriaService.getAllCategoria();
+        for (Categoria item : listCategoria) {
+            if (item.getImagen().equals(categoria.getImagen())) {
+                return ResponseEntity.badRequest().body("El icono ya existe. Elija uno diferente.");
+            }
+        }
         return categoriaService.addCategoria(categoria);
+    }
+
+    @PutMapping("/actualizar")
+    public ResponseEntity actualizarCategoria(@RequestBody Categoria categoria) {
+        categoriaService.actualizarCategoria(categoria);
+
+        List<Producto> productosConCategoria = productoService.getProductosByCategoriaId(categoria.getId());
+        for (Producto producto : productosConCategoria) {
+            producto.setCategoria(categoria.getTitulo());
+            productoService.actualizarProducto(producto);
+        }
+        return ResponseEntity.ok("Categoría actualizada y productos actualizados");
     }
 
     @GetMapping(value = "/listar")
@@ -39,22 +57,16 @@ public class CategoriaController {
         return categoriaService.getCategoriaById(id);
     }
 
-    @PostMapping("/{id}/guardar-producto")
-    public Categoria guardarProductoEnCategoria(@PathVariable String id, @RequestBody List<String> productosId){
-        return categoriaService.updateCategoria(productosId, id);
-    }
-
-    @GetMapping("/{id}/productos")
-    public List<Producto> listarProductoPorCategoria(@PathVariable String id){
-        Categoria categoria = categoriaService.getCategoriaById(id);
-        List<Producto> listaProductos = new ArrayList<>();
-        if(categoria!=null){
-            for(String idProducto : categoria.getIdProductos()){
-                Producto producto = productoService.getProductoById(idProducto);
-                if(producto!=null)
-                    listaProductos.add(producto);
-            }
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity borrarCategoria(@PathVariable String id) {
+        // Elimina la categoría de todos los productos que la tienen asignada
+        List<Producto> productosConCategoria = productoService.getProductosByCategoriaId(id);
+        for (Producto producto : productosConCategoria) {
+            producto.setIdCategoria(null);
+            producto.setCategoria(null);
+            productoService.actualizarProducto(producto);
         }
-        return listaProductos;
+        categoriaService.eliminarCategoriaById(id);
+        return ResponseEntity.ok("Categoría eliminada y productos actualizados");
     }
 }

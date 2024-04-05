@@ -46,8 +46,15 @@
 }
 
 .img {
-    height: 28px;
+    height: 25px;
     width: auto;
+}
+
+@media (min-width: 540px) {
+    .img {
+        height: 28px;
+        width: auto;
+    }
 }
 
 /*Estilos menu de login y registro*/
@@ -71,8 +78,8 @@
     border: var(--button-primary-border);
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
-    font-weight: var(--font-weight-light);
-    color: var(--text-color-black);
+    font-weight: var(--font-weight-medium);
+    color: #005B8D;
     border-radius: var(--button-primary-border-radius);
     padding: var(--button-primary-padding);
     text-decoration: none;

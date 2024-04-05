@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "productos")
@@ -18,6 +19,8 @@ public class Producto {
     @NotNull
     private String descripcion;
     @NotNull
+    private String idCategoria;
+    @NotNull
     private String categoria;
     @NotNull
     private LocalDate salidaDate;
@@ -27,18 +30,21 @@ public class Producto {
     private Double precio;
     private List<String> urlImagenes;
     private List<Caracteristica> listCaracteristicas;
+    private List<String> listResena;
 
-    public Producto(String id, String nombre, String destino, String descripcion, String categoria, LocalDate salidaDate, LocalDate vueltaDate, Double precio, List<String> urlImagenes, List<Caracteristica> listCaracteristicas) {
+    public Producto(String id, String nombre, String destino, String descripcion, String idCategoria, String categoria, LocalDate salidaDate, LocalDate vueltaDate, Double precio, List<String> urlImagenes, List<Caracteristica> listCaracteristicas, List<String> listResena) {
         this.id = id;
         this.nombre = nombre;
         this.destino = destino;
         this.descripcion = descripcion;
+        this.idCategoria = idCategoria;
         this.categoria = categoria;
         this.salidaDate = salidaDate;
         this.vueltaDate = vueltaDate;
         this.precio = precio;
         this.urlImagenes = urlImagenes;
         this.listCaracteristicas = listCaracteristicas;
+        this.listResena = listResena;
     }
 
     public Producto(){}
@@ -107,6 +113,14 @@ public class Producto {
         this.urlImagenes = urlImagenes;
     }
 
+    public String getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(String idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
     public String getCategoria() {
         return categoria;
     }
@@ -121,5 +135,33 @@ public class Producto {
 
     public void setListCaracteristicas(List<Caracteristica> listCaracteristicas) {
         this.listCaracteristicas = listCaracteristicas;
+    }
+
+    public List<String> getListResena() {
+        return listResena;
+    }
+
+    public void setListResena(List<String> listResena) {
+        this.listResena = listResena;
+    }
+
+    public void addResena(String resenaId){
+        if(listResena==null){
+            listResena = new ArrayList<>();
+        }
+
+        listResena.add(resenaId);
+    }
+
+    public Boolean removeResena(String resenaId) {
+        if (listResena != null && !listResena.isEmpty()) {
+            for (String id : listResena) {
+                if (resenaId.equals(id)) {
+                    listResena.remove(id);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

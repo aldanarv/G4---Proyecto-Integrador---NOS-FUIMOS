@@ -19,7 +19,7 @@ export function useFetchUpdate(url) {
                     text: "Su producto ha sido actualizado exitosamente.",
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
                 navigate('/administracion');
             }
@@ -30,7 +30,7 @@ export function useFetchUpdate(url) {
                 text: "Error: " + error,
                 icon: "error",
                 color: "#000000",
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
             });
         }
     };

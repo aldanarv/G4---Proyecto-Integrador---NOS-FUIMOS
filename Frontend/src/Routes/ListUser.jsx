@@ -1,53 +1,67 @@
 import React from "react";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useContextGlobal } from "../Context/global.context";
 import { useMediaQuery } from "react-responsive";
-import { useFetchGetAll } from "../PeticionesHTTP/Productos/useFetchGetAll";
+import { useFetchGetAll } from "../PeticionesHTTP/Usuarios/useFetchGetAll";
 import MobileAdministration from "../Components/MobileAdministration";
 import Administration from "../Components/Administration";
 import styles from "../styles/listProduct.module.css";
 
 const ListUser = () => {
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const { state, dispatch } = useContextGlobal();
-    const { data } = useFetchGetAll("http://localhost:8080/usuario/listar");
+    const [userData, setUserData] = useState(null);
+    const [idNames, setIdNames] = useState({});
 
-    // Manejar el estado de los roles de los usuarios
-    const [userRoles, setUserRoles] = useState(
-        data ? data.reduce((roles, user) => {
-            roles[user.id] = user.privilegios === true ? true : false;
-            return roles;
-        }, {}) : {}
-    );
+    useEffect(() => {
+        // Aquí defines los nombres descriptivos para cada ID
+        if (userData) {
+            const updatedIdNames = {};
+            userData.forEach((user, index) => {
+                updatedIdNames[user.id] = `USER-${index + 1}`;
+            });
+            setIdNames(updatedIdNames);
+        }
+    }, [userData]);
+
 
     const handleUserRoleChange = (userId) => {
-        setUserRoles((prevRoles) => {
-            // Si el usuario tiene el rol "admin", establecerlo como falso
-            if (prevRoles[userId] === undefined && userRoles[userId] === true) {
-                return {
-                    ...prevRoles,
-                    [userId]: false,
-                };
-            }
-            // En caso contrario, invertir el valor del rol
-            return {
-                ...prevRoles,
-                [userId]: !prevRoles[userId],
-            };
+        setUserData((prevData) => {
+            return prevData.map((user) => {
+                if (user.id === userId) {
+                    return { ...user, privilegios: !user.privilegios };
+                } else {
+                    return user;
+                }
+            });
         });
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await useFetchGetAll("http://localhost:8080/usuario/listar");
+                setUserData(result.data);
+            } catch (error) {
+                console.error("Error al obtener los datos:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
     const handleSaveChanges = (userId) => {
         // Obtener el usuario actual
-        const currentUser = data.find((user) => user.id === userId);
+        const currentUser = userData.find((user) => user.id === userId);
 
         // Construir el objeto con las propiedades requeridas
         const updatedUser = {
             nombre: currentUser.nombre,
             email: currentUser.email,
-            privilegios: userRoles[userId] ? true : false,
+            privilegios: currentUser.privilegios,
         };
 
         axios
@@ -55,11 +69,24 @@ const ListUser = () => {
             .then(() => {
                 // Actualizar el estado local con la nueva información del usuario
                 dispatch({ type: "DATA_USER", payload: updatedUser });
-                Swal.fire("¡Cambios guardados!", "", "success");
+                Swal.fire({
+                    title: "¡Cambios guardados!",
+                    icon: "success",
+                    color: "#000000",
+                    confirmButtonColor: "#ED9707",
+                }).then(() => {
+                    // Recargar la página después de guardar los cambios
+                    window.location.reload();
+                });
             })
             .catch((error) => {
                 console.error("Error updating user:", error);
-                Swal.fire("Error al guardar cambios", "", "error");
+                Swal.fire({
+                    title: "Error al guardar cambios",
+                    icon: "error",
+                    color: "#000000",
+                    confirmButtonColor: "#ED9707",
+                });
             });
     };
 
@@ -126,10 +153,10 @@ const ListUser = () => {
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-[#c5c5c5]">
-                                                {data?.map((user) => (
+                                                {userData?.map((user) => (
                                                     <tr key={user.id}>
                                                         <td className="px-4 py-4 text-base font-light text-black">
-                                                            {user.id}
+                                                            {idNames[user.id]}
                                                         </td>
                                                         <td className="px-4 py-4 text-base font-light text-black">
                                                             {user.nombre}
@@ -151,7 +178,7 @@ const ListUser = () => {
                                                                 <label className="flex items-center gap-2">
                                                                     <input
                                                                         type="checkbox"
-                                                                        checked={userRoles[user.id]}
+                                                                        checked={user.privilegios}
                                                                         onChange={() => handleUserRoleChange(user.id)}
                                                                     />
                                                                     <p>administrador</p>

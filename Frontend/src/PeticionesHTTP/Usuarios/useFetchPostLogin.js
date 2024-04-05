@@ -15,9 +15,9 @@ export function useFetchPostLogin(url) {
 
                 localStorage.setItem("id", response.data.id);
 
-                if(response.data.privilegios){
+                if (response.data.privilegios) {
                     dispatch({ type: 'ADMIN_LOGED' });
-                }else{
+                } else {
                     dispatch({ type: 'USER_LOGED' });
                 }
 
@@ -25,7 +25,7 @@ export function useFetchPostLogin(url) {
                     title: `Bienvenido(a)! ${response.data.nombre}`,
                     icon: "success",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
                 navigate('/detailUser');
             }
@@ -36,7 +36,7 @@ export function useFetchPostLogin(url) {
                     title: "contraseña incorrecta",
                     icon: "error",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             } else if (error.response.status == 404) {
                 console.log("Error: " + error.response.data);
@@ -44,7 +44,7 @@ export function useFetchPostLogin(url) {
                     title: "Usuario no encontrado",
                     icon: "error",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             } else if (error.response) {
                 console.log("Error: " + error.response.data);
@@ -52,7 +52,7 @@ export function useFetchPostLogin(url) {
                     title: "Lo sentimos, algo salió mal. Por favor, inténtalo de nuevo más tarde.",
                     icon: "error",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             }
             else {

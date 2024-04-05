@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
 import styles from "../styles/galleryImages.module.css";
 
-export default function GalleryImagesDos() {
+export default function GalleryImages() {
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
     const [open, setOpen] = React.useState(false);
@@ -109,7 +109,7 @@ export default function GalleryImagesDos() {
                             </div>
                         </div>
 
-                        <div className={styles.carouselItem__gallery }>
+                        <div className={styles.carouselItem__gallery}>
                             {data?.urlImagenes.map((imagenes, index) => (
                                 <div
                                     className="contents"

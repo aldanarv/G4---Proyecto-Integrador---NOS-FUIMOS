@@ -43,8 +43,47 @@ public class ProductoService {
         return productoRepository.save(producto);
     }
 
+    public List<Producto> getProductosByCategoria(String categoria) {
+        return productoRepository.findByCategoria(categoria);
+    }
+
+    public List<Producto> getProductosByCategoriaId(String idCategoria) {
+        return productoRepository.findByIdCategoria(idCategoria);
+    }
+
     public void deleteProducto(String id){
         productoRepository.deleteById(id);
     }
+
+    public ResponseEntity addResena(String productoId, String resenaId){
+        Optional<Producto> existingProduct = productoRepository.findById(productoId);
+        if (existingProduct.isPresent()){
+            Producto producto = existingProduct.get();
+            producto.addResena(resenaId);
+            return  ResponseEntity.ok(productoRepository.save(producto));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+        }
+    }
+
+    public ResponseEntity removeResena(String productoId, String resenaId){
+        Optional<Producto> existingProduct = productoRepository.findById(productoId);
+        if (existingProduct.isPresent()){
+            Producto producto = existingProduct.get();
+            if(producto.removeResena(resenaId)){
+                return  ResponseEntity.ok(productoRepository.save(producto));
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resena no encontrada en producto");
+            }
+
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+        }
+    }
+
+
 
 }

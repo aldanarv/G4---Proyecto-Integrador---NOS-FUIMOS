@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser";
@@ -13,29 +14,19 @@ const DetailUser = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-
     const formik = useFormik({
         initialValues: {
-            id: user?.id,
-            nombre: user?.nombre,
-            apellido: user?.apellido,
-            email:user?.email,
-            password: user?.password,
+            id: user?.id || "",
+            nombre: user?.nombre || "",
+            apellido: user?.apellido || "",
+            email: user?.email || "",
+            password: user?.password || "",
         },
         validationSchema: Yup.object({
             id: Yup.string().trim().required("Requerido"),
             nombre: Yup.string().min(4, "El nombre debe tener al menos 4 caracteres.").lowercase().trim().required("El nombre es requerido"),
             apellido: Yup.string().min(4, "El apellido debe tener al menos 4 caracteres.").lowercase().trim().required("El apellido es requerido"),
             email: Yup.string().email("Debe ser un correo electrónico válido").lowercase().trim().required("El correo electrónico es requerido"),
-            /*
-            password: Yup.string()
-                .matches(/[A-Z]/, "Debe contener al menos una letra mayúscula.")
-                .matches(/[0-9]/, "Debe contener al menos un número.")
-                .matches(/[!@#$%^&*(),.?":{}|<>]/, "Debe contener al menos un carácter especial.")
-                .min(4, "La contraseña debe tener al menos 4 caracteres.")
-                .trim()
-                .required("La contraseña es requerida"),
-            */
         }),
         onSubmit: (data) => {
             console.log("Submitted Data:", data);
@@ -50,6 +41,7 @@ const DetailUser = () => {
 
             console.log("Users:", avatar);
         },
+        validateOnChange: false
     });
 
     useEffect(() => {
@@ -78,7 +70,7 @@ const DetailUser = () => {
                                     name="nombre"
                                     id="nombre"
                                     placeholder='Nombres'
-                                    required
+                                    readOnly
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.nombre}
@@ -99,7 +91,7 @@ const DetailUser = () => {
                                     name="apellido"
                                     id="apellido"
                                     placeholder='Apellidos'
-                                    required
+                                    readOnly
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.apellido}
@@ -122,7 +114,7 @@ const DetailUser = () => {
                                 name="email"
                                 id="email"
                                 placeholder="Correo electrónico"
-                                required
+                                readOnly
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
@@ -135,13 +127,12 @@ const DetailUser = () => {
                             </div>
                         ) : null}
                     </div>
-
-                    {/*
-                <div className={styles.divButton}>
-                    <button type="submit" className={styles.button} >Actualizar datos</button>
-                </div>
-                */}
                 </form>
+            </div>
+            <div className="flex items-center justify-center mt-4">
+                <Link to="/" className="bg-[#005B8D] text-white mt-6 py-2.5 px-8 rounded-md">
+                    Volver al Inicio
+                </Link>
             </div>
         </article>
     )

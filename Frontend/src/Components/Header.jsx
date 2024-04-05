@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import NavMobile from "./ui/Buttons/NavMobile";
 import Avatar from "./Avatar";
+import AvatarMobile from "./AvatarMobile";
 import { useContextGlobal } from "../Context/global.context";
 import styles from "../styles/header.module.css";
 
@@ -19,17 +20,19 @@ const Header = () => {
                             src="/assets/logo3.png"
                             alt=""
                         />
+                        <h1 className="hidden">Nos Fuimos</h1>
                     </Link>
                 </div>
 
                 {/*Menu mobile*/}
                 <div className={styles.menuMobile}>
-                    <NavMobile />
+                    {/*<NavMobile />*/}
+                    <AvatarMobile />
                 </div>
 
                 {/* Menú de login, registro y Avatar */}
                 <div className={styles.header__auth}>
-                    {state.isLoged || state.loged ?(
+                    {state.isLoged || state.loged ? (
                         <Avatar />
                     ) : (
                         <>

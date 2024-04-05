@@ -14,7 +14,7 @@ export function useFetchPost(url) {
                 text: "Su producto ha sido creado exitosamente.",
                 icon: "success",
                 color: "#000000",
-                confirmButtonColor: "#E47F07",
+                confirmButtonColor: "#ED9707",
             });
         } catch (error) {
             if (error.response.status === 409) {
@@ -24,7 +24,7 @@ export function useFetchPost(url) {
                     text: error.response.data,
                     icon: "error",
                     color: "#000000",
-                    confirmButtonColor: "#E47F07",
+                    confirmButtonColor: "#ED9707",
                 });
             } else {
                 console.error('Error fetching data:', error);

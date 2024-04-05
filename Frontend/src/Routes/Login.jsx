@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useFetchPostLogin } from "../PeticionesHTTP/Usuarios/useFetchPostLogin";
+import { useContextGlobal } from "../Context/global.context";
 import styles from "../styles/login.module.css";
 
 const Login = () => {
     const { fetchDataUsers } = useFetchPostLogin("http://localhost:8080/usuario/iniciar-sesion");
+    const { state } = useContextGlobal();
 
     //Mostrar contraseña
     const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +28,6 @@ const Login = () => {
                 .trim()
                 .required("El correo electrónico es requerido"),
             password: Yup.string()
-                .min(4, "La contraseña debe tener al menos 4 caracteres.")
                 .trim()
                 .required("La contraseña es requerida"),
         }),
@@ -42,11 +44,23 @@ const Login = () => {
             fetchDataUsers(user);
             resetForm();
         },
+        validateOnChange: false
     });
     return (
         <article className={styles.container_login}>
             <div className={styles.login_title}>
                 <h2 className={styles.login_subtitle}>Iniciar sesión</h2>
+                {state.loginMsj &&
+                    <div className="mb-10">
+                        <p className={styles.needLogin}>
+                            Para poder realizar su reserva es necesario estar logueado.
+                        </p>
+                        <p className={styles.needLogin}>
+                            ¿Aún no estás registrado?
+                            <Link to="/register" className={styles.needLogin_enlace}>Registrarme</Link>
+                        </p>
+                    </div>
+                }
             </div>
             <div className={styles.containerForm}>
                 <form className={styles.input_form} onSubmit={formik.handleSubmit}>
@@ -106,6 +120,13 @@ const Login = () => {
                             Iniciar sesión
                         </button>
                     </div>
+
+                    {!state.loginMsj &&
+                        <p className={styles.needLogin}>
+                            ¿Aún no estás registrado?
+                            <Link to="/register" className={styles.needLogin_enlace}>Registrarme</Link>
+                        </p>
+                    }
                 </form>
             </div>
         </article>

@@ -1,12 +1,102 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import { useFetchGetID } from "../PeticionesHTTP/Productos/useFetchGetID";
-import GalleryImagesDos from "../Components/GalleryImages";
+import { useFetchGetIdUser } from "../PeticionesHTTP/Usuarios/useFetchGetIdUser"
+import { useFetchPutFavorite } from "../PeticionesHTTP/Usuarios/useFetchPutFavorite";
+import GalleryImages from "../Components/GalleryImages";
+import CompartirRedes from "../Components/CompartirRedes";
+import Calendario from "../Components/Calendario";
+import Reviews from "../Components/Reviews";
 import styles from "../styles/detailProduct.module.css";
 
 const DetailProduct = () => {
+    const [productData, setProductData] = useState(null);
+    const [esFavorito, setEsFavorito] = useState(null);
+
+    const [totalResenas, setTotalResenas] = useState(0);
+    const [promedioPuntuacion, setPromedioPuntuacion] = useState(0);
+
     const { id } = useParams();
     const { data } = useFetchGetID("http://localhost:8080/admin/productos/" + id);
+
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [fechasSeleccionadas, setFechasSeleccionadas] = useState({ startDate: data?.salidaDate, endDate: data?.vueltaDate });
+
+    const idUser = localStorage.getItem("id");
+    const { user } = idUser ? useFetchGetIdUser("http://localhost:8080/usuario/" + idUser) : { user: undefined };
+
+    useEffect(() => {
+        if (user && data && user.favoriteList != null) {
+            setEsFavorito(user.favoriteList.includes(data.id));
+            setProductData(data);
+        }
+    }, [user, data]);
+
+    const handlerFav = async (id, nombre) => {
+        const { fetchPutFavorite } = useFetchPutFavorite(`http://localhost:8080/usuario/addFav/${localStorage.getItem("id")}/${id}`);
+        fetchPutFavorite(id)
+            .then(res => {
+                if (res.status == 200) {
+                    setEsFavorito(res.data);
+                }
+            })
+            .catch(error => {
+                console.error("Error al actualizar el producto:", error);
+            });
+    };
+
+    const toggleCalendar = () => {
+        setIsCalendarOpen(!isCalendarOpen);
+    };
+
+    const handleDateSelect = (dates) => {
+        setFechasSeleccionadas(dates);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (data?.listResena) {
+                // Mapear sobre la lista de reseñas y realizar las solicitudes de forma paralela
+                const reviews = await Promise.all(data.listResena.map(async (idReview) => {
+                    try {
+                        const response = await axios.get("http://localhost:8080/resena/" + idReview);
+                        return response.data;
+                    } catch (error) {
+                        console.error("Error fetching review:", error);
+                        return null;
+                    }
+                }));
+                setTotalResenas(data?.listResena.length);
+                calcularPromedioPuntuacion(reviews);
+            }
+        };
+        fetchData();
+    }, [data]);
+
+    const calcularPromedioPuntuacion = (resenas) => {
+        if (resenas && resenas.length > 0) {
+            let totalPuntuacion = 0;
+            resenas.forEach((resena) => {
+                totalPuntuacion += resena.puntuacion;
+            });
+            const promedio = totalPuntuacion / resenas.length;
+            setPromedioPuntuacion(promedio);
+        }
+    };
+
+    // Función para renderizar las estrellas según la puntuación
+    const renderStars = (rating) => {
+        const stars = [];
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="#E47F07" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            } else {
+                stars.push(<svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E47F07" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>);
+            }
+        }
+        return stars;
+    };
 
     return (
         <article className={styles.article}>
@@ -61,7 +151,7 @@ const DetailProduct = () => {
                     </div>
                     <div className={styles.more}>
                         <div className={styles.title_plus}>
-                            <GalleryImagesDos />
+                            <GalleryImages />
                         </div>
                     </div>
                 </section>
@@ -69,13 +159,10 @@ const DetailProduct = () => {
                 <div className="bg-[#fff7ec] rounded-2xl">
                     <div>
                         <div className="flex justify-end gap-4 mx-auto px-4 pt-10 sm:px-6 lg:max-w-7xl lg:px-8">
-                            <div className="flex items-center gap-2">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-share"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M8.7 10.7l6.6 -3.4" /><path d="M8.7 13.3l6.6 3.4" /></svg>
-                                <p className="text-sm hover:underline">Compartir</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-heart"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                                <p className="text-sm hover:underline">Guardar</p>
+                            <CompartirRedes />
+                            <div className="flex items-center gap-2" onClick={() => handlerFav(productData.id, productData.name)}>
+                                <svg className={`icon icon-tabler icons-tabler-outline icon-tabler-heart ${productData && esFavorito ? "fill-[#fe0000]" : ""}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                                <p className="text-sm hover:underline capitalize text-black font-normal">{productData && esFavorito ? "Favorito" : "Guardar"}</p>
                             </div>
                         </div>
                         <div className="mx-auto px-4 pb-16 pt-5 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:px-8 lg:pb-24 lg:pt-16">
@@ -83,56 +170,55 @@ const DetailProduct = () => {
                                 <h1 className="text-xl font-bold text-black sm:text-2xl">{data?.destino}</h1>
                             </div>
 
-                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-6 rounded-md bg-white shadow-md">
+                            <div className="mt-4 lg:row-span-3 lg:mt-0 p-4 sm:p-6 rounded-md bg-white shadow-md h-min">
                                 <div className="flex flex-col sm:flex-row items-start sm:items-end sm:gap-2">
                                     <p className="text-xl text-black">${data?.precio} USD</p>
                                     <h3 className="text-sm font-light text-black">precio por persona</h3>
                                 </div>
                                 <div className="mt-6">
                                     <div className="flex items-center">
-                                        <div className="flex items-center">
-                                            <svg className="text-black h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
-                                            </svg>
-                                            <svg className="text-black h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
-                                            </svg>
-                                            <svg className="text-black h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
-                                            </svg>
-                                            <svg className="text-black h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
-                                            </svg>
-                                            <svg className="text-gray-200 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <a href="#" className="ml-3 text-sm font-light text-black hover:underline">10 Reseñas</a>
+                                        {renderStars(promedioPuntuacion)}
+                                        <p className="ml-3 text-sm font-light text-black">
+                                            {totalResenas} Reseñas
+                                        </p>
                                     </div>
                                 </div>
 
                                 <form className="mt-10">
                                     <div className="mt-10">
                                         <fieldset className="mt-4 border border-gray-300 rounded-md">
-                                        <div className="grid grid-rows sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                                                <div className="p-3 sm:border-r sm:border-gray-300 lg:border-r-0 xl:border-r xl:border-gray-300">
-                                                    <p className="text-sm font-medium text-black">Fecha salida</p>
-                                                    <p className="text-sm font-light text-black">{data?.salidaDate}</p>
-                                                    <input className="text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1" type="date" name="" id="" />
-                                                </div>
-
-                                                <div className="p-3 border-t border-gray-300 sm:border-t-0 lg:border-t lg:border-gray-300 xl:border-t-0">
-                                                    <p className="text-sm font-medium text-black">Fecha regreso</p>
-                                                    <p className="text-sm font-light text-black">{data?.vueltaDate}</p>
-                                                    <input className="text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1" type="date" name="" id="" />
+                                            <div className="grid grid-rows">
+                                                <div className="p-2 sm:p-3">
+                                                    <p className="text-sm font-medium text-black">Fecha salida - Fecha regreso</p>
+                                                    <div className="flex items-center gap-1 sm:gap-4">
+                                                        <p onClick={toggleCalendar} className="relative text-sm font-light text-black bg-transparent focus:outline-none pt-1 pb-1">
+                                                            {data?.salidaDate && data?.vueltaDate ?
+                                                                `${data.salidaDate} - ${data.vueltaDate}` :
+                                                                'dd/mm/aaaa - dd/mm/aaaa'
+                                                            }
+                                                        </p>
+                                                        <svg onClick={toggleCalendar} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
+                                                    </div>
+                                                    {isCalendarOpen && (
+                                                        <div
+                                                            style={{
+                                                                position: "absolute",
+                                                                left: "50%",
+                                                                right: "50%"
+                                                            }}
+                                                        >
+                                                            <Calendario fechasSeleccionadas={{ startDate: data?.salidaDate, endDate: data?.vueltaDate }} />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </fieldset>
                                     </div>
 
-                                    <Link to={"/product/" + id + "/reservar"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#E47F07] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#E47F07] hover:border hover:border-[#E47F07] focus:outline-none">
+                                    <Link to={"/product/" + id + "/detailReserva"} className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-[#005B8D] px-8 py-3 text-base font-medium text-white hover:bg-white hover:text-[#005B8D] hover:border hover:border-[#005B8D] focus:outline-none">
                                         Reservar
                                     </Link>
+
                                 </form>
                             </div>
 
@@ -142,7 +228,7 @@ const DetailProduct = () => {
 
                                     <div className="space-y-6">
                                         <p className="text-base text-black">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, odio. Officiis quae quis eligendi laboriosam dolor, pariatur veritatis atque rem eius accusantium facere, deserunt, earum nesciunt quo nihil. Excepturi, rem!
+                                            {data?.descripcion}
                                         </p>
                                     </div>
                                 </div>
@@ -150,26 +236,25 @@ const DetailProduct = () => {
                                 <div className="mt-10">
                                     <h3 className="text-lg font-medium text-black">Características</h3>
                                     <div className="mt-4">
-                                        {data?.listCaracteristicas.map((caracteristica, index) => (
-                                            <ul key={index} role="list" className="list-none pl-4 text-md">
-                                                <li className="flex items-center gap-4 mt-2">
+                                        <ul className="list-none pl-4 text-md flex flex-col sm:flex-wrap sm:max-h-64">
+                                            {data?.listCaracteristicas.map((caracteristica, index) => (
+                                                <li key={index} className="flex items-center gap-4 mt-2">
                                                     <img
-                                                        src={"data:image;base64," + caracteristica.icono}
+                                                        src={"data:image;base64," + caracteristica?.icono}
                                                         alt=""
                                                         className="w-6 h-6"
                                                     />
                                                     <p className="text-black">{caracteristica.nombre}</p>
                                                 </li>
-                                            </ul>
-                                        ))}
+                                            ))}
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
+                <Reviews />
             </section>
         </article>
     );
