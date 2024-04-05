@@ -66,7 +66,7 @@ function Calendario({ fechasSeleccionadas }) {
         <DateRange
           ranges={[{ startDate, endDate, key: 'selection' }]}
           onChange={handleDateChange}
-          rangeColors={["#01A9D6"]}
+          rangeColors={["#005B8D"]}
           showDateDisplay={false}
           direction="horizontal"
           months={monthsToShow}
