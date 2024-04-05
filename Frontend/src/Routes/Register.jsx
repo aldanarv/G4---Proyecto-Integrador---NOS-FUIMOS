@@ -22,8 +22,8 @@ const Register = () => {
             password: "",
         },
         validationSchema: Yup.object({
-            nombre: Yup.string().min(4, "El nombre debe tener al menos 4 caracteres.").lowercase().trim().matches(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/, "El nombre no puede contener números").required("El nombre es requerido"),
-            apellido: Yup.string().min(4, "El apellido debe tener al menos 4 caracteres.").lowercase().trim().matches(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/, "El apellido no puede contener números").required("El apellido es requerido"),
+            nombre: Yup.string().min(4, "El nombre debe tener al menos 4 caracteres.").lowercase().trim().matches(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+(?: [a-zA-ZñÑáéíóúÁÉÍÓÚ]+)*$/, "El nombre no puede contener números").required("El nombre es requerido"),
+            apellido: Yup.string().min(4, "El apellido debe tener al menos 4 caracteres.").lowercase().trim().matches(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ]+(?: [a-zA-ZñÑáéíóúÁÉÍÓÚ]+)*$/, "El apellido no puede contener números").required("El apellido es requerido"),
             email: Yup.string().email("Debe ser un correo electrónico válido").lowercase().trim().required("El correo electrónico es requerido"),
             password: Yup.string()
                 .matches(/[A-Z]/, "Debe contener al menos una letra mayúscula. [A-Z]")

@@ -28,7 +28,6 @@ const Login = () => {
                 .trim()
                 .required("El correo electrónico es requerido"),
             password: Yup.string()
-                .min(4, "La contraseña debe tener al menos 4 caracteres.")
                 .trim()
                 .required("La contraseña es requerida"),
         }),
