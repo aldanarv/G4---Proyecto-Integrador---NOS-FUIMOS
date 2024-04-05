@@ -1,23 +1,29 @@
-# G4 Proyecto Integrador - NOS FUIMOS
-Este repositorio tiene todo nuestro proyecto "*Nos Fuimos"*, habra una destribucion de ramas por cada integrante (9) :
+# NosFuimos - Proyecto Integrador
 
-- Rama Main --> Proyecto Final cumpliendo con todos los parametros ✅
-- Rama Desarrollo --> Rama antes de subirla a nuestra rama main ✅
+Este proyecto es una aplicación que permite reservar viajes desarrollada con React
 
-##  Flujo de Trabajo
-1. Cada uno va a tener su rama, ya que los roles Van cambiando y va a haber un apoyo general de todo el equipo ✅
-2. Cuando se finalice un objetivo o el desarrollo de una tarea, siempre hacer de primero hacer un push a la rama "DEV"  ** ❌❌NO A LA RAMA MAIN ❌❌** 
+## Ejecución del proyecto
+Para ejecutar el proyecto localmente es necesario seguir los siguientes pasos.
+Todos los comandos se ejecutan en la raíz del proyecto, desde una terminal:
 
-## Commits 
-Para los Commits vamos a manejar nomenclautra con la estructura de : 
-- "*FRONT - nombreDeLaFeature - numeroDeTareaTrello *"
-- "*BACK - nombreDeLaFeature - numeroDeTareaTrello*"
-- "*INFRA - nombreDeLaFeature - numeroDeTareaTrello*"
-- "*BDD - nombreDeLaFeature - numeroDeTareaTrello*"
-- "*TEST - nombreDeLaFeature - numeroDeTareaTrello*"
--  "*SPRING - REVISION# - DEV *"
--  "*SPRING - REVISION1 - MAIN*"
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | 1. instala las dependencies (node_modules)       |
+| `npm run dev`             | 2. Inicia el servidor local en `localhost:5173`  |
 
-##  Observación 
 
-!***❌❌❌❌ Jamar Haremos un push directo a la rama MAIN❌❌❌❌❌***
+### Tecnologías utilizadas Frontend
+ - vite: servidor de desarrollo local usado con la plantilla de proyecto de React - npm create vite@latest
+ - axios: manejo de peticiones http - npm i axios
+ - react-router-dom: para manejo de rutas - npm i react-router-dom
+ - react-responsive: para manejar un responsive condicional en el panel de administracion
+ - sweetalert2: permite mostrar alertas muy atractivas - npm i sweetalert2
+ - formik: librería para gestión de formularios  - npm install formik --save
+ - yup: creador de esquemas para la validación de datos - npm i yup
+ - tailwindcss: es un framework CSS para el diseño de páginas web. - CDN
+ - material-ui: es una librería de componentes de React.js
+
+### Tecnologías utilizadas Backend
+ - spring boot
+ - java
+ - mongoDb

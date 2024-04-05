@@ -19,28 +19,28 @@ const AvatarMobile = () => {
     const firstLetterLastName = lastName ? lastName.charAt(0) : '';
 
     //Mostrar menu desplegable
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const [isDropdownOpenMobile, setDropdownOpenMobile] = useState(false);
     const toggleDropdown = () => {
-        setDropdownOpen(!isDropdownOpen);
+        setDropdownOpenMobile(!isDropdownOpenMobile);
     };
 
     // Agregar un evento al documento para cerrar el menú cuando se hace clic fuera de él
     useEffect(() => {
-        const handleOutsideClick = (event) => {
-            const dropdownButton = document.getElementById("dropdownHoverButton");
-            if (dropdownButton && !dropdownButton.contains(event.target)) {
-                setDropdownOpen(false);
+        const handleOutsideClickMobile = (event) => {
+            const dropdownButtonMobile = document.getElementById("dropdownHoverButtonMobile");
+            if (dropdownButtonMobile && !dropdownButtonMobile.contains(event.target)) {
+                setDropdownOpenMobile(false);
             }
         };
         // Agregar el escuchador de eventos al documento
-        document.addEventListener("click", handleOutsideClick);
+        document.addEventListener("click", handleOutsideClickMobile);
         // Limpiar el escuchador de eventos cuando el componente se desmonta
         return () => {
-            document.removeEventListener("click", handleOutsideClick);
+            document.removeEventListener("click", handleOutsideClickMobile);
         };
     }, []);
 
-    const handleLogout = () => {
+    const handleLogoutMobile = () => {
         // Mostrar alerta de confirmación antes de cerrar sesión
         Swal.fire({
             title: "¿Deseas cerrar sesión?",
@@ -71,7 +71,7 @@ const AvatarMobile = () => {
                     </div>
                     <button
                         onClick={toggleDropdown}
-                        id="dropdownHoverButton"
+                        id="dropdownHoverButtonMobile"
                         data-dropdown-toggle="dropdownHover"
                         data-dropdown-trigger="click"
                         className="focus:outline-none flex flex-row items-center"
@@ -84,7 +84,7 @@ const AvatarMobile = () => {
 
                 </div>
 
-                <div id="dropdownHover" className={`z-10 ${isDropdownOpen ? 'absolute' : 'hidden'} right-0 bg-white rounded-lg shadow-md w-60`}>
+                <div id="dropdownHover" className={`z-10 ${isDropdownOpenMobile ? 'absolute' : 'hidden'} right-0 bg-white rounded-lg shadow-md w-60`}>
                     <ul className="" aria-labelledby="dropdownHover">
                         <li>
                             <Link to="/detailUser" className="px-4 py-2 text-base font-light text-black hover:bg-gray-100 rounded-lg flex items-center justify-between">
@@ -113,7 +113,7 @@ const AvatarMobile = () => {
                             </li> : ""
                         }
                         <li>
-                            <div onClick={handleLogout} className="px-4 py-2 text-base font-light text-black hover:bg-gray-100 rounded-lg flex items-center justify-between">
+                            <div onClick={handleLogoutMobile} className="px-4 py-2 text-base font-light text-black hover:bg-gray-100 rounded-lg flex items-center justify-between">
                                 Cerrar sesión
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>
                             </div>
